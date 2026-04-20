@@ -7,7 +7,7 @@ final class DMTSessionStore {
 
     private let defaults = UserDefaults.standard
     private let stashKey = "dmt.taste.session"
-    private let heritageKey = "towInkLIopHeritageVault"
+    private let interestTagKey = "interestTag"
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()
 
@@ -31,8 +31,8 @@ final class DMTSessionStore {
 
         session = payload
         TOWINKLIopVibeRoute.TOWINKLIopSessionToken = payload.token
-        if let heritageVault = payload.heritageVault {
-            defaults.set(heritageVault, forKey: heritageKey)
+        if let interestTag = payload.interestTag {
+            defaults.set(interestTag, forKey: interestTagKey)
         }
     }
 
@@ -42,8 +42,8 @@ final class DMTSessionStore {
             defaults.set(data, forKey: stashKey)
         }
         TOWINKLIopVibeRoute.TOWINKLIopSessionToken = payload.token
-        if let heritageVault = payload.heritageVault {
-            defaults.set(heritageVault, forKey: heritageKey)
+        if let interestTag = payload.interestTag {
+            defaults.set(interestTag, forKey: interestTagKey)
         }
         onStateChange?(true)
     }
@@ -51,7 +51,7 @@ final class DMTSessionStore {
     func clear() {
         session = nil
         defaults.removeObject(forKey: stashKey)
-        defaults.removeObject(forKey: heritageKey)
+        defaults.removeObject(forKey: interestTagKey)
         TOWINKLIopVibeRoute.TOWINKLIopSessionToken = nil
         onStateChange?(false)
     }

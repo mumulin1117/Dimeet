@@ -4,17 +4,17 @@ final class DMTMealRoomsViewController: UIViewController {
     private let service: DMTFeastService
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let brandLabel = UILabel()
-    private let actionButton = UIButton(type: .system)
+    private let brandLabel = UIImageView()
+    private let actionButton = UIButton()
     private let storyScrollView = UIScrollView()
     private let storyStack = UIStackView()
-    private let mateButton = UIButton(type: .system)
-    private let mateImageView = UIImageView()
-    private let mateTitleLabel = UILabel()
+    private let mateButton = UIButton()
+//    private let mateImageView = UIImageView()
+//    private let mateTitleLabel = UILabel()
     private let roomTitleLabel = UILabel()
     private let roomStack = UIStackView()
     private let spinner = UIActivityIndicatorView(style: .medium)
-    private let createRoomButton = UIButton(type: .system)
+    private let createRoomButton = UIButton()
     private var homeDeck: DMTHomeDeck?
 
     init(service: DMTFeastService) {
@@ -27,9 +27,16 @@ final class DMTMealRoomsViewController: UIViewController {
         nil
     }
 
+   private lazy var statementsevent: UIImageView = {
+        let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
+        statement.contentMode = .scaleToFill
+       statement.frame = UIScreen.main.bounds
+        return statement
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = DMTPalette.cream
+        view.addSubview(statementsevent)
+//        view.backgroundColor = DMTPalette.cream
         navigationItem.largeTitleDisplayMode = .never
         configureLayout()
         fetchHomeDeck()
@@ -40,15 +47,12 @@ final class DMTMealRoomsViewController: UIViewController {
         contentView.translatesAutoresizingMaskIntoConstraints = false
 
         brandLabel.translatesAutoresizingMaskIntoConstraints = false
-        brandLabel.font = UIFont.systemFont(ofSize: 26, weight: .black)
-        brandLabel.textColor = DMTPalette.ink
-        brandLabel.text = "Dimeet"
+        brandLabel.image = UIImage(named: "Dimmenter")
 
         actionButton.translatesAutoresizingMaskIntoConstraints = false
-        actionButton.backgroundColor = UIColor(red: 1, green: 0.54, blue: 0.37, alpha: 1)
-        actionButton.tintColor = .white
-        actionButton.setImage(UIImage(systemName: "slider.horizontal.3"), for: .normal)
-        actionButton.layer.cornerRadius = DMTScale.r(21)
+     
+        actionButton.setImage(UIImage(named: "nitoaniIconb"), for: .normal)
+       
         actionButton.addTarget(self, action: #selector(handleQuickAction), for: .touchUpInside)
 
         storyScrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -59,18 +63,15 @@ final class DMTMealRoomsViewController: UIViewController {
         storyStack.spacing = DMTScale.w(14)
 
         mateButton.translatesAutoresizingMaskIntoConstraints = false
-        mateButton.backgroundColor = UIColor(red: 1, green: 0.88, blue: 0.34, alpha: 1)
-        mateButton.layer.cornerRadius = DMTScale.r(26)
-        mateButton.layer.borderColor = UIColor(red: 0.95, green: 0.77, blue: 0.23, alpha: 1).cgColor
-        mateButton.layer.borderWidth = 2
+        mateButton.setBackgroundImage(UIImage.init(named: "RobotRoomds"), for: .normal)
         mateButton.addTarget(self, action: #selector(handleMateTap), for: .touchUpInside)
 
-        mateImageView.translatesAutoresizingMaskIntoConstraints = false
-        mateImageView.contentMode = .scaleAspectFit
-
-        mateTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        mateTitleLabel.font = UIFont.systemFont(ofSize: 22, weight: .black)
-        mateTitleLabel.textColor = DMTPalette.ink
+//        mateImageView.translatesAutoresizingMaskIntoConstraints = false
+//        mateImageView.contentMode = .scaleAspectFit
+//
+//        mateTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+//        mateTitleLabel.font = UIFont.systemFont(ofSize: 22, weight: .black)
+//        mateTitleLabel.textColor = DMTPalette.ink
 
         roomTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         roomTitleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
@@ -84,12 +85,7 @@ final class DMTMealRoomsViewController: UIViewController {
         spinner.startAnimating()
 
         createRoomButton.translatesAutoresizingMaskIntoConstraints = false
-        createRoomButton.backgroundColor = UIColor(red: 0.99, green: 0.35, blue: 0.76, alpha: 1)
-        createRoomButton.setTitleColor(.white, for: .normal)
-        createRoomButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .heavy)
-        createRoomButton.titleLabel?.numberOfLines = 2
-        createRoomButton.titleLabel?.textAlignment = .center
-        createRoomButton.layer.cornerRadius = DMTScale.r(24)
+        createRoomButton.setBackgroundImage(UIImage(named: "createrRoom"), for: .normal)
         createRoomButton.addTarget(self, action: #selector(handleCreateRoom), for: .touchUpInside)
 
         view.addSubview(scrollView)
@@ -101,8 +97,8 @@ final class DMTMealRoomsViewController: UIViewController {
         contentView.addSubview(actionButton)
         contentView.addSubview(storyScrollView)
         contentView.addSubview(mateButton)
-        mateButton.addSubview(mateImageView)
-        mateButton.addSubview(mateTitleLabel)
+//        mateButton.addSubview(mateImageView)
+//        mateButton.addSubview(mateTitleLabel)
         contentView.addSubview(roomTitleLabel)
         contentView.addSubview(roomStack)
 
@@ -114,7 +110,9 @@ final class DMTMealRoomsViewController: UIViewController {
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-
+            brandLabel.widthAnchor.constraint(equalToConstant: 87),
+            brandLabel.heightAnchor.constraint(equalToConstant: 36),
+            
             brandLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(6)),
             brandLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
 
@@ -135,18 +133,18 @@ final class DMTMealRoomsViewController: UIViewController {
             storyStack.heightAnchor.constraint(equalTo: storyScrollView.heightAnchor),
 
             mateButton.topAnchor.constraint(equalTo: storyScrollView.bottomAnchor, constant: DMTScale.h(12)),
-            mateButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(14)),
-            mateButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(14)),
-            mateButton.heightAnchor.constraint(equalToConstant: DMTScale.h(72)),
+            mateButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(15)),
+            mateButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(15)),
+            mateButton.heightAnchor.constraint(equalToConstant: DMTScale.h(79)),
 
-            mateImageView.leadingAnchor.constraint(equalTo: mateButton.leadingAnchor, constant: DMTScale.w(12)),
-            mateImageView.centerYAnchor.constraint(equalTo: mateButton.centerYAnchor),
-            mateImageView.widthAnchor.constraint(equalToConstant: DMTScale.w(58)),
-            mateImageView.heightAnchor.constraint(equalToConstant: DMTScale.w(58)),
-
-            mateTitleLabel.leadingAnchor.constraint(equalTo: mateImageView.trailingAnchor, constant: DMTScale.w(12)),
-            mateTitleLabel.centerYAnchor.constraint(equalTo: mateButton.centerYAnchor),
-            mateTitleLabel.trailingAnchor.constraint(equalTo: mateButton.trailingAnchor, constant: -DMTScale.w(18)),
+//            mateImageView.leadingAnchor.constraint(equalTo: mateButton.leadingAnchor, constant: DMTScale.w(12)),
+//            mateImageView.centerYAnchor.constraint(equalTo: mateButton.centerYAnchor),
+//            mateImageView.widthAnchor.constraint(equalToConstant: DMTScale.w(58)),
+//            mateImageView.heightAnchor.constraint(equalToConstant: DMTScale.w(58)),
+//
+//            mateTitleLabel.leadingAnchor.constraint(equalTo: mateImageView.trailingAnchor, constant: DMTScale.w(12)),
+//            mateTitleLabel.centerYAnchor.constraint(equalTo: mateButton.centerYAnchor),
+//            mateTitleLabel.trailingAnchor.constraint(equalTo: mateButton.trailingAnchor, constant: -DMTScale.w(18)),
 
             roomTitleLabel.topAnchor.constraint(equalTo: mateButton.bottomAnchor, constant: DMTScale.h(18)),
             roomTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
@@ -159,8 +157,8 @@ final class DMTMealRoomsViewController: UIViewController {
 
             createRoomButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DMTScale.w(16)),
             createRoomButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -DMTScale.h(26)),
-            createRoomButton.widthAnchor.constraint(equalToConstant: DMTScale.w(116)),
-            createRoomButton.heightAnchor.constraint(equalToConstant: DMTScale.h(52)),
+            createRoomButton.widthAnchor.constraint(equalToConstant: DMTScale.w(118)),
+            createRoomButton.heightAnchor.constraint(equalToConstant: DMTScale.h(50)),
 
             spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
@@ -187,11 +185,11 @@ final class DMTMealRoomsViewController: UIViewController {
     }
 
     private func apply(deck: DMTHomeDeck) {
-        brandLabel.text = deck.brandTitle
-        mateImageView.image = DMTMainArtworkFactory.sceneImage(for: deck.mateBanner.artKey, size: CGSize(width: 120, height: 120))
-        mateTitleLabel.text = deck.mateBanner.title
+     
+//        mateImageView.image = DMTMainArtworkFactory.sceneImage(for: deck.mateBanner.artKey, size: CGSize(width: 120, height: 120))
+//        mateTitleLabel.text = deck.mateBanner.title
         roomTitleLabel.text = deck.sectionTitle
-        createRoomButton.setTitle(deck.createRoomTitle, for: .normal)
+//        createRoomButton.setTitle(deck.createRoomTitle, for: .normal)
 
         storyStack.arrangedSubviews.forEach {
             storyStack.removeArrangedSubview($0)
@@ -221,7 +219,7 @@ final class DMTMealRoomsViewController: UIViewController {
             card.addTarget(self, action: #selector(handleRoomTap(_:)), for: .touchUpInside)
             card.tag = deck.rooms.firstIndex(where: { $0.id == room.id }) ?? 0
             NSLayoutConstraint.activate([
-                card.heightAnchor.constraint(equalToConstant: DMTScale.h(206))
+                card.heightAnchor.constraint(equalToConstant: DMTScale.h(266))
             ])
             roomStack.addArrangedSubview(card)
         }

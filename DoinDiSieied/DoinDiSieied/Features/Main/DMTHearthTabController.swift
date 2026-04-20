@@ -4,15 +4,15 @@ final class DMTHearthTabController: UITabBarController {
     init(service: DMTFeastService, sessionStore: DMTSessionStore, profileStore: DMTTasteProfileStore) {
         super.init(nibName: nil, bundle: nil)
 
-        let roomsController = UINavigationController(rootViewController: DMTMealRoomsViewController(service: service))
+        let roomsController = UINavigationController(rootViewController:DMTMealRoomsViewController(service: service))
         let buzzController = UINavigationController(rootViewController: DMTBiteFeedViewController(service: service))
         let mateController = UINavigationController(rootViewController: DMTMealMateViewController(service: service))
         let nookController = UINavigationController(rootViewController: DMTTasteNookViewController(service: service, sessionStore: sessionStore, profileStore: profileStore))
 
-        roomsController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), selectedImage: UIImage(systemName: "house.fill"))
-        buzzController.tabBarItem = UITabBarItem(title: "Clip", image: UIImage(systemName: "record.circle.fill"), selectedImage: UIImage(systemName: "record.circle.fill"))
-        mateController.tabBarItem = UITabBarItem(title: "Discover", image: UIImage(systemName: "heart.circle.fill"), selectedImage: UIImage(systemName: "heart.circle.fill"))
-        nookController.tabBarItem = UITabBarItem(title: "Me", image: UIImage(systemName: "person.crop.circle.fill"), selectedImage: UIImage(systemName: "person.crop.circle.fill"))
+        roomsController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "errorRef0")?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage(named: "errorRef0IOP")?.withRenderingMode(.alwaysOriginal))
+        buzzController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "errorRef1")?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage(named: "errorRef1IOP")?.withRenderingMode(.alwaysOriginal))
+        mateController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "errorRef2")?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage(named: "errorRef2IOP")?.withRenderingMode(.alwaysOriginal))
+        nookController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "errorRef3")?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage(named: "errorRef3IOP")?.withRenderingMode(.alwaysOriginal))
 
         viewControllers = [roomsController, buzzController, mateController, nookController]
         configureTabBar()

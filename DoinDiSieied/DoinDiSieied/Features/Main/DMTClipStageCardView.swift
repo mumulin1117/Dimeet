@@ -2,8 +2,16 @@ import UIKit
 
 final class DMTClipStageCardView: UIControl {
     private let artView = UIImageView()
+    
+    private let alertButton = UIButton(type: .system)
     private let playButton = UIButton(type: .system)
+    
+    
+    
+    private let focusButton = UIButton(type: .system)
+    
     private let avatarView = UIImageView()
+//    private let creatorLabel = UILabel()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let actionStack = UIStackView()
@@ -19,8 +27,15 @@ final class DMTClipStageCardView: UIControl {
     }
 
     func apply(clip: DMTClipCard) {
-        artView.image = DMTMainArtworkFactory.sceneImage(for: clip.artKey, size: CGSize(width: 720, height: 1200))
-        avatarView.image = DMTMainArtworkFactory.avatarImage(for: clip.avatarKey, size: CGSize(width: 72, height: 72))
+        artView.dmtSetMealImage(
+            source: clip.artKey,
+            placeholder: DMTMainArtworkFactory.sceneImage(for: clip.id, size: CGSize(width: 720, height: 1200))
+        )
+        avatarView.dmtSetMealImage(
+            source: clip.avatarKey,
+            placeholder: DMTMainArtworkFactory.avatarImage(for: clip.creatorName, size: CGSize(width: 72, height: 72))
+        )
+//        creatorLabel.text = clip.creatorName
         titleLabel.text = clip.title
         subtitleLabel.text = clip.subtitle
 
@@ -30,9 +45,9 @@ final class DMTClipStageCardView: UIControl {
         }
 
         let actions = [
-            ("heart.fill", clip.likesLine, UIColor(red: 1, green: 0.44, blue: 0.48, alpha: 1)),
-            ("bubble.right", clip.talksLine, UIColor.white),
-            ("plus", clip.accentTitle, UIColor.white)
+            ("noiseCancelFilterdd", clip.likesLine),
+            ("switchToggleOnmessagedd", clip.talksLine),
+            ("menuPageLayout", clip.accentTitle)
         ]
 
         for action in actions {
@@ -41,15 +56,9 @@ final class DMTClipStageCardView: UIControl {
             shell.alignment = .center
             shell.spacing = DMTScale.h(6)
 
-            let bubble = UIView()
+            let bubble = UIImageView(image: UIImage(named: action.0))
             bubble.translatesAutoresizingMaskIntoConstraints = false
-            bubble.backgroundColor = action.2 == .white ? UIColor.white.withAlphaComponent(0.2) : UIColor.white
-            bubble.layer.cornerRadius = DMTScale.r(24)
-
-            let icon = UIImageView(image: UIImage(systemName: action.0))
-            icon.translatesAutoresizingMaskIntoConstraints = false
-            icon.tintColor = action.2 == .white ? UIColor.white : action.2
-            bubble.addSubview(icon)
+            bubble.contentMode = .scaleAspectFit
 
             let label = UILabel()
             label.font = UIFont.systemFont(ofSize: 13, weight: .medium)
@@ -60,9 +69,7 @@ final class DMTClipStageCardView: UIControl {
             shell.addArrangedSubview(label)
             NSLayoutConstraint.activate([
                 bubble.widthAnchor.constraint(equalToConstant: DMTScale.w(48)),
-                bubble.heightAnchor.constraint(equalToConstant: DMTScale.w(48)),
-                icon.centerXAnchor.constraint(equalTo: bubble.centerXAnchor),
-                icon.centerYAnchor.constraint(equalTo: bubble.centerYAnchor)
+                bubble.heightAnchor.constraint(equalToConstant: DMTScale.w(48))
             ])
             actionStack.addArrangedSubview(shell)
         }
@@ -71,10 +78,14 @@ final class DMTClipStageCardView: UIControl {
     private func configureLayout() {
         layer.cornerRadius = DMTScale.r(28)
         clipsToBounds = true
-
+        focusButton.translatesAutoresizingMaskIntoConstraints = false
+        focusButton.setImage(UIImage.init(named: "FocusButton"), for: .normal)
+        
+        
+        alertButton.setImage(UIImage.init(named: "askertdd"), for: .normal)
         artView.translatesAutoresizingMaskIntoConstraints = false
         artView.contentMode = .scaleAspectFill
-
+        alertButton.translatesAutoresizingMaskIntoConstraints = false
         playButton.translatesAutoresizingMaskIntoConstraints = false
         playButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
         playButton.tintColor = .white
@@ -87,15 +98,20 @@ final class DMTClipStageCardView: UIControl {
         avatarView.clipsToBounds = true
         avatarView.layer.borderWidth = 2
         avatarView.layer.borderColor = UIColor.white.cgColor
+//
+//        creatorLabel.translatesAutoresizingMaskIntoConstraints = false
+//        creatorLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+//        creatorLabel.textColor = .white
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
+        titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         titleLabel.textColor = .white
+        titleLabel.numberOfLines = 2
 
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         subtitleLabel.textColor = UIColor.white.withAlphaComponent(0.92)
-        subtitleLabel.numberOfLines = 0
+        subtitleLabel.numberOfLines = 2
 
         actionStack.translatesAutoresizingMaskIntoConstraints = false
         actionStack.axis = .vertical
@@ -104,25 +120,39 @@ final class DMTClipStageCardView: UIControl {
         addSubview(artView)
         addSubview(playButton)
         addSubview(avatarView)
+//        addSubview(creatorLabel)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
         addSubview(actionStack)
-
+        addSubview(focusButton)
+addSubview(alertButton)
         NSLayoutConstraint.activate([
             artView.topAnchor.constraint(equalTo: topAnchor),
             artView.leadingAnchor.constraint(equalTo: leadingAnchor),
             artView.trailingAnchor.constraint(equalTo: trailingAnchor),
             artView.bottomAnchor.constraint(equalTo: bottomAnchor),
-
+            alertButton.widthAnchor.constraint(equalToConstant: 40),
+            alertButton.heightAnchor.constraint(equalToConstant: 40),
+            alertButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 30),
+            alertButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            
             playButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             playButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             playButton.widthAnchor.constraint(equalToConstant: DMTScale.w(60)),
             playButton.heightAnchor.constraint(equalToConstant: DMTScale.w(60)),
 
             avatarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DMTScale.w(18)),
-            avatarView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(72)),
+            avatarView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(92)),
             avatarView.widthAnchor.constraint(equalToConstant: DMTScale.w(44)),
             avatarView.heightAnchor.constraint(equalToConstant: DMTScale.w(44)),
+            focusButton.widthAnchor.constraint(equalToConstant: 30),
+            focusButton.heightAnchor.constraint(equalToConstant: 20),
+            
+            focusButton.centerYAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: 0),
+            focusButton.centerXAnchor.constraint(equalTo: avatarView.centerXAnchor, constant: 0),
+//            creatorLabel.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: DMTScale.w(12)),
+//            creatorLabel.trailingAnchor.constraint(equalTo: actionStack.leadingAnchor, constant: -DMTScale.w(14)),
+//            creatorLabel.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -DMTScale.h(8)),
 
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DMTScale.w(18)),
             titleLabel.trailingAnchor.constraint(equalTo: actionStack.leadingAnchor, constant: -DMTScale.w(14)),

@@ -131,7 +131,7 @@ private enum DMTMockKitchen {
 
     private static func sessionPayload(email: String, name: String) -> DMTSessionPayload {
         let cleaned = name.lowercased().replacingOccurrences(of: " ", with: "")
-        return DMTSessionPayload(token: "dmt-\(cleaned)-table", displayName: name.capitalized, handle: "@\(cleaned)", email: email.lowercased(), heritageVault: 54894011)
+        return DMTSessionPayload(token: "dmt-\(cleaned)-table", displayName: name.capitalized, handle: "@\(cleaned)", email: email.lowercased(), interestTag: 54894011)
     }
 
     private static let authBundle = DMTAuthBundle(
@@ -289,10 +289,10 @@ private enum DMTMockKitchen {
     ]
 
     private static let momentCards = [
-        DMTMomentCard(id: "pepper-sizzle", author: "Evelyn Drake", dish: "After all, tomorrow is a...", note: "A night plate with camera-first energy.", stamp: "12m ago", heatTag: "Video", artKey: "moment-evelyn", modeTag: "Video", sideTag: "Live"),
-        DMTMomentCard(id: "berry-waffle", author: "Evelyn Drake", dish: "Where Every Meal Tells...", note: "An audio-led bite story for people staying late.", stamp: "34m ago", heatTag: "Audio", artKey: "moment-denim", modeTag: "Audio", sideTag: "Live"),
-        DMTMomentCard(id: "curry-cloud", author: "Florence Sutton", dish: "Exploring the World...", note: "A quick dish clip from a soft outdoor table.", stamp: "58m ago", heatTag: "Video", artKey: "moment-florence", modeTag: "Video", sideTag: "Live"),
-        DMTMomentCard(id: "garden-bite", author: "Jorge Hicks", dish: "Sharing My Food, My...", note: "Low-key table energy with a close-up bite.", stamp: "1h ago", heatTag: "Video", artKey: "moment-jorge", modeTag: "Video", sideTag: "Live")
+        DMTMomentCard(id: "pepper-sizzle", author: "Evelyn Drake", dish: "After all, tomorrow is a...", note: "A night plate with camera-first energy.", stamp: "12m ago", heatTag: "Video", artKey: "moment-evelyn", avatarKey: "story-vasquez", modeTag: "Video", sideTag: "Live"),
+        DMTMomentCard(id: "berry-waffle", author: "Evelyn Drake", dish: "Where Every Meal Tells...", note: "An audio-led bite story for people staying late.", stamp: "34m ago", heatTag: "Audio", artKey: "moment-denim", avatarKey: "story-vasquez", modeTag: "Audio", sideTag: "Live"),
+        DMTMomentCard(id: "curry-cloud", author: "Florence Sutton", dish: "Exploring the World...", note: "A quick dish clip from a soft outdoor table.", stamp: "58m ago", heatTag: "Video", artKey: "moment-florence", avatarKey: "story-mccoya", modeTag: "Video", sideTag: "Live"),
+        DMTMomentCard(id: "garden-bite", author: "Jorge Hicks", dish: "Sharing My Food, My...", note: "Low-key table energy with a close-up bite.", stamp: "1h ago", heatTag: "Video", artKey: "moment-jorge", avatarKey: "story-ruiz", modeTag: "Video", sideTag: "Live")
     ]
 
     private static let momentDetails = [
@@ -422,6 +422,7 @@ private enum DMTMockKitchen {
 
     private static let nookDigest = DMTNookDigest(
         displayName: "Taste Scout",
+        avatarKey: "story-vasquez",
         handle: "@taste.scout",
         moodLine: "Always finds a reason to stay for one more bite.",
         about: "This nook tracks your current table streak, the dish moods you share, and a few shortcuts for tuning your Dimeet rhythm.",
@@ -438,6 +439,6 @@ private enum DMTMockKitchen {
         giftLine: "Gifts Received 0",
         segmentTitles: ["Dynamic", "Short Video"],
         emptyTitle: "No Record",
-        emptyArtKey: "nook-empty"
+        emptyArtKey: "sliderThumbPosNOdata"
     )
 }

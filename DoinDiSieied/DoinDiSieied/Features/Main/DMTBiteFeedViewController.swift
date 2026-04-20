@@ -22,9 +22,15 @@ final class DMTBiteFeedViewController: UIViewController {
         nil
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = DMTPalette.cream
+    private lazy var statementsevent: UIImageView = {
+         let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
+         statement.contentMode = .scaleToFill
+        statement.frame = UIScreen.main.bounds
+         return statement
+     }()
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         view.addSubview(statementsevent)
         navigationItem.largeTitleDisplayMode = .never
         configureLayout()
         fetchClipDeck()
@@ -48,10 +54,7 @@ final class DMTBiteFeedViewController: UIViewController {
         secondaryButton.addTarget(self, action: #selector(handleSecondary), for: .touchUpInside)
 
         inboxButton.translatesAutoresizingMaskIntoConstraints = false
-        inboxButton.backgroundColor = UIColor(red: 1, green: 0.56, blue: 0.43, alpha: 1)
-        inboxButton.tintColor = .white
-        inboxButton.setImage(UIImage(systemName: "message.fill"), for: .normal)
-        inboxButton.layer.cornerRadius = DMTScale.r(19)
+        inboxButton.setBackgroundImage(UIImage(named: "noiseCancelFilter"), for: .normal)
 
         cardStack.translatesAutoresizingMaskIntoConstraints = false
         cardStack.axis = .vertical

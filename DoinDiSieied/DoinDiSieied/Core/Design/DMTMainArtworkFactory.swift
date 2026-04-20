@@ -2,6 +2,9 @@ import UIKit
 
 enum DMTMainArtworkFactory {
     static func avatarImage(for key: String, size: CGSize = CGSize(width: 96, height: 96)) -> UIImage {
+        if let image = UIImage(named: key) {
+            return image
+        }
         let palette = paletteForKey(key)
         let initials = initialsForKey(key)
         let renderer = UIGraphicsImageRenderer(size: size)
@@ -34,6 +37,9 @@ enum DMTMainArtworkFactory {
     }
 
     static func sceneImage(for key: String, size: CGSize) -> UIImage {
+        if let image = UIImage(named: key) {
+            return image
+        }
         let palette = paletteForKey(key)
         let glyph = glyphForKey(key)
         let renderer = UIGraphicsImageRenderer(size: size)

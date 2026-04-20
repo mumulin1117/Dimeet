@@ -85,7 +85,7 @@ struct DMTSessionPayload: Codable {
     let displayName: String
     let handle: String
     let email: String
-    let heritageVault: Int?
+    let interestTag: Int?
 }
 
 struct DMTLocalTasteProfile: Codable {

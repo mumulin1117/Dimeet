@@ -22,7 +22,10 @@ final class DMTRoomStageCardView: UIControl {
     }
 
     func apply(room: DMTRoomCard) {
-        imageView.image = DMTMainArtworkFactory.sceneImage(for: room.artKey, size: CGSize(width: 720, height: 520))
+        imageView.dmtSetMealImage(
+            source: room.artKey,
+            placeholder: DMTMainArtworkFactory.sceneImage(for: room.id, size: CGSize(width: 720, height: 520))
+        )
         onlineBadge.text = "  \(room.onlineCount) Online  "
         titleLabel.text = room.hostName
         captionLabel.text = room.caption
@@ -35,12 +38,17 @@ final class DMTRoomStageCardView: UIControl {
         }
 
         for key in room.attendeeKeys.prefix(3) {
-            let avatar = UIImageView(image: DMTMainArtworkFactory.avatarImage(for: key, size: CGSize(width: 44, height: 44)))
+            let avatar = UIImageView()
             avatar.translatesAutoresizingMaskIntoConstraints = false
+            avatar.contentMode = .scaleAspectFill
             avatar.layer.cornerRadius = DMTScale.r(14)
             avatar.clipsToBounds = true
             avatar.layer.borderColor = UIColor.white.cgColor
             avatar.layer.borderWidth = 1.5
+            avatar.dmtSetMealImage(
+                source: key,
+                placeholder: DMTMainArtworkFactory.avatarImage(for: room.id + key, size: CGSize(width: 44, height: 44))
+            )
             NSLayoutConstraint.activate([
                 avatar.widthAnchor.constraint(equalToConstant: DMTScale.w(28)),
                 avatar.heightAnchor.constraint(equalToConstant: DMTScale.w(28))
@@ -116,7 +124,7 @@ final class DMTRoomStageCardView: UIControl {
             infoButton.heightAnchor.constraint(equalToConstant: DMTScale.w(30)),
 
             avatarStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DMTScale.w(16)),
-            avatarStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(52)),
+            avatarStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(82)),
 
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DMTScale.w(16)),
             titleLabel.bottomAnchor.constraint(equalTo: captionLabel.topAnchor, constant: -DMTScale.h(4)),

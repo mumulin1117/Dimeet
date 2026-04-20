@@ -16,7 +16,10 @@ final class DMTStoryChipView: UIView {
     }
 
     func apply(story: DMTStoryChip) {
-        imageView.image = DMTMainArtworkFactory.avatarImage(for: story.artKey)
+        imageView.dmtSetMealImage(
+            source: story.artKey,
+            placeholder: DMTMainArtworkFactory.avatarImage(for: story.id)
+        )
         ringView.layer.borderColor = (story.isActive ? UIColor(red: 1, green: 0.42, blue: 0.45, alpha: 1) : UIColor.clear).cgColor
         ringView.layer.borderWidth = story.isActive ? DMTScale.r(2.5) : 0
         nameLabel.text = story.name

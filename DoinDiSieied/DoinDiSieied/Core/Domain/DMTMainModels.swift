@@ -74,6 +74,7 @@ struct DMTMomentCard: Codable {
     let stamp: String
     let heatTag: String
     let artKey: String
+    let avatarKey: String
     let modeTag: String
     let sideTag: String
 }
@@ -129,6 +130,7 @@ struct DMTDiscoverGalleryCard: Codable {
 
 struct DMTNookDigest: Codable {
     let displayName: String
+    let avatarKey: String
     let handle: String
     let moodLine: String
     let about: String

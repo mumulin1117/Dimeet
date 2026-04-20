@@ -27,9 +27,15 @@ final class DMTMealMateViewController: UIViewController {
         nil
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = DMTPalette.cream
+    private lazy var statementsevent: UIImageView = {
+         let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
+         statement.contentMode = .scaleToFill
+        statement.frame = UIScreen.main.bounds
+         return statement
+     }()
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         view.addSubview(statementsevent)
         navigationItem.largeTitleDisplayMode = .never
         configureLayout()
         fetchDiscoverDeck()
@@ -45,10 +51,7 @@ final class DMTMealMateViewController: UIViewController {
         titleLabel.textAlignment = .center
 
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.backgroundColor = UIColor(red: 1, green: 0.58, blue: 0.35, alpha: 1)
-        addButton.tintColor = .white
-        addButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        addButton.layer.cornerRadius = DMTScale.r(19)
+        addButton.setBackgroundImage(UIImage(named: "menuPageLayout"), for: .normal)
         addButton.addTarget(self, action: #selector(handleAdd), for: .touchUpInside)
 
         filterStack.translatesAutoresizingMaskIntoConstraints = false
@@ -196,7 +199,7 @@ final class DMTMealMateViewController: UIViewController {
                 cardView.tag = deck.spotlight.firstIndex(where: { $0.id == card.id }) ?? 0
                 cardView.addTarget(self, action: #selector(handleMomentTap(_:)), for: .touchUpInside)
                 NSLayoutConstraint.activate([
-                    cardView.heightAnchor.constraint(equalToConstant: DMTScale.h(194))
+                    cardView.heightAnchor.constraint(equalToConstant: DMTScale.h(204))
                 ])
                 rowStack.addArrangedSubview(cardView)
             }

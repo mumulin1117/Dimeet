@@ -25,6 +25,7 @@ struct DMTMateBanner: Codable {
 
 struct DMTRoomCard: Codable {
     let id: String
+    let hostUserID: String
     let title: String
     let topic: String
     let seatLine: String
@@ -55,6 +56,7 @@ struct DMTClipDeck: Codable {
 
 struct DMTClipCard: Codable {
     let id: String
+    let creatorUserID: String
     let creatorName: String
     let title: String
     let subtitle: String
@@ -68,6 +70,7 @@ struct DMTClipCard: Codable {
 
 struct DMTMomentCard: Codable {
     let id: String
+    let authorUserID: String
     let author: String
     let dish: String
     let note: String
@@ -114,7 +117,7 @@ struct DMTDiscoverDeck: Codable {
     let secondaryTitle: String
     let spotlight: [DMTMomentCard]
     let promo: DMTDiscoverPromo
-    let gallery: [DMTDiscoverGalleryCard]
+    let gallery: [DMTMomentCard]
 }
 
 struct DMTDiscoverPromo: Codable {
@@ -123,12 +126,8 @@ struct DMTDiscoverPromo: Codable {
     let artKey: String
 }
 
-struct DMTDiscoverGalleryCard: Codable {
-    let id: String
-    let artKey: String
-}
-
 struct DMTNookDigest: Codable {
+    let userID: String
     let displayName: String
     let avatarKey: String
     let handle: String

@@ -215,6 +215,7 @@ private enum DMTMockKitchen {
         rooms: [
             DMTRoomCard(
                 id: "sunrise-broth",
+                hostUserID: "story-host-evelyn",
                 title: "Cocoa Corner",
                 topic: "Flavor stories that stay warm and easy.",
                 seatLine: "Cooking My Way Through Flavors and Cultures...",
@@ -229,6 +230,7 @@ private enum DMTMockKitchen {
             ),
             DMTRoomCard(
                 id: "noodle-noon",
+                hostUserID: "story-host-heartbreaker",
                 title: "Bite Breakers",
                 topic: "Playful meal talk with quick join energy.",
                 seatLine: "Pick your role and speak your part.",
@@ -243,6 +245,7 @@ private enum DMTMockKitchen {
             ),
             DMTRoomCard(
                 id: "midnight-toast",
+                hostUserID: "story-host-nora",
                 title: "After Bite",
                 topic: "Night tables for one more snack and one more story.",
                 seatLine: "Midnight cravings with people still awake.",
@@ -289,10 +292,10 @@ private enum DMTMockKitchen {
     ]
 
     private static let momentCards = [
-        DMTMomentCard(id: "pepper-sizzle", author: "Evelyn Drake", dish: "After all, tomorrow is a...", note: "A night plate with camera-first energy.", stamp: "12m ago", heatTag: "Video", artKey: "moment-evelyn", avatarKey: "story-vasquez", modeTag: "Video", sideTag: "Live"),
-        DMTMomentCard(id: "berry-waffle", author: "Evelyn Drake", dish: "Where Every Meal Tells...", note: "An audio-led bite story for people staying late.", stamp: "34m ago", heatTag: "Audio", artKey: "moment-denim", avatarKey: "story-vasquez", modeTag: "Audio", sideTag: "Live"),
-        DMTMomentCard(id: "curry-cloud", author: "Florence Sutton", dish: "Exploring the World...", note: "A quick dish clip from a soft outdoor table.", stamp: "58m ago", heatTag: "Video", artKey: "moment-florence", avatarKey: "story-mccoya", modeTag: "Video", sideTag: "Live"),
-        DMTMomentCard(id: "garden-bite", author: "Jorge Hicks", dish: "Sharing My Food, My...", note: "Low-key table energy with a close-up bite.", stamp: "1h ago", heatTag: "Video", artKey: "moment-jorge", avatarKey: "story-ruiz", modeTag: "Video", sideTag: "Live")
+        DMTMomentCard(id: "pepper-sizzle", authorUserID: "moment-user-evelyn", author: "Evelyn Drake", dish: "After all, tomorrow is a...", note: "A night plate with camera-first energy.", stamp: "12m ago", heatTag: "Video", artKey: "moment-evelyn", avatarKey: "story-vasquez", modeTag: "Video", sideTag: "Live"),
+        DMTMomentCard(id: "berry-waffle", authorUserID: "moment-user-evelyn", author: "Evelyn Drake", dish: "Where Every Meal Tells...", note: "An audio-led bite story for people staying late.", stamp: "34m ago", heatTag: "Audio", artKey: "moment-denim", avatarKey: "story-vasquez", modeTag: "Audio", sideTag: "Live"),
+        DMTMomentCard(id: "curry-cloud", authorUserID: "moment-user-florence", author: "Florence Sutton", dish: "Exploring the World...", note: "A quick dish clip from a soft outdoor table.", stamp: "58m ago", heatTag: "Video", artKey: "moment-florence", avatarKey: "story-mccoya", modeTag: "Video", sideTag: "Live"),
+        DMTMomentCard(id: "garden-bite", authorUserID: "moment-user-jorge", author: "Jorge Hicks", dish: "Sharing My Food, My...", note: "Low-key table energy with a close-up bite.", stamp: "1h ago", heatTag: "Video", artKey: "moment-jorge", avatarKey: "story-ruiz", modeTag: "Video", sideTag: "Live")
     ]
 
     private static let momentDetails = [
@@ -336,6 +339,7 @@ private enum DMTMockKitchen {
         clips: [
             DMTClipCard(
                 id: "clip-heartbreaker",
+                creatorUserID: "clip-user-heartbreaker",
                 creatorName: "Heart breaker",
                 title: "Heart breaker ❤️",
                 subtitle: "Pick your role and speak your part.",
@@ -348,6 +352,7 @@ private enum DMTMockKitchen {
             ),
             DMTClipCard(
                 id: "clip-florence",
+                creatorUserID: "clip-user-florence",
                 creatorName: "Florence Sutton",
                 title: "Night cravings only",
                 subtitle: "Join when the table feels too quiet.",
@@ -379,12 +384,9 @@ private enum DMTMockKitchen {
         promo: DMTDiscoverPromo(
             title: "Out of coins. Recharge now!",
             subtitle: "Keep the room glowing and the prompts moving.",
-            artKey: "promo-splash"
+            artKey: "outofcoingsj"
         ),
-        gallery: [
-            DMTDiscoverGalleryCard(id: "gallery-ember", artKey: "gallery-ember"),
-            DMTDiscoverGalleryCard(id: "gallery-silk", artKey: "gallery-silk")
-        ]
+        gallery: Array(momentCards.dropFirst(4).prefix(2))
     )
 
     private static let mateReplies = [
@@ -421,6 +423,7 @@ private enum DMTMockKitchen {
     ]
 
     private static let nookDigest = DMTNookDigest(
+        userID: "taste-scout-id",
         displayName: "Taste Scout",
         avatarKey: "story-vasquez",
         handle: "@taste.scout",

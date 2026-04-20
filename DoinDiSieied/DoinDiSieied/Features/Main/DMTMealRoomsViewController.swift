@@ -52,7 +52,6 @@ final class DMTMealRoomsViewController: UIViewController {
         actionButton.translatesAutoresizingMaskIntoConstraints = false
      
         actionButton.setImage(UIImage(named: "nitoaniIconb"), for: .normal)
-       
         actionButton.addTarget(self, action: #selector(handleQuickAction), for: .touchUpInside)
 
         storyScrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -199,6 +198,9 @@ final class DMTMealRoomsViewController: UIViewController {
         for story in deck.stories {
             let storyView = DMTStoryChipView()
             storyView.apply(story: story)
+            storyView.tag = deck.stories.firstIndex(where: { $0.id == story.id }) ?? 0
+            storyView.isUserInteractionEnabled = true
+            storyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleStoryTap(_:))))
             NSLayoutConstraint.activate([
                 storyView.widthAnchor.constraint(equalToConstant: DMTScale.w(72))
             ])
@@ -227,31 +229,38 @@ final class DMTMealRoomsViewController: UIViewController {
 
     @objc
     private func handleQuickAction() {
-        dmtShowNotice(title: "Table Tools", message: "Filters and quick tools can be expanded from this entry.")
+        dmtOpenPortal(.noticeCenter)
     }
 
     @objc
     private func handleMateTap() {
-        guard let promptID = homeDeck?.mateBanner.promptID else { return }
-        let detailController = DMTMateDetailViewController(service: service, promptID: promptID)
-        detailController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(detailController, animated: true)
+        dmtOpenPortal(.mealRobot)
     }
 
     @objc
     private func handleCreateRoom() {
-        dmtShowNotice(title: "Room Composer", message: "The room creation step is reserved for the next interface round.")
+        dmtOpenPortal(.createRoom)
     }
 
     @objc
     private func handleRoomTap(_ sender: UIControl) {
-        guard let roomID = homeDeck?.rooms[sender.tag].id else { return }
-        showRoomDetail(roomID: roomID)
+        guard let room = homeDeck?.rooms[sender.tag] else { return }
+        dmtOpenPortal(.joinRoom(channel: room.id, hostUserID: room.hostUserID))
+    }
+
+    @objc
+    private func handleStoryTap(_ recognizer: UITapGestureRecognizer) {
+        guard
+            let storyView = recognizer.view,
+            let story = homeDeck?.stories[storyView.tag]
+        else {
+            return
+        }
+
+        dmtOpenPortal(.userHomepage(userID: story.id))
     }
 
     private func showRoomDetail(roomID: String) {
-        let detailController = DMTRoomDetailViewController(service: service, roomID: roomID)
-        detailController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(detailController, animated: true)
+        dmtOpenPortal(.tableLounge(liveID: roomID))
     }
 }

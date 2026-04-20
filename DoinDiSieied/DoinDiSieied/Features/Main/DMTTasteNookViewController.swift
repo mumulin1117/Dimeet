@@ -6,7 +6,7 @@ final class DMTTasteNookViewController: UIViewController {
     private let profileStore: DMTTasteProfileStore
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let gradientView = UIView()
+//    private let gradientView = UIView()
     private let titleLabel = UILabel()
     private let settingsButton = UIButton(type: .system)
     private let avatarView = UIImageView()
@@ -24,6 +24,7 @@ final class DMTTasteNookViewController: UIViewController {
     private let dynamicButton = UIButton(type: .system)
     private let videoButton = UIButton(type: .system)
     private let emptyImageView = UIImageView()
+    private var digest: DMTNookDigest?
   
 //    private let spinner = UIActivityIndicatorView(style: .medium)
 
@@ -57,17 +58,17 @@ final class DMTTasteNookViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
 
-        gradientView.translatesAutoresizingMaskIntoConstraints = false
-        gradientView.layer.cornerRadius = DMTScale.r(32)
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [
-            UIColor(red: 1, green: 0.83, blue: 0.49, alpha: 1).cgColor,
-            UIColor(red: 1, green: 0.6, blue: 0.43, alpha: 1).cgColor,
-            UIColor(red: 0.99, green: 0.75, blue: 0.76, alpha: 1).cgColor
-        ]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-        gradientView.layer.insertSublayer(gradientLayer, at: 0)
+//        gradientView.translatesAutoresizingMaskIntoConstraints = false
+//        gradientView.layer.cornerRadius = DMTScale.r(32)
+//        let gradientLayer = CAGradientLayer()
+//        gradientLayer.colors = [
+//            UIColor(red: 1, green: 0.83, blue: 0.49, alpha: 1).cgColor,
+//            UIColor(red: 1, green: 0.6, blue: 0.43, alpha: 1).cgColor,
+//            UIColor(red: 0.99, green: 0.75, blue: 0.76, alpha: 1).cgColor
+//        ]
+//        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+//        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+//        gradientView.layer.insertSublayer(gradientLayer, at: 0)
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
@@ -88,6 +89,7 @@ final class DMTTasteNookViewController: UIViewController {
 
         editButton.translatesAutoresizingMaskIntoConstraints = false
         editButton.setBackgroundImage(UIImage(named: "toppingExtraSide"), for: .normal)
+        editButton.addTarget(self, action: #selector(handleEditTap), for: .touchUpInside)
 
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont.systemFont(ofSize: 22, weight: .black)
@@ -96,6 +98,8 @@ final class DMTTasteNookViewController: UIViewController {
         walletCard.translatesAutoresizingMaskIntoConstraints = false
         walletCard.layer.cornerRadius = DMTScale.r(24)
         walletCard.clipsToBounds = true
+        walletCard.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleWalletTap)))
+        walletCard.isUserInteractionEnabled = true
 
         walletBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         walletBackgroundView.image = UIImage(named: "safeAreaInsets")
@@ -116,6 +120,7 @@ final class DMTTasteNookViewController: UIViewController {
         giftCard.translatesAutoresizingMaskIntoConstraints = false
         giftCard.setBackgroundImage(UIImage(named: "longPressTime"), for: .normal)
         giftCard.clipsToBounds = true
+        giftCard.addTarget(self, action: #selector(handleGiftTap), for: .touchUpInside)
 
      
 
@@ -137,17 +142,20 @@ final class DMTTasteNookViewController: UIViewController {
         view.addSubview(scrollView)
       
         scrollView.addSubview(contentView)
-        contentView.addSubview(gradientView)
-        gradientView.addSubview(titleLabel)
-        gradientView.addSubview(settingsButton)
-        gradientView.addSubview(avatarView)
-        gradientView.addSubview(editButton)
-        gradientView.addSubview(nameLabel)
-        gradientView.addSubview(walletCard)
-        gradientView.addSubview(statsStack)
-        gradientView.addSubview(giftCard)
-        gradientView.addSubview(segmentShell)
-        gradientView.addSubview(emptyImageView)
+        contentView.isUserInteractionEnabled = true
+        editButton.isUserInteractionEnabled = true
+        walletCard.isUserInteractionEnabled = true
+//        contentView.addSubview(gradientView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(settingsButton)
+        contentView.addSubview(avatarView)
+        contentView.addSubview(editButton)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(walletCard)
+        contentView.addSubview(statsStack)
+        contentView.addSubview(giftCard)
+        contentView.addSubview(segmentShell)
+        contentView.addSubview(emptyImageView)
        
         walletCard.addSubview(walletBackgroundView)
         walletCard.addSubview(walletTitleLabel)
@@ -157,7 +165,8 @@ final class DMTTasteNookViewController: UIViewController {
         segmentShell.addSubview(videoButton)
 
         scrollView.dmtPinEdges(to: view)
-
+        // 在 NSLayoutConstraint.activate 数组中添加这一行
+        emptyImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(40)).isActive = true
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -165,21 +174,21 @@ final class DMTTasteNookViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            gradientView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(4)),
-            gradientView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(10)),
-            gradientView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(10)),
-            gradientView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(120)),
+//            gradientView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(4)),
+//            gradientView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(10)),
+//            gradientView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(10)),
+//            gradientView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(120)),
 
-            titleLabel.topAnchor.constraint(equalTo: gradientView.topAnchor, constant: DMTScale.h(14)),
-            titleLabel.centerXAnchor.constraint(equalTo: gradientView.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: DMTScale.h(14)),
+            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
             settingsButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            settingsButton.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -DMTScale.w(16)),
+            settingsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(16)),
             settingsButton.widthAnchor.constraint(equalToConstant: DMTScale.w(34)),
             settingsButton.heightAnchor.constraint(equalToConstant: DMTScale.w(34)),
 
             avatarView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: DMTScale.h(18)),
-            avatarView.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: DMTScale.w(16)),
+            avatarView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
             avatarView.widthAnchor.constraint(equalToConstant: DMTScale.w(68)),
             avatarView.heightAnchor.constraint(equalToConstant: DMTScale.w(68)),
 
@@ -189,11 +198,11 @@ final class DMTTasteNookViewController: UIViewController {
             editButton.heightAnchor.constraint(equalToConstant: DMTScale.h(24)),
 
             nameLabel.topAnchor.constraint(equalTo: editButton.bottomAnchor, constant: DMTScale.h(12)),
-            nameLabel.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: DMTScale.w(16)),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
             nameLabel.widthAnchor.constraint(equalToConstant: DMTScale.w(170)),
 
             walletCard.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: DMTScale.h(14)),
-            walletCard.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -DMTScale.w(16)),
+            walletCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(16)),
             walletCard.widthAnchor.constraint(equalToConstant: DMTScale.w(168)),
             walletCard.heightAnchor.constraint(equalToConstant: DMTScale.h(92)),
 
@@ -210,18 +219,18 @@ final class DMTTasteNookViewController: UIViewController {
             walletValueLabel.bottomAnchor.constraint(equalTo: walletCard.bottomAnchor, constant: -DMTScale.h(14)),
 
             statsStack.topAnchor.constraint(equalTo: walletCard.bottomAnchor, constant: DMTScale.h(12)),
-            statsStack.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -DMTScale.w(16)),
+            statsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(16)),
             statsStack.widthAnchor.constraint(equalToConstant: DMTScale.w(168)),
 
             giftCard.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: DMTScale.h(20)),
-            giftCard.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: DMTScale.w(16)),
-            giftCard.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -DMTScale.w(16)),
+            giftCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
+            giftCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(16)),
             giftCard.heightAnchor.constraint(equalToConstant: DMTScale.h(48)),
 
          
 
             segmentShell.topAnchor.constraint(equalTo: giftCard.bottomAnchor, constant: DMTScale.h(16)),
-            segmentShell.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: DMTScale.w(16)),
+            segmentShell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
             segmentShell.widthAnchor.constraint(equalToConstant: DMTScale.w(172)),
             segmentShell.heightAnchor.constraint(equalToConstant: DMTScale.h(40)),
 
@@ -232,13 +241,15 @@ final class DMTTasteNookViewController: UIViewController {
 
             videoButton.topAnchor.constraint(equalTo: segmentShell.topAnchor, constant: DMTScale.h(4)),
             videoButton.leadingAnchor.constraint(equalTo: dynamicButton.trailingAnchor, constant: DMTScale.w(4)),
-            videoButton.trailingAnchor.constraint(equalTo: segmentShell.trailingAnchor, constant: -DMTScale.w(4)),
+//            videoButton.trailingAnchor.constraint(equalTo: segmentShell.trailingAnchor, constant: -DMTScale.w(4)),
             videoButton.bottomAnchor.constraint(equalTo: segmentShell.bottomAnchor, constant: -DMTScale.h(4)),
-
-            emptyImageView.centerXAnchor.constraint(equalTo: gradientView.centerXAnchor),
+            videoButton.widthAnchor.constraint(equalToConstant: DMTScale.w(108)),
+            emptyImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             emptyImageView.topAnchor.constraint(equalTo: segmentShell.bottomAnchor, constant: DMTScale.h(72)),
             emptyImageView.widthAnchor.constraint(equalToConstant: DMTScale.w(120)),
             emptyImageView.heightAnchor.constraint(equalToConstant: DMTScale.w(120)),
+            
+            
 //
 //            emptyLabel.topAnchor.constraint(equalTo: emptyImageView.bottomAnchor, constant: DMTScale.h(12)),
 //            emptyLabel.centerXAnchor.constraint(equalTo: gradientView.centerXAnchor),
@@ -271,6 +282,7 @@ final class DMTTasteNookViewController: UIViewController {
     }
 
     private func apply(digest: DMTNookDigest) {
+        self.digest = digest
         let localProfile = sessionStore.session.flatMap { profileStore.profile(for: $0.email) }
         if let localAvatar = localProfile.flatMap({ profileStore.image(for: $0.avatarStamp) }), digest.avatarKey.isEmpty {
             avatarView.image = localAvatar
@@ -293,14 +305,20 @@ final class DMTTasteNookViewController: UIViewController {
         }
 
         let items = [
-            ("Followers", "\(digest.followerCount)"),
-            ("Following", "\(digest.followingCount)")
+            ("Followers", "\(digest.followerCount)", 0),
+            ("Following", "\(digest.followingCount)", 1)
         ]
         for item in items {
-            let shell = UIStackView()
-            shell.axis = .vertical
-            shell.alignment = .center
-            shell.spacing = DMTScale.h(4)
+            let shell = UIButton(type: .system)
+            shell.tintColor = .clear
+            shell.addTarget(self, action: #selector(handleStatsTap(_:)), for: .touchUpInside)
+            shell.tag = item.2
+
+            let stack = UIStackView()
+            stack.axis = .vertical
+            stack.alignment = .center
+            stack.spacing = DMTScale.h(4)
+            stack.translatesAutoresizingMaskIntoConstraints = false
 
             let valueLabel = UILabel()
             valueLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
@@ -312,8 +330,13 @@ final class DMTTasteNookViewController: UIViewController {
             label.textColor = DMTPalette.ink
             label.text = item.0
 
-            shell.addArrangedSubview(valueLabel)
-            shell.addArrangedSubview(label)
+            stack.addArrangedSubview(valueLabel)
+            stack.addArrangedSubview(label)
+            shell.addSubview(stack)
+            NSLayoutConstraint.activate([
+                stack.centerXAnchor.constraint(equalTo: shell.centerXAnchor),
+                stack.centerYAnchor.constraint(equalTo: shell.centerYAnchor)
+            ])
             statsStack.addArrangedSubview(shell)
         }
 
@@ -326,12 +349,7 @@ final class DMTTasteNookViewController: UIViewController {
 
     @objc
     private func handleSettingsTap() {
-        let alert = UIAlertController(title: "Settings", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Log out", style: .destructive) { [weak self] _ in
-            self?.sessionStore.clear()
-        })
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        present(alert, animated: true)
+        dmtOpenPortal(.settingCenter)
     }
 
     @objc
@@ -342,6 +360,31 @@ final class DMTTasteNookViewController: UIViewController {
     @objc
     private func handleVideoTap() {
         styleSegments(showDynamic: false)
+    }
+
+    @objc
+    private func handleEditTap() {
+        dmtOpenPortal(.editProfile)
+    }
+
+    @objc
+    private func handleWalletTap() {
+        dmtOpenPortal(.walletCenter)
+    }
+
+    @objc
+    private func handleGiftTap() {
+        guard let userID = digest?.userID, !userID.isEmpty else { return }
+        dmtOpenPortal(.receivedGift(userID: userID))
+    }
+
+    @objc
+    private func handleStatsTap(_ sender: UIButton) {
+        if sender.tag == 0 {
+            dmtOpenPortal(.fansList)
+        } else {
+            dmtOpenPortal(.followingList)
+        }
     }
 
     private func styleSegments(showDynamic: Bool) {

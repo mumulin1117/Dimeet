@@ -1,8 +1,11 @@
 import UIKit
 
 final class DMTDiscoverCardView: UIControl {
+    var onAvatarTap: (() -> Void)?
+
     private let artView = UIImageView()
     private let avatarView = UIImageView()
+    private let avatarButton = UIButton(type: .system)
     private let leftBadgeView = UIImageView()
     private let leftBadge = UILabel()
     private let rightBadge = UILabel()
@@ -69,6 +72,10 @@ final class DMTDiscoverCardView: UIControl {
         avatarView.layer.borderWidth = 1.5
         avatarView.layer.borderColor = UIColor.white.cgColor
 
+        avatarButton.translatesAutoresizingMaskIntoConstraints = false
+        avatarButton.backgroundColor = .clear
+        avatarButton.addTarget(self, action: #selector(handleAvatarTap), for: .touchUpInside)
+
         leftBadgeView.translatesAutoresizingMaskIntoConstraints = false
         leftBadgeView.contentMode = .scaleToFill
 
@@ -93,6 +100,7 @@ final class DMTDiscoverCardView: UIControl {
 
         addSubview(artView)
         addSubview(avatarView)
+        addSubview(avatarButton)
         addSubview(leftBadgeView)
         addSubview(leftBadge)
         addSubview(rightBadge)
@@ -124,6 +132,11 @@ final class DMTDiscoverCardView: UIControl {
             avatarView.widthAnchor.constraint(equalToConstant: DMTScale.w(34)),
             avatarView.heightAnchor.constraint(equalToConstant: DMTScale.w(34)),
 
+            avatarButton.centerXAnchor.constraint(equalTo: avatarView.centerXAnchor),
+            avatarButton.centerYAnchor.constraint(equalTo: avatarView.centerYAnchor),
+            avatarButton.widthAnchor.constraint(equalToConstant: DMTScale.w(42)),
+            avatarButton.heightAnchor.constraint(equalToConstant: DMTScale.w(42)),
+
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DMTScale.w(12)),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DMTScale.w(12)),
             titleLabel.bottomAnchor.constraint(equalTo: subtitleLabel.topAnchor, constant: -DMTScale.h(4)),
@@ -132,5 +145,10 @@ final class DMTDiscoverCardView: UIControl {
             subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DMTScale.w(12)),
             subtitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(12))
         ])
+    }
+
+    @objc
+    private func handleAvatarTap() {
+        onAvatarTap?()
     }
 }

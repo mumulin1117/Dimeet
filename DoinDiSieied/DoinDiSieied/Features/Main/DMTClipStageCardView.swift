@@ -1,17 +1,16 @@
 import UIKit
 
 final class DMTClipStageCardView: UIControl {
+    var onAvatarTap: (() -> Void)?
+    var onChatTap: (() -> Void)?
+    var onReportTap: (() -> Void)?
+
     private let artView = UIImageView()
-    
     private let alertButton = UIButton(type: .system)
     private let playButton = UIButton(type: .system)
-    
-    
-    
-    private let focusButton = UIButton(type: .system)
-    
+    private let focusButton = UIButton()
     private let avatarView = UIImageView()
-//    private let creatorLabel = UILabel()
+    private let avatarButton = UIButton(type: .system)
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let actionStack = UIStackView()
@@ -20,6 +19,8 @@ final class DMTClipStageCardView: UIControl {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         configureLayout()
+        focusButton.setImage(UIImage(named: "swipeDirMode"), for: .normal)
+        
     }
 
     required init?(coder: NSCoder) {
@@ -80,12 +81,11 @@ final class DMTClipStageCardView: UIControl {
         clipsToBounds = true
         focusButton.translatesAutoresizingMaskIntoConstraints = false
         focusButton.setImage(UIImage.init(named: "FocusButton"), for: .normal)
-        
-        
         alertButton.setImage(UIImage.init(named: "askertdd"), for: .normal)
         artView.translatesAutoresizingMaskIntoConstraints = false
         artView.contentMode = .scaleAspectFill
         alertButton.translatesAutoresizingMaskIntoConstraints = false
+        alertButton.addTarget(self, action: #selector(handleReportTap), for: .touchUpInside)
         playButton.translatesAutoresizingMaskIntoConstraints = false
         playButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
         playButton.tintColor = .white
@@ -93,15 +93,17 @@ final class DMTClipStageCardView: UIControl {
         playButton.layer.cornerRadius = DMTScale.r(30)
         playButton.isUserInteractionEnabled = false
 
+        focusButton.addTarget(self, action: #selector(handleChatTap), for: .touchUpInside)
+
         avatarView.translatesAutoresizingMaskIntoConstraints = false
         avatarView.layer.cornerRadius = DMTScale.r(22)
         avatarView.clipsToBounds = true
         avatarView.layer.borderWidth = 2
         avatarView.layer.borderColor = UIColor.white.cgColor
-//
-//        creatorLabel.translatesAutoresizingMaskIntoConstraints = false
-//        creatorLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-//        creatorLabel.textColor = .white
+
+        avatarButton.translatesAutoresizingMaskIntoConstraints = false
+        avatarButton.backgroundColor = .clear
+        avatarButton.addTarget(self, action: #selector(handleAvatarTap), for: .touchUpInside)
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
@@ -120,12 +122,12 @@ final class DMTClipStageCardView: UIControl {
         addSubview(artView)
         addSubview(playButton)
         addSubview(avatarView)
-//        addSubview(creatorLabel)
+        addSubview(avatarButton)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
         addSubview(actionStack)
         addSubview(focusButton)
-addSubview(alertButton)
+        addSubview(alertButton)
         NSLayoutConstraint.activate([
             artView.topAnchor.constraint(equalTo: topAnchor),
             artView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -145,14 +147,16 @@ addSubview(alertButton)
             avatarView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(92)),
             avatarView.widthAnchor.constraint(equalToConstant: DMTScale.w(44)),
             avatarView.heightAnchor.constraint(equalToConstant: DMTScale.w(44)),
+
+            avatarButton.centerXAnchor.constraint(equalTo: avatarView.centerXAnchor),
+            avatarButton.centerYAnchor.constraint(equalTo: avatarView.centerYAnchor),
+            avatarButton.widthAnchor.constraint(equalToConstant: DMTScale.w(54)),
+            avatarButton.heightAnchor.constraint(equalToConstant: DMTScale.w(54)),
+
             focusButton.widthAnchor.constraint(equalToConstant: 30),
             focusButton.heightAnchor.constraint(equalToConstant: 20),
-            
             focusButton.centerYAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: 0),
             focusButton.centerXAnchor.constraint(equalTo: avatarView.centerXAnchor, constant: 0),
-//            creatorLabel.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: DMTScale.w(12)),
-//            creatorLabel.trailingAnchor.constraint(equalTo: actionStack.leadingAnchor, constant: -DMTScale.w(14)),
-//            creatorLabel.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -DMTScale.h(8)),
 
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DMTScale.w(18)),
             titleLabel.trailingAnchor.constraint(equalTo: actionStack.leadingAnchor, constant: -DMTScale.w(14)),
@@ -165,5 +169,20 @@ addSubview(alertButton)
             actionStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DMTScale.w(18)),
             actionStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(38))
         ])
+    }
+
+    @objc
+    private func handleAvatarTap() {
+        onAvatarTap?()
+    }
+
+    @objc
+    private func handleChatTap() {
+        onChatTap?()
+    }
+
+    @objc
+    private func handleReportTap() {
+        onReportTap?()
     }
 }

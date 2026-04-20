@@ -10,7 +10,7 @@ final class DMTMealMateViewController: UIViewController {
     private let primaryButton = UIButton(type: .system)
     private let secondaryButton = UIButton(type: .system)
     private let spotlightStack = UIStackView()
-    private let promoCard = UIView()
+    private let promoCard = UIControl()
     private let promoImageView = UIImageView()
     private let promoTitleLabel = UILabel()
     private let galleryStack = UIStackView()
@@ -71,9 +71,9 @@ final class DMTMealMateViewController: UIViewController {
         spotlightStack.spacing = DMTScale.h(12)
 
         promoCard.translatesAutoresizingMaskIntoConstraints = false
-        promoCard.backgroundColor = UIColor(red: 0.98, green: 0.84, blue: 1, alpha: 1)
         promoCard.layer.cornerRadius = DMTScale.r(18)
         promoCard.clipsToBounds = true
+        promoCard.addTarget(self, action: #selector(handlePromoTap), for: .touchUpInside)
 
         promoImageView.translatesAutoresizingMaskIntoConstraints = false
         promoImageView.contentMode = .scaleAspectFill
@@ -146,7 +146,7 @@ final class DMTMealMateViewController: UIViewController {
             galleryStack.topAnchor.constraint(equalTo: promoCard.bottomAnchor, constant: DMTScale.h(16)),
             galleryStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(14)),
             galleryStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(14)),
-            galleryStack.heightAnchor.constraint(equalToConstant: DMTScale.h(110)),
+            galleryStack.heightAnchor.constraint(equalToConstant: DMTScale.h(204)),
             galleryStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(120)),
 
             spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -196,6 +196,10 @@ final class DMTMealMateViewController: UIViewController {
             for card in row {
                 let cardView = DMTDiscoverCardView()
                 cardView.apply(moment: card)
+                cardView.onAvatarTap = { [weak self, weak cardView] in
+                    guard let self, let cardView else { return }
+                    self.dmtPresentProfileSheet(userID: card.authorUserID, anchor: cardView)
+                }
                 cardView.tag = deck.spotlight.firstIndex(where: { $0.id == card.id }) ?? 0
                 cardView.addTarget(self, action: #selector(handleMomentTap(_:)), for: .touchUpInside)
                 NSLayoutConstraint.activate([
@@ -206,8 +210,9 @@ final class DMTMealMateViewController: UIViewController {
             spotlightStack.addArrangedSubview(rowStack)
         }
 
-        promoImageView.image = DMTMainArtworkFactory.sceneImage(for: deck.promo.artKey, size: CGSize(width: 700, height: 220))
+        promoImageView.image = UIImage(named: deck.promo.artKey) ?? DMTMainArtworkFactory.sceneImage(for: deck.promo.artKey, size: CGSize(width: 700, height: 220))
         promoTitleLabel.text = deck.promo.title
+        promoTitleLabel.isHidden = true
 
         galleryStack.arrangedSubviews.forEach {
             galleryStack.removeArrangedSubview($0)
@@ -216,14 +221,32 @@ final class DMTMealMateViewController: UIViewController {
 
         for card in deck.gallery {
             let galleryView = DMTDiscoverCardView()
-            galleryView.applyGallery(artKey: card.artKey)
+            galleryView.apply(moment: card)
+            galleryView.onAvatarTap = { [weak self, weak galleryView] in
+                guard let self, let galleryView else { return }
+                self.dmtPresentProfileSheet(userID: card.authorUserID, anchor: galleryView)
+            }
+            galleryView.tag = deck.gallery.firstIndex(where: { $0.id == card.id }) ?? 0
+            galleryView.addTarget(self, action: #selector(handleGalleryTap(_:)), for: .touchUpInside)
             galleryStack.addArrangedSubview(galleryView)
         }
     }
 
     @objc
     private func handleAdd() {
-        dmtShowNotice(title: "Discover Composer", message: "The quick publish composer can be attached in the next step.")
+        let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "Issue Dynamic", style: .default) { [weak self] _ in
+            self?.dmtOpenPortal(.publishDynamic)
+        })
+        sheet.addAction(UIAlertAction(title: "Post Video", style: .default) { [weak self] _ in
+            self?.dmtOpenPortal(.publishVideo)
+        })
+        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        if let popover = sheet.popoverPresentationController {
+            popover.sourceView = addButton
+            popover.sourceRect = addButton.bounds
+        }
+        present(sheet, animated: true)
     }
 
     @objc
@@ -239,9 +262,18 @@ final class DMTMealMateViewController: UIViewController {
     @objc
     private func handleMomentTap(_ sender: UIControl) {
         guard let momentID = discoverDeck?.spotlight[sender.tag].id else { return }
-        let detailController = DMTMomentDetailViewController(service: service, momentID: momentID)
-        detailController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(detailController, animated: true)
+        dmtOpenPortal(.dynamicDetail(dynamicID: momentID))
+    }
+
+    @objc
+    private func handleGalleryTap(_ sender: UIControl) {
+        guard let momentID = discoverDeck?.gallery[sender.tag].id else { return }
+        dmtOpenPortal(.dynamicDetail(dynamicID: momentID))
+    }
+
+    @objc
+    private func handlePromoTap() {
+        dmtOpenPortal(.walletCenter)
     }
 
     private func styleFilters(selectedPrimary: Bool) {

@@ -55,6 +55,7 @@ final class DMTBiteFeedViewController: UIViewController {
 
         inboxButton.translatesAutoresizingMaskIntoConstraints = false
         inboxButton.setBackgroundImage(UIImage(named: "noiseCancelFilter"), for: .normal)
+        inboxButton.addTarget(self, action: #selector(handleInboxTap), for: .touchUpInside)
 
         cardStack.translatesAutoresizingMaskIntoConstraints = false
         cardStack.axis = .vertical
@@ -131,6 +132,16 @@ final class DMTBiteFeedViewController: UIViewController {
         for clip in deck.clips {
             let card = DMTClipStageCardView()
             card.apply(clip: clip)
+            card.onAvatarTap = { [weak self, weak card] in
+                guard let self, let card else { return }
+                self.dmtPresentProfileSheet(userID: clip.creatorUserID, anchor: card)
+            }
+            card.onChatTap = { [weak self] in
+                self?.dmtOpenPortal(.directMessage(userID: clip.creatorUserID, videoCall: false))
+            }
+            card.onReportTap = { [weak self] in
+                self?.dmtOpenPortal(.reportCenter)
+            }
             card.tag = deck.clips.firstIndex(where: { $0.id == clip.id }) ?? 0
             card.addTarget(self, action: #selector(handleClipTap(_:)), for: .touchUpInside)
             NSLayoutConstraint.activate([
@@ -153,9 +164,12 @@ final class DMTBiteFeedViewController: UIViewController {
     @objc
     private func handleClipTap(_ sender: UIControl) {
         guard let clip = clipDeck?.clips[sender.tag] else { return }
-        let detailController = DMTMomentDetailViewController(service: service, momentID: clip.linkedMomentID)
-        detailController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(detailController, animated: true)
+        dmtOpenPortal(.videoDetail(dynamicID: clip.linkedMomentID))
+    }
+
+    @objc
+    private func handleInboxTap() {
+        dmtOpenPortal(.noticeCenter)
     }
 
     private func styleSegmentButtons(selectedPrimary: Bool) {

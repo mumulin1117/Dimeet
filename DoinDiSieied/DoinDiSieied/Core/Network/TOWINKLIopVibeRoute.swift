@@ -103,10 +103,7 @@ enum TOWINKLIopVibeRoute {
 
     static func TOWINKLIopFetchClipDeck() async throws -> DMTClipDeck {
         let TOWINKLIopRows = try await TOWINKLIopFetchDynamicRows()
-
-        let TOWINKLIopClips = TOWINKLIopRows
-            .filter { !(TOWINKLIopString($0["fusionCuisine"]) ?? "").isEmpty }
-            .compactMap(TOWINKLIopMapClipCard)
+        let TOWINKLIopClips = TOWINKLIopRows.compactMap(TOWINKLIopMapClipCard)
 
         return DMTClipDeck(primaryTitle: "Clip", secondaryTitle: "Following", clips: TOWINKLIopClips)
     }
@@ -119,9 +116,7 @@ enum TOWINKLIopVibeRoute {
 
         let TOWINKLIopSpotlight = Array(TOWINKLIopMoments.prefix(4))
         let TOWINKLIopPromoSeed = TOWINKLIopMoments.first
-        let TOWINKLIopGallery = Array(TOWINKLIopMoments.dropFirst(4).prefix(2)).map {
-            DMTDiscoverGalleryCard(id: $0.id, artKey: $0.artKey)
-        }
+        let TOWINKLIopGallery = Array(TOWINKLIopMoments.dropFirst(4).prefix(2))
 
         return DMTDiscoverDeck(
             title: "Discover",
@@ -129,13 +124,11 @@ enum TOWINKLIopVibeRoute {
             secondaryTitle: "Follow",
             spotlight: TOWINKLIopSpotlight,
             promo: DMTDiscoverPromo(
-                title: TOWINKLIopPromoSeed?.dish ?? "Fresh table picks",
+                title: "Out of coins. Recharge now!",
                 subtitle: TOWINKLIopPromoSeed?.note ?? "",
-                artKey: TOWINKLIopPromoSeed?.artKey ?? "promo-splash"
+                artKey: "outofcoingsj"
             ),
-            gallery: TOWINKLIopGallery.isEmpty
-                ? TOWINKLIopSpotlight.prefix(2).map { DMTDiscoverGalleryCard(id: $0.id, artKey: $0.artKey) }
-                : TOWINKLIopGallery
+            gallery: TOWINKLIopGallery.isEmpty ? Array(TOWINKLIopSpotlight.prefix(2)) : TOWINKLIopGallery
         )
     }
 
@@ -165,6 +158,7 @@ enum TOWINKLIopVibeRoute {
         let TOWINKLIopAbout = TOWINKLIopString(TOWINKLIopProfile["seamlessConnection"]) ?? ""
 
         return DMTNookDigest(
+            userID: "\(TOWINKLIopInterestTag)",
             displayName: TOWINKLIopDisplay,
             avatarKey: TOWINKLIopAvatar,
             handle: "@\(TOWINKLIopDisplay.lowercased().replacingOccurrences(of: " ", with: ""))",
@@ -341,6 +335,7 @@ enum TOWINKLIopVibeRoute {
 
         return DMTRoomCard(
             id: TOWINKLIopRoomID,
+            hostUserID: TOWINKLIopString(TOWINKLIopRow["languageOption"]) ?? "",
             title: TOWINKLIopRoomTitle,
             topic: TOWINKLIopCaption,
             seatLine: TOWINKLIopCaption,
@@ -356,14 +351,16 @@ enum TOWINKLIopVibeRoute {
     }
 
     private static func TOWINKLIopMapClipCard(TOWINKLIopRow: [String: Any]) -> DMTClipCard? {
-        guard let TOWINKLIopDynamicID = TOWINKLIopString(TOWINKLIopRow["culturalCuisine"]) else {
+        guard
+            let TOWINKLIopDynamicID = TOWINKLIopString(TOWINKLIopRow["culturalCuisine"]),
+            let TOWINKLIopMedia = TOWINKLIopFusionSource(TOWINKLIopRow["fusionCuisine"])
+        else {
             return nil
         }
 
         let TOWINKLIopCreator = TOWINKLIopString(TOWINKLIopRow["foodTrend"]) ?? "Dimeet"
         let TOWINKLIopTitle = TOWINKLIopString(TOWINKLIopRow["recipeSharing"]) ?? TOWINKLIopCreator
         let TOWINKLIopSubtitle = TOWINKLIopString(TOWINKLIopRow["eatingHabit"]) ?? ""
-        let TOWINKLIopMedia = TOWINKLIopString(TOWINKLIopRow["fusionCuisine"]) ?? ""
         let TOWINKLIopArtKey = TOWINKLIopImageSource(
             primary: TOWINKLIopMedia,
             fallback: TOWINKLIopFirstMediaURL(TOWINKLIopRow["foodCulture"]) ?? TOWINKLIopFirstMediaURL(TOWINKLIopRow["onlineGathering"])
@@ -372,6 +369,7 @@ enum TOWINKLIopVibeRoute {
 
         return DMTClipCard(
             id: TOWINKLIopDynamicID,
+            creatorUserID: TOWINKLIopString(TOWINKLIopRow["dietaryPreference"]) ?? "",
             creatorName: TOWINKLIopCreator,
             title: TOWINKLIopTitle,
             subtitle: TOWINKLIopSubtitle,
@@ -403,6 +401,7 @@ enum TOWINKLIopVibeRoute {
 
         return DMTMomentCard(
             id: TOWINKLIopDynamicID,
+            authorUserID: TOWINKLIopString(TOWINKLIopRow["dietaryPreference"]) ?? "",
             author: TOWINKLIopCreator,
             dish: TOWINKLIopTitle,
             note: TOWINKLIopSubtitle,
@@ -469,6 +468,22 @@ enum TOWINKLIopVibeRoute {
 
     private static func TOWINKLIopFirstMediaURL(_ TOWINKLIopValue: Any?) -> String? {
         TOWINKLIopMediaList(TOWINKLIopValue).first
+    }
+
+    private static func TOWINKLIopFusionSource(_ TOWINKLIopValue: Any?) -> String? {
+        if let TOWINKLIopMedia = TOWINKLIopMediaList(TOWINKLIopValue)
+            .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+            .first(where: { $0.isEmpty == false  }) {
+            return TOWINKLIopMedia
+        }
+
+        if let TOWINKLIopText = TOWINKLIopString(TOWINKLIopValue)?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+           TOWINKLIopText.isEmpty == false  && TOWINKLIopText.contains("mp3") == false {
+            return TOWINKLIopText
+        }
+
+        return nil
     }
 
     private static func TOWINKLIopImageSource(primary: String, fallback: String?) -> String {

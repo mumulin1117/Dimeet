@@ -1,6 +1,11 @@
 import UIKit
 
 final class DMTBiteFeedViewController: UIViewController {
+    private enum DMTClipSegment {
+        case primary
+        case secondary
+    }
+
     private let service: DMTFeastService
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -11,6 +16,8 @@ final class DMTBiteFeedViewController: UIViewController {
     private let cardStack = UIStackView()
     private let spinner = UIActivityIndicatorView(style: .medium)
     private var clipDeck: DMTClipDeck?
+    private var visibleClips: [DMTClipCard] = []
+    private var selectedSegment: DMTClipSegment = .primary
 
     init(service: DMTFeastService) {
         self.service = service
@@ -30,16 +37,23 @@ final class DMTBiteFeedViewController: UIViewController {
      }()
      override func viewDidLoad() {
          super.viewDidLoad()
+         
          view.addSubview(statementsevent)
         navigationItem.largeTitleDisplayMode = .never
         configureLayout()
         fetchClipDeck()
+         
+         menuPageLayout.addTarget(self, action: #selector(publishiMyVideor), for: .touchUpInside)
+    }
+    
+    @objc func publishiMyVideor()  {
+        dmtOpenPortal(.publishVideo)
     }
 
     private func configureLayout() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
-
+        scrollView.contentInsetAdjustmentBehavior = .never
         segmentStack.translatesAutoresizingMaskIntoConstraints = false
         segmentStack.axis = .horizontal
         segmentStack.spacing = DMTScale.w(18)
@@ -73,16 +87,20 @@ final class DMTBiteFeedViewController: UIViewController {
         segmentStack.addArrangedSubview(primaryButton)
         segmentStack.addArrangedSubview(secondaryButton)
 
-        scrollView.dmtPinEdges(to: view)
-
+        view.addSubview(menuPageLayout)
         NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor,constant: DMTMgetTopSafeAreaHeight()),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            segmentStack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(8)),
+            segmentStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: dmtTopChromeSpacing),
             segmentStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(18)),
 
             inboxButton.centerYAnchor.constraint(equalTo: segmentStack.centerYAnchor),
@@ -96,7 +114,12 @@ final class DMTBiteFeedViewController: UIViewController {
             cardStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(120)),
 
             spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            menuPageLayout.widthAnchor.constraint(equalToConstant: 30),
+            menuPageLayout.heightAnchor.constraint(equalToConstant: 30),
+            menuPageLayout.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            menuPageLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90),
         ])
     }
 
@@ -108,7 +131,8 @@ final class DMTBiteFeedViewController: UIViewController {
                 await MainActor.run {
                     self.spinner.stopAnimating()
                     self.clipDeck = deck
-                    self.apply(deck: deck)
+                    self.applyBase(deck: deck)
+                    self.renderClips(using: deck, selectedSegment: .primary, animated: false)
                 }
             } catch {
                 await MainActor.run {
@@ -119,51 +143,33 @@ final class DMTBiteFeedViewController: UIViewController {
         }
     }
 
-    private func apply(deck: DMTClipDeck) {
+    
+   private lazy var menuPageLayout: UIButton = {
+        let add = UIButton.init()
+        add.setImage(UIImage.init(named: "menuPageLayout"), for: .normal)
+        return add
+    }()
+    private func applyBase(deck: DMTClipDeck) {
         primaryButton.setTitle(deck.primaryTitle, for: .normal)
         secondaryButton.setTitle(deck.secondaryTitle, for: .normal)
-        styleSegmentButtons(selectedPrimary: true)
-
-        cardStack.arrangedSubviews.forEach {
-            cardStack.removeArrangedSubview($0)
-            $0.removeFromSuperview()
-        }
-
-        for clip in deck.clips {
-            let card = DMTClipStageCardView()
-            card.apply(clip: clip)
-            card.onAvatarTap = { [weak self, weak card] in
-                guard let self, let card else { return }
-                self.dmtPresentProfileSheet(userID: clip.creatorUserID, anchor: card)
-            }
-            card.onChatTap = { [weak self] in
-                self?.dmtOpenPortal(.directMessage(userID: clip.creatorUserID, videoCall: false))
-            }
-            card.onReportTap = { [weak self] in
-                self?.dmtOpenPortal(.reportCenter)
-            }
-            card.tag = deck.clips.firstIndex(where: { $0.id == clip.id }) ?? 0
-            card.addTarget(self, action: #selector(handleClipTap(_:)), for: .touchUpInside)
-            NSLayoutConstraint.activate([
-                card.heightAnchor.constraint(equalToConstant: DMTScale.h(610))
-            ])
-            cardStack.addArrangedSubview(card)
-        }
     }
 
     @objc
     private func handlePrimary() {
-        styleSegmentButtons(selectedPrimary: true)
+        guard let deck = clipDeck, selectedSegment != .primary else { return }
+        renderClips(using: deck, selectedSegment: .primary, animated: true)
     }
 
     @objc
     private func handleSecondary() {
-        styleSegmentButtons(selectedPrimary: false)
+        guard let deck = clipDeck, selectedSegment != .secondary else { return }
+        renderClips(using: deck, selectedSegment: .secondary, animated: true)
     }
 
     @objc
     private func handleClipTap(_ sender: UIControl) {
-        guard let clip = clipDeck?.clips[sender.tag] else { return }
+        guard visibleClips.indices.contains(sender.tag) else { return }
+        let clip = visibleClips[sender.tag]
         dmtOpenPortal(.videoDetail(dynamicID: clip.linkedMomentID))
     }
 
@@ -182,5 +188,58 @@ final class DMTBiteFeedViewController: UIViewController {
         let secondaryLine = selectedPrimary ? 0 : NSUnderlineStyle.single.rawValue
         primaryButton.setAttributedTitle(NSAttributedString(string: primaryButton.title(for: .normal) ?? "", attributes: [.underlineStyle: primaryLine]), for: .normal)
         secondaryButton.setAttributedTitle(NSAttributedString(string: secondaryButton.title(for: .normal) ?? "", attributes: [.underlineStyle: secondaryLine]), for: .normal)
+    }
+
+    private func renderClips(using deck: DMTClipDeck, selectedSegment: DMTClipSegment, animated: Bool) {
+        self.selectedSegment = selectedSegment
+        styleSegmentButtons(selectedPrimary: selectedSegment == .primary)
+        visibleClips = clipSubset(from: deck, selectedSegment: selectedSegment)
+
+        let rebuild = { [self] in
+            cardStack.arrangedSubviews.forEach {
+                cardStack.removeArrangedSubview($0)
+                $0.removeFromSuperview()
+            }
+
+            for (index, clip) in visibleClips.enumerated() {
+                let card = DMTClipStageCardView()
+                card.apply(clip: clip)
+                card.onAvatarTap = { [weak self, weak card] in
+                    guard let self, let card else { return }
+                    self.dmtPresentProfileSheet(userID: clip.creatorUserID, anchor: card)
+                }
+                card.onChatTap = { [weak self] in
+                    self?.dmtOpenPortal(.directMessage(userID: clip.creatorUserID, videoCall: false))
+                }
+                card.onReportTap = { [weak self] in
+                    self?.dmtOpenPortal(.reportCenter)
+                }
+                card.tag = index
+                card.addTarget(self, action: #selector(handleClipTap(_:)), for: .touchUpInside)
+                NSLayoutConstraint.activate([
+                    card.heightAnchor.constraint(equalToConstant: DMTScale.h(610))
+                ])
+                cardStack.addArrangedSubview(card)
+            }
+        }
+
+        if animated {
+            UIView.transition(with: cardStack, duration: 0.22, options: [.transitionCrossDissolve, .allowAnimatedContent], animations: rebuild)
+        } else {
+            rebuild()
+        }
+    }
+
+    private func clipSubset(from deck: DMTClipDeck, selectedSegment: DMTClipSegment) -> [DMTClipCard] {
+        let filtered = deck.clips.enumerated().compactMap { index, clip in
+            switch selectedSegment {
+            case .primary:
+                return index.isMultiple(of: 2) ? clip : nil
+            case .secondary:
+                return index.isMultiple(of: 2) ? nil : clip
+            }
+        }
+
+        return filtered.isEmpty ? deck.clips : filtered
     }
 }

@@ -1,5 +1,8 @@
 import UIKit
-
+func DMTMgetTopSafeAreaHeight() -> CGFloat {
+    let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+    return window?.safeAreaInsets.top ?? 0
+}
 final class DMTMealRoomsViewController: UIViewController {
     private let service: DMTFeastService
     private let scrollView = UIScrollView()
@@ -36,6 +39,7 @@ final class DMTMealRoomsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(statementsevent)
+        scrollView.contentInsetAdjustmentBehavior = .never
 //        view.backgroundColor = DMTPalette.cream
         navigationItem.largeTitleDisplayMode = .never
         configureLayout()
@@ -101,9 +105,12 @@ final class DMTMealRoomsViewController: UIViewController {
         contentView.addSubview(roomTitleLabel)
         contentView.addSubview(roomStack)
 
-        scrollView.dmtPinEdges(to: view)
-
         NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor,constant: DMTMgetTopSafeAreaHeight()),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
@@ -112,7 +119,7 @@ final class DMTMealRoomsViewController: UIViewController {
             brandLabel.widthAnchor.constraint(equalToConstant: 87),
             brandLabel.heightAnchor.constraint(equalToConstant: 36),
             
-            brandLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(6)),
+            brandLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: dmtTopChromeSpacing),
             brandLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
 
             actionButton.centerYAnchor.constraint(equalTo: brandLabel.centerYAnchor),

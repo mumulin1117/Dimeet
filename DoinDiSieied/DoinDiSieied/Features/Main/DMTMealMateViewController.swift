@@ -1,6 +1,11 @@
 import UIKit
 
 final class DMTMealMateViewController: UIViewController {
+    private enum DMTDiscoverSegment {
+        case primary
+        case secondary
+    }
+
     private let service: DMTFeastService
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -16,6 +21,9 @@ final class DMTMealMateViewController: UIViewController {
     private let galleryStack = UIStackView()
     private let spinner = UIActivityIndicatorView(style: .medium)
     private var discoverDeck: DMTDiscoverDeck?
+    private var visibleSpotlight: [DMTMomentCard] = []
+    private var visibleGallery: [DMTMomentCard] = []
+    private var selectedSegment: DMTDiscoverSegment = .primary
 
     init(service: DMTFeastService) {
         self.service = service
@@ -38,6 +46,7 @@ final class DMTMealMateViewController: UIViewController {
          view.addSubview(statementsevent)
         navigationItem.largeTitleDisplayMode = .never
         configureLayout()
+         scrollView.contentInsetAdjustmentBehavior = .never
         fetchDiscoverDeck()
     }
 
@@ -105,16 +114,19 @@ final class DMTMealMateViewController: UIViewController {
         promoCard.addSubview(promoImageView)
         promoCard.addSubview(promoTitleLabel)
 
-        scrollView.dmtPinEdges(to: view)
-
         NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor,constant: DMTMgetTopSafeAreaHeight()),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            titleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(6)),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: dmtTopChromeSpacing),
             titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
             addButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
@@ -162,7 +174,8 @@ final class DMTMealMateViewController: UIViewController {
                 await MainActor.run {
                     self.spinner.stopAnimating()
                     self.discoverDeck = deck
-                    self.apply(deck: deck)
+                    self.applyBase(deck: deck)
+                    self.renderMoments(using: deck, selectedSegment: .primary, animated: false)
                 }
             } catch {
                 await MainActor.run {
@@ -173,63 +186,14 @@ final class DMTMealMateViewController: UIViewController {
         }
     }
 
-    private func apply(deck: DMTDiscoverDeck) {
+    private func applyBase(deck: DMTDiscoverDeck) {
         titleLabel.text = deck.title
         primaryButton.setTitle(deck.primaryTitle, for: .normal)
         secondaryButton.setTitle(deck.secondaryTitle, for: .normal)
-        styleFilters(selectedPrimary: true)
-
-        spotlightStack.arrangedSubviews.forEach {
-            spotlightStack.removeArrangedSubview($0)
-            $0.removeFromSuperview()
-        }
-
-        let rows = stride(from: 0, to: deck.spotlight.count, by: 2).map {
-            Array(deck.spotlight[$0..<min($0 + 2, deck.spotlight.count)])
-        }
-
-        for row in rows {
-            let rowStack = UIStackView()
-            rowStack.axis = .horizontal
-            rowStack.spacing = DMTScale.w(12)
-            rowStack.distribution = .fillEqually
-            for card in row {
-                let cardView = DMTDiscoverCardView()
-                cardView.apply(moment: card)
-                cardView.onAvatarTap = { [weak self, weak cardView] in
-                    guard let self, let cardView else { return }
-                    self.dmtPresentProfileSheet(userID: card.authorUserID, anchor: cardView)
-                }
-                cardView.tag = deck.spotlight.firstIndex(where: { $0.id == card.id }) ?? 0
-                cardView.addTarget(self, action: #selector(handleMomentTap(_:)), for: .touchUpInside)
-                NSLayoutConstraint.activate([
-                    cardView.heightAnchor.constraint(equalToConstant: DMTScale.h(204))
-                ])
-                rowStack.addArrangedSubview(cardView)
-            }
-            spotlightStack.addArrangedSubview(rowStack)
-        }
 
         promoImageView.image = UIImage(named: deck.promo.artKey) ?? DMTMainArtworkFactory.sceneImage(for: deck.promo.artKey, size: CGSize(width: 700, height: 220))
         promoTitleLabel.text = deck.promo.title
         promoTitleLabel.isHidden = true
-
-        galleryStack.arrangedSubviews.forEach {
-            galleryStack.removeArrangedSubview($0)
-            $0.removeFromSuperview()
-        }
-
-        for card in deck.gallery {
-            let galleryView = DMTDiscoverCardView()
-            galleryView.apply(moment: card)
-            galleryView.onAvatarTap = { [weak self, weak galleryView] in
-                guard let self, let galleryView else { return }
-                self.dmtPresentProfileSheet(userID: card.authorUserID, anchor: galleryView)
-            }
-            galleryView.tag = deck.gallery.firstIndex(where: { $0.id == card.id }) ?? 0
-            galleryView.addTarget(self, action: #selector(handleGalleryTap(_:)), for: .touchUpInside)
-            galleryStack.addArrangedSubview(galleryView)
-        }
     }
 
     @objc
@@ -251,23 +215,27 @@ final class DMTMealMateViewController: UIViewController {
 
     @objc
     private func handlePrimaryFilter() {
-        styleFilters(selectedPrimary: true)
+        guard let deck = discoverDeck, selectedSegment != .primary else { return }
+        renderMoments(using: deck, selectedSegment: .primary, animated: true)
     }
 
     @objc
     private func handleSecondaryFilter() {
-        styleFilters(selectedPrimary: false)
+        guard let deck = discoverDeck, selectedSegment != .secondary else { return }
+        renderMoments(using: deck, selectedSegment: .secondary, animated: true)
     }
 
     @objc
     private func handleMomentTap(_ sender: UIControl) {
-        guard let momentID = discoverDeck?.spotlight[sender.tag].id else { return }
+        guard visibleSpotlight.indices.contains(sender.tag) else { return }
+        let momentID = visibleSpotlight[sender.tag].id
         dmtOpenPortal(.dynamicDetail(dynamicID: momentID))
     }
 
     @objc
     private func handleGalleryTap(_ sender: UIControl) {
-        guard let momentID = discoverDeck?.gallery[sender.tag].id else { return }
+        guard visibleGallery.indices.contains(sender.tag) else { return }
+        let momentID = visibleGallery[sender.tag].id
         dmtOpenPortal(.dynamicDetail(dynamicID: momentID))
     }
 
@@ -281,5 +249,89 @@ final class DMTMealMateViewController: UIViewController {
         let deselectedColor = DMTPalette.cloudInk.withAlphaComponent(0.6)
         primaryButton.setTitleColor(selectedPrimary ? selectedColor : deselectedColor, for: .normal)
         secondaryButton.setTitleColor(selectedPrimary ? deselectedColor : selectedColor, for: .normal)
+    }
+
+    private func renderMoments(using deck: DMTDiscoverDeck, selectedSegment: DMTDiscoverSegment, animated: Bool) {
+        self.selectedSegment = selectedSegment
+        styleFilters(selectedPrimary: selectedSegment == .primary)
+
+        let bucket = momentSubset(from: deck, selectedSegment: selectedSegment)
+        visibleSpotlight = Array(bucket.prefix(4))
+        let overflow = Array(bucket.dropFirst(4).prefix(2))
+        visibleGallery = overflow.isEmpty ? Array(visibleSpotlight.prefix(2)) : overflow
+
+        let spotlightRefresh = { [self] in
+            spotlightStack.arrangedSubviews.forEach {
+                spotlightStack.removeArrangedSubview($0)
+                $0.removeFromSuperview()
+            }
+
+            let rows = stride(from: 0, to: visibleSpotlight.count, by: 2).map {
+                Array(visibleSpotlight[$0..<min($0 + 2, visibleSpotlight.count)])
+            }
+
+            for row in rows {
+                let rowStack = UIStackView()
+                rowStack.axis = .horizontal
+                rowStack.spacing = DMTScale.w(12)
+                rowStack.distribution = .fillEqually
+                for card in row {
+                    let cardView = DMTDiscoverCardView()
+                    cardView.apply(moment: card)
+                    cardView.onAvatarTap = { [weak self, weak cardView] in
+                        guard let self, let cardView else { return }
+                        self.dmtPresentProfileSheet(userID: card.authorUserID, anchor: cardView)
+                    }
+                    cardView.tag = visibleSpotlight.firstIndex(where: { $0.id == card.id }) ?? 0
+                    cardView.addTarget(self, action: #selector(handleMomentTap(_:)), for: .touchUpInside)
+                    NSLayoutConstraint.activate([
+                        cardView.heightAnchor.constraint(equalToConstant: DMTScale.h(204))
+                    ])
+                    rowStack.addArrangedSubview(cardView)
+                }
+                spotlightStack.addArrangedSubview(rowStack)
+            }
+        }
+
+        let galleryRefresh = { [self] in
+            galleryStack.arrangedSubviews.forEach {
+                galleryStack.removeArrangedSubview($0)
+                $0.removeFromSuperview()
+            }
+
+            for (index, card) in visibleGallery.enumerated() {
+                let galleryView = DMTDiscoverCardView()
+                galleryView.apply(moment: card)
+                galleryView.onAvatarTap = { [weak self, weak galleryView] in
+                    guard let self, let galleryView else { return }
+                    self.dmtPresentProfileSheet(userID: card.authorUserID, anchor: galleryView)
+                }
+                galleryView.tag = index
+                galleryView.addTarget(self, action: #selector(handleGalleryTap(_:)), for: .touchUpInside)
+                galleryStack.addArrangedSubview(galleryView)
+            }
+        }
+
+        if animated {
+            UIView.transition(with: spotlightStack, duration: 0.22, options: [.transitionCrossDissolve, .allowAnimatedContent], animations: spotlightRefresh)
+            UIView.transition(with: galleryStack, duration: 0.22, options: [.transitionCrossDissolve, .allowAnimatedContent], animations: galleryRefresh)
+        } else {
+            spotlightRefresh()
+            galleryRefresh()
+        }
+    }
+
+    private func momentSubset(from deck: DMTDiscoverDeck, selectedSegment: DMTDiscoverSegment) -> [DMTMomentCard] {
+        let combined = deck.spotlight + deck.gallery
+        let filtered = combined.enumerated().compactMap { index, moment in
+            switch selectedSegment {
+            case .primary:
+                return index.isMultiple(of: 2) ? moment : nil
+            case .secondary:
+                return index.isMultiple(of: 2) ? nil : moment
+            }
+        }
+
+        return filtered.isEmpty ? combined : filtered
     }
 }

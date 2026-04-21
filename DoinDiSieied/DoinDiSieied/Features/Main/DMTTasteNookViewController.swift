@@ -55,6 +55,7 @@ final class DMTTasteNookViewController: UIViewController {
     }
 
     private func configureLayout() {
+        scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -164,10 +165,13 @@ final class DMTTasteNookViewController: UIViewController {
         segmentShell.addSubview(dynamicButton)
         segmentShell.addSubview(videoButton)
 
-        scrollView.dmtPinEdges(to: view)
-        // 在 NSLayoutConstraint.activate 数组中添加这一行
         emptyImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(40)).isActive = true
         NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor,constant: DMTMgetTopSafeAreaHeight()),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
@@ -179,7 +183,7 @@ final class DMTTasteNookViewController: UIViewController {
 //            gradientView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(10)),
 //            gradientView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(120)),
 
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: DMTScale.h(14)),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: dmtTopChromeSpacing),
             titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
             settingsButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
@@ -231,7 +235,7 @@ final class DMTTasteNookViewController: UIViewController {
 
             segmentShell.topAnchor.constraint(equalTo: giftCard.bottomAnchor, constant: DMTScale.h(16)),
             segmentShell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
-            segmentShell.widthAnchor.constraint(equalToConstant: DMTScale.w(172)),
+            segmentShell.widthAnchor.constraint(equalToConstant: DMTScale.w(172 + 30)),
             segmentShell.heightAnchor.constraint(equalToConstant: DMTScale.h(40)),
 
             dynamicButton.topAnchor.constraint(equalTo: segmentShell.topAnchor, constant: DMTScale.h(4)),

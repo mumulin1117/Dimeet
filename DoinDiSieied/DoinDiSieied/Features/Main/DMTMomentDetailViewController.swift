@@ -23,6 +23,7 @@ final class DMTMomentDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = DMTPalette.cream
         configureLayout()
+        scrollView.contentInsetAdjustmentBehavior = .never
         fetchDetail()
     }
 

@@ -20,7 +20,8 @@ final class DMTClipStageCardView: UIControl {
         translatesAutoresizingMaskIntoConstraints = false
         configureLayout()
         focusButton.setImage(UIImage(named: "swipeDirMode"), for: .normal)
-        
+        playButton.isUserInteractionEnabled = false
+        focusButton.isUserInteractionEnabled = false
     }
 
     required init?(coder: NSCoder) {
@@ -44,11 +45,10 @@ final class DMTClipStageCardView: UIControl {
             actionStack.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
-
+    
         let actions = [
             ("noiseCancelFilterdd", clip.likesLine),
-            ("switchToggleOnmessagedd", clip.talksLine),
-            ("menuPageLayout", clip.accentTitle)
+            ("switchToggleOnmessagedd", clip.talksLine)
         ]
 
         for action in actions {
@@ -144,7 +144,7 @@ final class DMTClipStageCardView: UIControl {
             playButton.heightAnchor.constraint(equalToConstant: DMTScale.w(60)),
 
             avatarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DMTScale.w(18)),
-            avatarView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(92)),
+            avatarView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(112)),
             avatarView.widthAnchor.constraint(equalToConstant: DMTScale.w(44)),
             avatarView.heightAnchor.constraint(equalToConstant: DMTScale.w(44)),
 

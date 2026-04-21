@@ -27,6 +27,7 @@ final class DMTMateDetailViewController: UIViewController {
     }
 
     private func configureLayout() {
+        scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false

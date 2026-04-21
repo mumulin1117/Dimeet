@@ -6,21 +6,21 @@ final class DMTBiteFeedViewController: UIViewController {
         case secondary
     }
 
-    private let service: DMTFeastService
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
-    private let segmentStack = UIStackView()
-    private let primaryButton = UIButton(type: .system)
-    private let secondaryButton = UIButton(type: .system)
-    private let inboxButton = UIButton(type: .system)
-    private let cardStack = UIStackView()
-    private let spinner = UIActivityIndicatorView(style: .medium)
-    private var clipDeck: DMTClipDeck?
-    private var visibleClips: [DMTClipCard] = []
-    private var selectedSegment: DMTClipSegment = .primary
+    private let hearthService: DMTFeastService
+    private let courseScrollView = UIScrollView()
+    private let platingCanvas = UIView()
+    private let clipSegmentRail = UIStackView()
+    private let clipLeadButton = UIButton(type: .system)
+    private let clipFollowButton = UIButton(type: .system)
+    private let noticeBubbleButton = UIButton(type: .system)
+    private let clipStageStack = UIStackView()
+    private let simmerSpinner = UIActivityIndicatorView(style: .medium)
+    private var clipCourseDeck: DMTClipDeck?
+    private var stagedClips: [DMTClipCard] = []
+    private var activeClipSegment: DMTClipSegment = .primary
 
-    init(service: DMTFeastService) {
-        self.service = service
+    init(hearthService: DMTFeastService) {
+        self.hearthService = hearthService
         super.init(nibName: nil, bundle: nil)
         title = ""
     }
@@ -29,7 +29,7 @@ final class DMTBiteFeedViewController: UIViewController {
         nil
     }
 
-    private lazy var statementsevent: UIImageView = {
+    private lazy var backdropCanvas: UIImageView = {
          let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
          statement.contentMode = .scaleToFill
         statement.frame = UIScreen.main.bounds
@@ -38,201 +38,201 @@ final class DMTBiteFeedViewController: UIViewController {
      override func viewDidLoad() {
          super.viewDidLoad()
          
-         view.addSubview(statementsevent)
+         view.addSubview(backdropCanvas)
         navigationItem.largeTitleDisplayMode = .never
-        configureLayout()
-        fetchClipDeck()
+        composeLayout()
+        fetchClipCourse()
          
-         menuPageLayout.addTarget(self, action: #selector(publishiMyVideor), for: .touchUpInside)
+         publishOrbButton.addTarget(self, action: #selector(handlePublishOrbTap), for: .touchUpInside)
     }
     
-    @objc func publishiMyVideor()  {
-        dmtOpenPortal(.publishVideo)
+    @objc func handlePublishOrbTap()  {
+        dmtOpenHearth(.publishVideo)
     }
 
-    private func configureLayout() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.contentInsetAdjustmentBehavior = .never
-        segmentStack.translatesAutoresizingMaskIntoConstraints = false
-        segmentStack.axis = .horizontal
-        segmentStack.spacing = DMTScale.w(18)
-        segmentStack.alignment = .center
+    private func composeLayout() {
+        courseScrollView.translatesAutoresizingMaskIntoConstraints = false
+        platingCanvas.translatesAutoresizingMaskIntoConstraints = false
+        courseScrollView.contentInsetAdjustmentBehavior = .never
+        clipSegmentRail.translatesAutoresizingMaskIntoConstraints = false
+        clipSegmentRail.axis = .horizontal
+        clipSegmentRail.spacing = DMTScale.w(18)
+        clipSegmentRail.alignment = .center
 
-        [primaryButton, secondaryButton].forEach {
+        [clipLeadButton, clipFollowButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.setTitleColor(DMTPalette.ink, for: .normal)
             $0.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         }
-        primaryButton.addTarget(self, action: #selector(handlePrimary), for: .touchUpInside)
-        secondaryButton.addTarget(self, action: #selector(handleSecondary), for: .touchUpInside)
+        clipLeadButton.addTarget(self, action: #selector(handleLeadClipTap), for: .touchUpInside)
+        clipFollowButton.addTarget(self, action: #selector(handleFollowClipTap), for: .touchUpInside)
 
-        inboxButton.translatesAutoresizingMaskIntoConstraints = false
-        inboxButton.setBackgroundImage(UIImage(named: "noiseCancelFilter"), for: .normal)
-        inboxButton.addTarget(self, action: #selector(handleInboxTap), for: .touchUpInside)
+        noticeBubbleButton.translatesAutoresizingMaskIntoConstraints = false
+        noticeBubbleButton.setBackgroundImage(UIImage(named: "noiseCancelFilter"), for: .normal)
+        noticeBubbleButton.addTarget(self, action: #selector(handleNoticeBubbleTap), for: .touchUpInside)
 
-        cardStack.translatesAutoresizingMaskIntoConstraints = false
-        cardStack.axis = .vertical
-        cardStack.spacing = DMTScale.h(18)
+        clipStageStack.translatesAutoresizingMaskIntoConstraints = false
+        clipStageStack.axis = .vertical
+        clipStageStack.spacing = DMTScale.h(18)
 
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.startAnimating()
+        simmerSpinner.translatesAutoresizingMaskIntoConstraints = false
+        simmerSpinner.startAnimating()
 
-        view.addSubview(scrollView)
-        view.addSubview(spinner)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(segmentStack)
-        contentView.addSubview(inboxButton)
-        contentView.addSubview(cardStack)
-        segmentStack.addArrangedSubview(primaryButton)
-        segmentStack.addArrangedSubview(secondaryButton)
+        view.addSubview(courseScrollView)
+        view.addSubview(simmerSpinner)
+        courseScrollView.addSubview(platingCanvas)
+        platingCanvas.addSubview(clipSegmentRail)
+        platingCanvas.addSubview(noticeBubbleButton)
+        platingCanvas.addSubview(clipStageStack)
+        clipSegmentRail.addArrangedSubview(clipLeadButton)
+        clipSegmentRail.addArrangedSubview(clipFollowButton)
 
-        view.addSubview(menuPageLayout)
+        view.addSubview(publishOrbButton)
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            courseScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            courseScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            courseScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            courseScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            platingCanvas.topAnchor.constraint(equalTo: courseScrollView.topAnchor),
+            platingCanvas.leadingAnchor.constraint(equalTo: courseScrollView.leadingAnchor),
+            platingCanvas.trailingAnchor.constraint(equalTo: courseScrollView.trailingAnchor),
+            platingCanvas.bottomAnchor.constraint(equalTo: courseScrollView.bottomAnchor),
+            platingCanvas.widthAnchor.constraint(equalTo: courseScrollView.widthAnchor),
 
-            segmentStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: dmtTopChromeSpacing),
-            segmentStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(18)),
+            clipSegmentRail.topAnchor.constraint(equalTo: platingCanvas.topAnchor, constant: dmtTopHearthInset),
+            clipSegmentRail.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(18)),
 
-            inboxButton.centerYAnchor.constraint(equalTo: segmentStack.centerYAnchor),
-            inboxButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(18)),
-            inboxButton.widthAnchor.constraint(equalToConstant: DMTScale.w(38)),
-            inboxButton.heightAnchor.constraint(equalToConstant: DMTScale.w(38)),
+            noticeBubbleButton.centerYAnchor.constraint(equalTo: clipSegmentRail.centerYAnchor),
+            noticeBubbleButton.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(18)),
+            noticeBubbleButton.widthAnchor.constraint(equalToConstant: DMTScale.w(38)),
+            noticeBubbleButton.heightAnchor.constraint(equalToConstant: DMTScale.w(38)),
 
-            cardStack.topAnchor.constraint(equalTo: segmentStack.bottomAnchor, constant: DMTScale.h(18)),
-            cardStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(12)),
-            cardStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(12)),
-            cardStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(120)),
+            clipStageStack.topAnchor.constraint(equalTo: clipSegmentRail.bottomAnchor, constant: DMTScale.h(18)),
+            clipStageStack.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(12)),
+            clipStageStack.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(12)),
+            clipStageStack.bottomAnchor.constraint(equalTo: platingCanvas.bottomAnchor, constant: -DMTScale.h(120)),
 
-            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            simmerSpinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            simmerSpinner.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            menuPageLayout.widthAnchor.constraint(equalToConstant: 30),
-            menuPageLayout.heightAnchor.constraint(equalToConstant: 30),
-            menuPageLayout.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            menuPageLayout.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90),
+            publishOrbButton.widthAnchor.constraint(equalToConstant: 30),
+            publishOrbButton.heightAnchor.constraint(equalToConstant: 30),
+            publishOrbButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            publishOrbButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90),
         ])
     }
 
-    private func fetchClipDeck() {
+    private func fetchClipCourse() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let deck = try await service.fetchClipDeck()
+                let deck = try await hearthService.fetchClipCourse()
                 await MainActor.run {
-                    self.spinner.stopAnimating()
-                    self.clipDeck = deck
-                    self.applyBase(deck: deck)
-                    self.renderClips(using: deck, selectedSegment: .primary, animated: false)
+                    self.simmerSpinner.stopAnimating()
+                    self.clipCourseDeck = deck
+                    self.styleClipHeader(deck: deck)
+                    self.renderClipStage(using: deck, activeClipSegment: .primary, animated: false)
                 }
             } catch {
                 await MainActor.run {
-                    self.spinner.stopAnimating()
-                    self.dmtShowNotice(title: "Clip Unavailable", message: error.localizedDescription)
+                    self.simmerSpinner.stopAnimating()
+                    self.dmtServeNotice(title: "Clip Unavailable", message: error.localizedDescription)
                 }
             }
         }
     }
 
     
-   private lazy var menuPageLayout: UIButton = {
+   private lazy var publishOrbButton: UIButton = {
         let add = UIButton.init()
-        add.setImage(UIImage.init(named: "menuPageLayout"), for: .normal)
+        add.setImage(UIImage.init(named: "publishOrbButton"), for: .normal)
         return add
     }()
-    private func applyBase(deck: DMTClipDeck) {
-        primaryButton.setTitle(deck.primaryTitle, for: .normal)
-        secondaryButton.setTitle(deck.secondaryTitle, for: .normal)
+    private func styleClipHeader(deck: DMTClipDeck) {
+        clipLeadButton.setTitle(deck.primaryTitle, for: .normal)
+        clipFollowButton.setTitle(deck.secondaryTitle, for: .normal)
     }
 
     @objc
-    private func handlePrimary() {
-        guard let deck = clipDeck, selectedSegment != .primary else { return }
-        renderClips(using: deck, selectedSegment: .primary, animated: true)
+    private func handleLeadClipTap() {
+        guard let deck = clipCourseDeck, activeClipSegment != .primary else { return }
+        renderClipStage(using: deck, activeClipSegment: .primary, animated: true)
     }
 
     @objc
-    private func handleSecondary() {
-        guard let deck = clipDeck, selectedSegment != .secondary else { return }
-        renderClips(using: deck, selectedSegment: .secondary, animated: true)
+    private func handleFollowClipTap() {
+        guard let deck = clipCourseDeck, activeClipSegment != .secondary else { return }
+        renderClipStage(using: deck, activeClipSegment: .secondary, animated: true)
     }
 
     @objc
-    private func handleClipTap(_ sender: UIControl) {
-        guard visibleClips.indices.contains(sender.tag) else { return }
-        let clip = visibleClips[sender.tag]
-        dmtOpenPortal(.videoDetail(dynamicID: clip.linkedMomentID))
+    private func handleClipCardTap(_ sender: UIControl) {
+        guard stagedClips.indices.contains(sender.tag) else { return }
+        let clip = stagedClips[sender.tag]
+        dmtOpenHearth(.videoDetail(dynamicID: clip.linkedMomentID))
     }
 
     @objc
-    private func handleInboxTap() {
-        dmtOpenPortal(.noticeCenter)
+    private func handleNoticeBubbleTap() {
+        dmtOpenHearth(.noticeCenter)
     }
 
-    private func styleSegmentButtons(selectedPrimary: Bool) {
+    private func styleClipSegmentRail(selectedPrimary: Bool) {
         let selectedColor = DMTPalette.ink
         let deselectedColor = DMTPalette.cloudInk.withAlphaComponent(0.56)
-        primaryButton.setTitleColor(selectedPrimary ? selectedColor : deselectedColor, for: .normal)
-        secondaryButton.setTitleColor(selectedPrimary ? deselectedColor : selectedColor, for: .normal)
+        clipLeadButton.setTitleColor(selectedPrimary ? selectedColor : deselectedColor, for: .normal)
+        clipFollowButton.setTitleColor(selectedPrimary ? deselectedColor : selectedColor, for: .normal)
 
         let primaryLine = selectedPrimary ? NSUnderlineStyle.single.rawValue : 0
         let secondaryLine = selectedPrimary ? 0 : NSUnderlineStyle.single.rawValue
-        primaryButton.setAttributedTitle(NSAttributedString(string: primaryButton.title(for: .normal) ?? "", attributes: [.underlineStyle: primaryLine]), for: .normal)
-        secondaryButton.setAttributedTitle(NSAttributedString(string: secondaryButton.title(for: .normal) ?? "", attributes: [.underlineStyle: secondaryLine]), for: .normal)
+        clipLeadButton.setAttributedTitle(NSAttributedString(string: clipLeadButton.title(for: .normal) ?? "", attributes: [.underlineStyle: primaryLine]), for: .normal)
+        clipFollowButton.setAttributedTitle(NSAttributedString(string: clipFollowButton.title(for: .normal) ?? "", attributes: [.underlineStyle: secondaryLine]), for: .normal)
     }
 
-    private func renderClips(using deck: DMTClipDeck, selectedSegment: DMTClipSegment, animated: Bool) {
-        self.selectedSegment = selectedSegment
-        styleSegmentButtons(selectedPrimary: selectedSegment == .primary)
-        visibleClips = clipSubset(from: deck, selectedSegment: selectedSegment)
+    private func renderClipStage(using deck: DMTClipDeck, activeClipSegment: DMTClipSegment, animated: Bool) {
+        self.activeClipSegment = activeClipSegment
+        styleClipSegmentRail(selectedPrimary: activeClipSegment == .primary)
+        stagedClips = clipRailSlice(from: deck, activeClipSegment: activeClipSegment)
 
         let rebuild = { [self] in
-            cardStack.arrangedSubviews.forEach {
-                cardStack.removeArrangedSubview($0)
+            clipStageStack.arrangedSubviews.forEach {
+                clipStageStack.removeArrangedSubview($0)
                 $0.removeFromSuperview()
             }
 
-            for (index, clip) in visibleClips.enumerated() {
+            for (index, clip) in stagedClips.enumerated() {
                 let card = DMTClipStageCardView()
                 card.apply(clip: clip)
                 card.onAvatarTap = { [weak self, weak card] in
                     guard let self, let card else { return }
-                    self.dmtPresentProfileSheet(userID: clip.creatorUserID, anchor: card)
+                    self.dmtPresentGuestSheet(userID: clip.creatorUserID, anchor: card)
                 }
                 card.onChatTap = { [weak self] in
-                    self?.dmtOpenPortal(.directMessage(userID: clip.creatorUserID, videoCall: false))
+                    self?.dmtOpenHearth(.directMessage(userID: clip.creatorUserID, videoCall: false))
                 }
                 card.onReportTap = { [weak self] in
-                    self?.dmtOpenPortal(.reportCenter)
+                    self?.dmtOpenHearth(.reportCenter)
                 }
                 card.tag = index
-                card.addTarget(self, action: #selector(handleClipTap(_:)), for: .touchUpInside)
+                card.addTarget(self, action: #selector(handleClipCardTap(_:)), for: .touchUpInside)
                 NSLayoutConstraint.activate([
                     card.heightAnchor.constraint(equalToConstant: DMTScale.h(610))
                 ])
-                cardStack.addArrangedSubview(card)
+                clipStageStack.addArrangedSubview(card)
             }
         }
 
         if animated {
-            UIView.transition(with: cardStack, duration: 0.22, options: [.transitionCrossDissolve, .allowAnimatedContent], animations: rebuild)
+            UIView.transition(with: clipStageStack, duration: 0.22, options: [.transitionCrossDissolve, .allowAnimatedContent], animations: rebuild)
         } else {
             rebuild()
         }
     }
 
-    private func clipSubset(from deck: DMTClipDeck, selectedSegment: DMTClipSegment) -> [DMTClipCard] {
+    private func clipRailSlice(from deck: DMTClipDeck, activeClipSegment: DMTClipSegment) -> [DMTClipCard] {
         let filtered = deck.clips.enumerated().compactMap { index, clip in
-            switch selectedSegment {
+            switch activeClipSegment {
             case .primary:
                 return index.isMultiple(of: 2) ? clip : nil
             case .secondary:

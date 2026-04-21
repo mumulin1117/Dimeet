@@ -3,7 +3,7 @@ import UIKit
 @main
 final class DMTAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        DMTAppPantry.shared.sessionStore.restoreSession()
+        DMTAppPantry.shared.seatSession.restoreSession()
         return true
     }
 

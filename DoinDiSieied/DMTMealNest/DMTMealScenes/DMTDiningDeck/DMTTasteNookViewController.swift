@@ -1,32 +1,32 @@
 import UIKit
 
 final class DMTTasteNookViewController: UIViewController {
-    private let service: DMTFeastService
-    private let sessionStore: DMTSessionStore
-    private let profileStore: DMTTasteProfileStore
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
-    private let titleLabel = UILabel()
-    private let settingsButton = UIButton(type: .system)
-    private let avatarView = UIImageView()
-    private let editButton = UIButton(type: .system)
-    private let nameLabel = UILabel()
-    private let walletCard = UIView()
-    private let walletBackgroundView = UIImageView()
-    private let walletTitleLabel = UILabel()
-    private let walletValueLabel = UILabel()
-    private let statsStack = UIStackView()
-    private let giftCard = UIButton()
-    private let segmentShell = UIView()
-    private let dynamicButton = UIButton(type: .system)
-    private let videoButton = UIButton(type: .system)
-    private let emptyImageView = UIImageView()
-    private var digest: DMTNookDigest?
+    private let hearthService: DMTFeastService
+    private let seatSession: DMTSessionStore
+    private let tasteLedger: DMTTasteProfileStore
+    private let courseScrollView = UIScrollView()
+    private let platingCanvas = UIView()
+    private let nookTitleLabel = UILabel()
+    private let spiceGearButton = UIButton(type: .system)
+    private let profileTasteView = UIImageView()
+    private let editTasteButton = UIButton(type: .system)
+    private let profileNameLabel = UILabel()
+    private let walletTasteCard = UIView()
+    private let walletBackdropView = UIImageView()
+    private let walletCaptionLabel = UILabel()
+    private let walletAmountLabel = UILabel()
+    private let statsRail = UIStackView()
+    private let giftTasteCard = UIButton()
+    private let segmentPlate = UIView()
+    private let dynamicTasteButton = UIButton(type: .system)
+    private let shortTasteButton = UIButton(type: .system)
+    private let emptyTasteView = UIImageView()
+    private var nookDigestCopy: DMTNookDigest?
 
-    init(service: DMTFeastService, sessionStore: DMTSessionStore, profileStore: DMTTasteProfileStore) {
-        self.service = service
-        self.sessionStore = sessionStore
-        self.profileStore = profileStore
+    init(hearthService: DMTFeastService, seatSession: DMTSessionStore, tasteLedger: DMTTasteProfileStore) {
+        self.hearthService = hearthService
+        self.seatSession = seatSession
+        self.tasteLedger = tasteLedger
         super.init(nibName: nil, bundle: nil)
         title = ""
     }
@@ -35,7 +35,7 @@ final class DMTTasteNookViewController: UIViewController {
         nil
     }
 
-    private lazy var statementsevent: UIImageView = {
+    private lazy var backdropCanvas: UIImageView = {
          let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
          statement.contentMode = .scaleToFill
         statement.frame = UIScreen.main.bounds
@@ -43,186 +43,186 @@ final class DMTTasteNookViewController: UIViewController {
      }()
      override func viewDidLoad() {
          super.viewDidLoad()
-         view.addSubview(statementsevent)
+         view.addSubview(backdropCanvas)
         navigationItem.largeTitleDisplayMode = .never
-        configureLayout()
+        composeLayout()
         fetchDigest()
     }
 
-    private func configureLayout() {
-        scrollView.contentInsetAdjustmentBehavior = .never
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+    private func composeLayout() {
+        courseScrollView.contentInsetAdjustmentBehavior = .never
+        courseScrollView.translatesAutoresizingMaskIntoConstraints = false
+        platingCanvas.translatesAutoresizingMaskIntoConstraints = false
 
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
-        titleLabel.textColor = DMTPalette.ink
-        titleLabel.text = "Me"
+        nookTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        nookTitleLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
+        nookTitleLabel.textColor = DMTPalette.ink
+        nookTitleLabel.text = "Me"
 
-        settingsButton.translatesAutoresizingMaskIntoConstraints = false
-        settingsButton.tintColor = DMTPalette.ink
-        settingsButton.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
-        settingsButton.addTarget(self, action: #selector(handleSettingsTap), for: .touchUpInside)
+        spiceGearButton.translatesAutoresizingMaskIntoConstraints = false
+        spiceGearButton.tintColor = DMTPalette.ink
+        spiceGearButton.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
+        spiceGearButton.addTarget(self, action: #selector(handleSpiceGearTap), for: .touchUpInside)
 
-        avatarView.translatesAutoresizingMaskIntoConstraints = false
-        avatarView.layer.cornerRadius = DMTScale.r(34)
-        avatarView.clipsToBounds = true
-        avatarView.layer.borderWidth = 2
-        avatarView.layer.borderColor = UIColor.white.cgColor
-        avatarView.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        profileTasteView.translatesAutoresizingMaskIntoConstraints = false
+        profileTasteView.layer.cornerRadius = DMTScale.r(34)
+        profileTasteView.clipsToBounds = true
+        profileTasteView.layer.borderWidth = 2
+        profileTasteView.layer.borderColor = UIColor.white.cgColor
+        profileTasteView.backgroundColor = UIColor.white.withAlphaComponent(0.4)
 
-        editButton.translatesAutoresizingMaskIntoConstraints = false
-        editButton.setBackgroundImage(UIImage(named: "toppingExtraSide"), for: .normal)
-        editButton.addTarget(self, action: #selector(handleEditTap), for: .touchUpInside)
+        editTasteButton.translatesAutoresizingMaskIntoConstraints = false
+        editTasteButton.setBackgroundImage(UIImage(named: "toppingExtraSide"), for: .normal)
+        editTasteButton.addTarget(self, action: #selector(handleEditTasteTap), for: .touchUpInside)
 
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.font = UIFont.systemFont(ofSize: 22, weight: .black)
-        nameLabel.textColor = DMTPalette.ink
+        profileNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        profileNameLabel.font = UIFont.systemFont(ofSize: 22, weight: .black)
+        profileNameLabel.textColor = DMTPalette.ink
 
-        walletCard.translatesAutoresizingMaskIntoConstraints = false
-        walletCard.layer.cornerRadius = DMTScale.r(24)
-        walletCard.clipsToBounds = true
-        walletCard.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleWalletTap)))
-        walletCard.isUserInteractionEnabled = true
+        walletTasteCard.translatesAutoresizingMaskIntoConstraints = false
+        walletTasteCard.layer.cornerRadius = DMTScale.r(24)
+        walletTasteCard.clipsToBounds = true
+        walletTasteCard.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleWalletTasteTap)))
+        walletTasteCard.isUserInteractionEnabled = true
 
-        walletBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        walletBackgroundView.image = UIImage(named: "safeAreaInsets")
-        walletBackgroundView.contentMode = .scaleToFill
+        walletBackdropView.translatesAutoresizingMaskIntoConstraints = false
+        walletBackdropView.image = UIImage(named: "safeAreaInsets")
+        walletBackdropView.contentMode = .scaleToFill
 
-        walletTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        walletTitleLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        walletTitleLabel.textColor = DMTPalette.ink
+        walletCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        walletCaptionLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        walletCaptionLabel.textColor = DMTPalette.ink
 
-        walletValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        walletValueLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
-        walletValueLabel.textColor = DMTPalette.ink
+        walletAmountLabel.translatesAutoresizingMaskIntoConstraints = false
+        walletAmountLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
+        walletAmountLabel.textColor = DMTPalette.ink
 
-        statsStack.translatesAutoresizingMaskIntoConstraints = false
-        statsStack.axis = .horizontal
-        statsStack.distribution = .fillEqually
+        statsRail.translatesAutoresizingMaskIntoConstraints = false
+        statsRail.axis = .horizontal
+        statsRail.distribution = .fillEqually
 
-        giftCard.translatesAutoresizingMaskIntoConstraints = false
-        giftCard.setBackgroundImage(UIImage(named: "longPressTime"), for: .normal)
-        giftCard.clipsToBounds = true
-        giftCard.addTarget(self, action: #selector(handleGiftTap), for: .touchUpInside)
+        giftTasteCard.translatesAutoresizingMaskIntoConstraints = false
+        giftTasteCard.setBackgroundImage(UIImage(named: "longPressTime"), for: .normal)
+        giftTasteCard.clipsToBounds = true
+        giftTasteCard.addTarget(self, action: #selector(handleGiftTasteTap), for: .touchUpInside)
 
      
 
-        segmentShell.translatesAutoresizingMaskIntoConstraints = false
-        segmentShell.backgroundColor = UIColor.white.withAlphaComponent(0.82)
-        segmentShell.layer.cornerRadius = DMTScale.r(18)
+        segmentPlate.translatesAutoresizingMaskIntoConstraints = false
+        segmentPlate.backgroundColor = UIColor.white.withAlphaComponent(0.82)
+        segmentPlate.layer.cornerRadius = DMTScale.r(18)
 
-        [dynamicButton, videoButton].forEach {
+        [dynamicTasteButton, shortTasteButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
             $0.layer.cornerRadius = DMTScale.r(16)
         }
-        dynamicButton.addTarget(self, action: #selector(handleDynamicTap), for: .touchUpInside)
-        videoButton.addTarget(self, action: #selector(handleVideoTap), for: .touchUpInside)
+        dynamicTasteButton.addTarget(self, action: #selector(handleDynamicShelfTap), for: .touchUpInside)
+        shortTasteButton.addTarget(self, action: #selector(handleShortShelfTap), for: .touchUpInside)
 
-        emptyImageView.translatesAutoresizingMaskIntoConstraints = false
-        emptyImageView.contentMode = .scaleAspectFit
+        emptyTasteView.translatesAutoresizingMaskIntoConstraints = false
+        emptyTasteView.contentMode = .scaleAspectFit
 
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(settingsButton)
-        contentView.addSubview(avatarView)
-        contentView.addSubview(editButton)
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(walletCard)
-        contentView.addSubview(statsStack)
-        contentView.addSubview(giftCard)
-        contentView.addSubview(segmentShell)
-        contentView.addSubview(emptyImageView)
+        view.addSubview(courseScrollView)
+        courseScrollView.addSubview(platingCanvas)
+        platingCanvas.addSubview(nookTitleLabel)
+        platingCanvas.addSubview(spiceGearButton)
+        platingCanvas.addSubview(profileTasteView)
+        platingCanvas.addSubview(editTasteButton)
+        platingCanvas.addSubview(profileNameLabel)
+        platingCanvas.addSubview(walletTasteCard)
+        platingCanvas.addSubview(statsRail)
+        platingCanvas.addSubview(giftTasteCard)
+        platingCanvas.addSubview(segmentPlate)
+        platingCanvas.addSubview(emptyTasteView)
        
-        walletCard.addSubview(walletBackgroundView)
-        walletCard.addSubview(walletTitleLabel)
-        walletCard.addSubview(walletValueLabel)
-        segmentShell.addSubview(dynamicButton)
-        segmentShell.addSubview(videoButton)
+        walletTasteCard.addSubview(walletBackdropView)
+        walletTasteCard.addSubview(walletCaptionLabel)
+        walletTasteCard.addSubview(walletAmountLabel)
+        segmentPlate.addSubview(dynamicTasteButton)
+        segmentPlate.addSubview(shortTasteButton)
 
-        emptyImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(40)).isActive = true
+        emptyTasteView.bottomAnchor.constraint(equalTo: platingCanvas.bottomAnchor, constant: -DMTScale.h(40)).isActive = true
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            courseScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            courseScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            courseScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            courseScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            platingCanvas.topAnchor.constraint(equalTo: courseScrollView.topAnchor),
+            platingCanvas.leadingAnchor.constraint(equalTo: courseScrollView.leadingAnchor),
+            platingCanvas.trailingAnchor.constraint(equalTo: courseScrollView.trailingAnchor),
+            platingCanvas.bottomAnchor.constraint(equalTo: courseScrollView.bottomAnchor),
+            platingCanvas.widthAnchor.constraint(equalTo: courseScrollView.widthAnchor),
 
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: dmtTopChromeSpacing),
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            nookTitleLabel.topAnchor.constraint(equalTo: platingCanvas.topAnchor, constant: dmtTopHearthInset),
+            nookTitleLabel.centerXAnchor.constraint(equalTo: platingCanvas.centerXAnchor),
 
-            settingsButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            settingsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(16)),
-            settingsButton.widthAnchor.constraint(equalToConstant: DMTScale.w(34)),
-            settingsButton.heightAnchor.constraint(equalToConstant: DMTScale.w(34)),
+            spiceGearButton.centerYAnchor.constraint(equalTo: nookTitleLabel.centerYAnchor),
+            spiceGearButton.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(16)),
+            spiceGearButton.widthAnchor.constraint(equalToConstant: DMTScale.w(34)),
+            spiceGearButton.heightAnchor.constraint(equalToConstant: DMTScale.w(34)),
 
-            avatarView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: DMTScale.h(18)),
-            avatarView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
-            avatarView.widthAnchor.constraint(equalToConstant: DMTScale.w(68)),
-            avatarView.heightAnchor.constraint(equalToConstant: DMTScale.w(68)),
+            profileTasteView.topAnchor.constraint(equalTo: nookTitleLabel.bottomAnchor, constant: DMTScale.h(18)),
+            profileTasteView.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(16)),
+            profileTasteView.widthAnchor.constraint(equalToConstant: DMTScale.w(68)),
+            profileTasteView.heightAnchor.constraint(equalToConstant: DMTScale.w(68)),
 
-            editButton.topAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: -DMTScale.h(10)),
-            editButton.leadingAnchor.constraint(equalTo: avatarView.leadingAnchor, constant: DMTScale.w(8)),
-            editButton.widthAnchor.constraint(equalToConstant: DMTScale.w(52)),
-            editButton.heightAnchor.constraint(equalToConstant: DMTScale.h(24)),
+            editTasteButton.topAnchor.constraint(equalTo: profileTasteView.bottomAnchor, constant: -DMTScale.h(10)),
+            editTasteButton.leadingAnchor.constraint(equalTo: profileTasteView.leadingAnchor, constant: DMTScale.w(8)),
+            editTasteButton.widthAnchor.constraint(equalToConstant: DMTScale.w(52)),
+            editTasteButton.heightAnchor.constraint(equalToConstant: DMTScale.h(24)),
 
-            nameLabel.topAnchor.constraint(equalTo: editButton.bottomAnchor, constant: DMTScale.h(12)),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
-            nameLabel.widthAnchor.constraint(equalToConstant: DMTScale.w(170)),
+            profileNameLabel.topAnchor.constraint(equalTo: editTasteButton.bottomAnchor, constant: DMTScale.h(12)),
+            profileNameLabel.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(16)),
+            profileNameLabel.widthAnchor.constraint(equalToConstant: DMTScale.w(170)),
 
-            walletCard.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: DMTScale.h(14)),
-            walletCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(16)),
-            walletCard.widthAnchor.constraint(equalToConstant: DMTScale.w(168)),
-            walletCard.heightAnchor.constraint(equalToConstant: DMTScale.h(92)),
+            walletTasteCard.topAnchor.constraint(equalTo: nookTitleLabel.bottomAnchor, constant: DMTScale.h(14)),
+            walletTasteCard.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(16)),
+            walletTasteCard.widthAnchor.constraint(equalToConstant: DMTScale.w(168)),
+            walletTasteCard.heightAnchor.constraint(equalToConstant: DMTScale.h(92)),
 
-            walletBackgroundView.topAnchor.constraint(equalTo: walletCard.topAnchor),
-            walletBackgroundView.leadingAnchor.constraint(equalTo: walletCard.leadingAnchor),
-            walletBackgroundView.trailingAnchor.constraint(equalTo: walletCard.trailingAnchor),
-            walletBackgroundView.bottomAnchor.constraint(equalTo: walletCard.bottomAnchor),
+            walletBackdropView.topAnchor.constraint(equalTo: walletTasteCard.topAnchor),
+            walletBackdropView.leadingAnchor.constraint(equalTo: walletTasteCard.leadingAnchor),
+            walletBackdropView.trailingAnchor.constraint(equalTo: walletTasteCard.trailingAnchor),
+            walletBackdropView.bottomAnchor.constraint(equalTo: walletTasteCard.bottomAnchor),
 
-            walletTitleLabel.topAnchor.constraint(equalTo: walletCard.topAnchor, constant: DMTScale.h(16)),
-            walletTitleLabel.leadingAnchor.constraint(equalTo: walletCard.leadingAnchor, constant: DMTScale.w(18)),
-            walletTitleLabel.trailingAnchor.constraint(equalTo: walletCard.trailingAnchor, constant: -DMTScale.w(18)),
+            walletCaptionLabel.topAnchor.constraint(equalTo: walletTasteCard.topAnchor, constant: DMTScale.h(16)),
+            walletCaptionLabel.leadingAnchor.constraint(equalTo: walletTasteCard.leadingAnchor, constant: DMTScale.w(18)),
+            walletCaptionLabel.trailingAnchor.constraint(equalTo: walletTasteCard.trailingAnchor, constant: -DMTScale.w(18)),
 
-            walletValueLabel.leadingAnchor.constraint(equalTo: walletCard.leadingAnchor, constant: DMTScale.w(18)),
-            walletValueLabel.bottomAnchor.constraint(equalTo: walletCard.bottomAnchor, constant: -DMTScale.h(14)),
+            walletAmountLabel.leadingAnchor.constraint(equalTo: walletTasteCard.leadingAnchor, constant: DMTScale.w(18)),
+            walletAmountLabel.bottomAnchor.constraint(equalTo: walletTasteCard.bottomAnchor, constant: -DMTScale.h(14)),
 
-            statsStack.topAnchor.constraint(equalTo: walletCard.bottomAnchor, constant: DMTScale.h(12)),
-            statsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(16)),
-            statsStack.widthAnchor.constraint(equalToConstant: DMTScale.w(168)),
+            statsRail.topAnchor.constraint(equalTo: walletTasteCard.bottomAnchor, constant: DMTScale.h(12)),
+            statsRail.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(16)),
+            statsRail.widthAnchor.constraint(equalToConstant: DMTScale.w(168)),
 
-            giftCard.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: DMTScale.h(20)),
-            giftCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
-            giftCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(16)),
-            giftCard.heightAnchor.constraint(equalToConstant: DMTScale.h(48)),
+            giftTasteCard.topAnchor.constraint(equalTo: profileNameLabel.bottomAnchor, constant: DMTScale.h(20)),
+            giftTasteCard.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(16)),
+            giftTasteCard.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(16)),
+            giftTasteCard.heightAnchor.constraint(equalToConstant: DMTScale.h(48)),
 
          
 
-            segmentShell.topAnchor.constraint(equalTo: giftCard.bottomAnchor, constant: DMTScale.h(16)),
-            segmentShell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
-            segmentShell.widthAnchor.constraint(equalToConstant: DMTScale.w(172 + 30)),
-            segmentShell.heightAnchor.constraint(equalToConstant: DMTScale.h(40)),
+            segmentPlate.topAnchor.constraint(equalTo: giftTasteCard.bottomAnchor, constant: DMTScale.h(16)),
+            segmentPlate.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(16)),
+            segmentPlate.widthAnchor.constraint(equalToConstant: DMTScale.w(172 + 30)),
+            segmentPlate.heightAnchor.constraint(equalToConstant: DMTScale.h(40)),
 
-            dynamicButton.topAnchor.constraint(equalTo: segmentShell.topAnchor, constant: DMTScale.h(4)),
-            dynamicButton.leadingAnchor.constraint(equalTo: segmentShell.leadingAnchor, constant: DMTScale.w(4)),
-            dynamicButton.widthAnchor.constraint(equalToConstant: DMTScale.w(88)),
-            dynamicButton.bottomAnchor.constraint(equalTo: segmentShell.bottomAnchor, constant: -DMTScale.h(4)),
+            dynamicTasteButton.topAnchor.constraint(equalTo: segmentPlate.topAnchor, constant: DMTScale.h(4)),
+            dynamicTasteButton.leadingAnchor.constraint(equalTo: segmentPlate.leadingAnchor, constant: DMTScale.w(4)),
+            dynamicTasteButton.widthAnchor.constraint(equalToConstant: DMTScale.w(88)),
+            dynamicTasteButton.bottomAnchor.constraint(equalTo: segmentPlate.bottomAnchor, constant: -DMTScale.h(4)),
 
-            videoButton.topAnchor.constraint(equalTo: segmentShell.topAnchor, constant: DMTScale.h(4)),
-            videoButton.leadingAnchor.constraint(equalTo: dynamicButton.trailingAnchor, constant: DMTScale.w(4)),
-            videoButton.bottomAnchor.constraint(equalTo: segmentShell.bottomAnchor, constant: -DMTScale.h(4)),
-            videoButton.widthAnchor.constraint(equalToConstant: DMTScale.w(108)),
-            emptyImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            emptyImageView.topAnchor.constraint(equalTo: segmentShell.bottomAnchor, constant: DMTScale.h(72)),
-            emptyImageView.widthAnchor.constraint(equalToConstant: DMTScale.w(120)),
-            emptyImageView.heightAnchor.constraint(equalToConstant: DMTScale.w(120))
+            shortTasteButton.topAnchor.constraint(equalTo: segmentPlate.topAnchor, constant: DMTScale.h(4)),
+            shortTasteButton.leadingAnchor.constraint(equalTo: dynamicTasteButton.trailingAnchor, constant: DMTScale.w(4)),
+            shortTasteButton.bottomAnchor.constraint(equalTo: segmentPlate.bottomAnchor, constant: -DMTScale.h(4)),
+            shortTasteButton.widthAnchor.constraint(equalToConstant: DMTScale.w(108)),
+            emptyTasteView.centerXAnchor.constraint(equalTo: platingCanvas.centerXAnchor),
+            emptyTasteView.topAnchor.constraint(equalTo: segmentPlate.bottomAnchor, constant: DMTScale.h(72)),
+            emptyTasteView.widthAnchor.constraint(equalToConstant: DMTScale.w(120)),
+            emptyTasteView.heightAnchor.constraint(equalToConstant: DMTScale.w(120))
         ])
     }
 
@@ -230,49 +230,49 @@ final class DMTTasteNookViewController: UIViewController {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let digest = try await service.fetchNookDigest()
+                let nookDigestCopy = try await hearthService.fetchNookCourse()
                 await MainActor.run {
                    
-                    self.apply(digest: digest)
+                    self.renderNookDigest(nookDigestCopy: nookDigestCopy)
                 }
             } catch {
                 await MainActor.run {
                    
-                    self.dmtShowNotice(title: "Profile Unavailable", message: error.localizedDescription)
+                    self.dmtServeNotice(title: "Profile Unavailable", message: error.localizedDescription)
                 }
             }
         }
     }
 
-    private func apply(digest: DMTNookDigest) {
-        self.digest = digest
-        let localProfile = sessionStore.session.flatMap { profileStore.profile(for: $0.email) }
-        if let localAvatar = localProfile.flatMap({ profileStore.image(for: $0.avatarStamp) }), digest.avatarKey.isEmpty {
-            avatarView.image = localAvatar
+    private func renderNookDigest(nookDigestCopy: DMTNookDigest) {
+        self.nookDigestCopy = nookDigestCopy
+        let localProfile = seatSession.session.flatMap { tasteLedger.profile(for: $0.email) }
+        if let localAvatar = localProfile.flatMap({ tasteLedger.image(for: $0.avatarStamp) }), nookDigestCopy.avatarKey.isEmpty {
+            profileTasteView.image = localAvatar
         } else {
-            avatarView.dmtSetMealImage(
-                source: digest.avatarKey,
-                placeholder: localProfile.flatMap { profileStore.image(for: $0.avatarStamp) } ?? DMTMainArtworkFactory.avatarImage(for: digest.displayName)
+            profileTasteView.dmtSetMealImage(
+                source: nookDigestCopy.avatarKey,
+                placeholder: localProfile.flatMap { tasteLedger.image(for: $0.avatarStamp) } ?? DMTMainArtworkFactory.avatarImage(for: nookDigestCopy.displayName)
             )
         }
-        nameLabel.text = digest.displayName.isEmpty ? (localProfile?.nickname ?? "") : digest.displayName
-        walletTitleLabel.text = digest.walletTitle
-        walletValueLabel.text = "\(digest.walletBalance)"
-        emptyImageView.image = UIImage(named: digest.emptyArtKey) ?? DMTMainArtworkFactory.sceneImage(for: digest.emptyArtKey, size: CGSize(width: 240, height: 240))
+        profileNameLabel.text = nookDigestCopy.displayName.isEmpty ? (localProfile?.nickname ?? "") : nookDigestCopy.displayName
+        walletCaptionLabel.text = nookDigestCopy.walletTitle
+        walletAmountLabel.text = "\(nookDigestCopy.walletBalance)"
+        emptyTasteView.image = UIImage(named: nookDigestCopy.emptyArtKey) ?? DMTMainArtworkFactory.sceneImage(for: nookDigestCopy.emptyArtKey, size: CGSize(width: 240, height: 240))
 
-        statsStack.arrangedSubviews.forEach {
-            statsStack.removeArrangedSubview($0)
+        statsRail.arrangedSubviews.forEach {
+            statsRail.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
 
         let items = [
-            ("Followers", "\(digest.followerCount)", 0),
-            ("Following", "\(digest.followingCount)", 1)
+            ("Followers", "\(nookDigestCopy.followerCount)", 0),
+            ("Following", "\(nookDigestCopy.followingCount)", 1)
         ]
         for item in items {
             let shell = UIButton(type: .system)
             shell.tintColor = .clear
-            shell.addTarget(self, action: #selector(handleStatsTap(_:)), for: .touchUpInside)
+            shell.addTarget(self, action: #selector(handleStatsRailTap(_:)), for: .touchUpInside)
             shell.tag = item.2
 
             let stack = UIStackView()
@@ -298,60 +298,60 @@ final class DMTTasteNookViewController: UIViewController {
                 stack.centerXAnchor.constraint(equalTo: shell.centerXAnchor),
                 stack.centerYAnchor.constraint(equalTo: shell.centerYAnchor)
             ])
-            statsStack.addArrangedSubview(shell)
+            statsRail.addArrangedSubview(shell)
         }
 
-        let dynamicTitle = digest.segmentTitles.first ?? "Dynamic"
-        let videoTitle = digest.segmentTitles.dropFirst().first ?? "Short Video"
-        dynamicButton.setTitle(dynamicTitle, for: .normal)
-        videoButton.setTitle(videoTitle, for: .normal)
-        styleSegments(showDynamic: true)
+        let dynamicTitle = nookDigestCopy.segmentTitles.first ?? "Dynamic"
+        let videoTitle = nookDigestCopy.segmentTitles.dropFirst().first ?? "Short Video"
+        dynamicTasteButton.setTitle(dynamicTitle, for: .normal)
+        shortTasteButton.setTitle(videoTitle, for: .normal)
+        styleProfileShelves(showDynamic: true)
     }
 
     @objc
-    private func handleSettingsTap() {
-        dmtOpenPortal(.settingCenter)
+    private func handleSpiceGearTap() {
+        dmtOpenHearth(.settingCenter)
     }
 
     @objc
-    private func handleDynamicTap() {
-        styleSegments(showDynamic: true)
+    private func handleDynamicShelfTap() {
+        styleProfileShelves(showDynamic: true)
     }
 
     @objc
-    private func handleVideoTap() {
-        styleSegments(showDynamic: false)
+    private func handleShortShelfTap() {
+        styleProfileShelves(showDynamic: false)
     }
 
     @objc
-    private func handleEditTap() {
-        dmtOpenPortal(.editProfile)
+    private func handleEditTasteTap() {
+        dmtOpenHearth(.editProfile)
     }
 
     @objc
-    private func handleWalletTap() {
-        dmtOpenPortal(.walletCenter)
+    private func handleWalletTasteTap() {
+        dmtOpenHearth(.walletCenter)
     }
 
     @objc
-    private func handleGiftTap() {
-        guard let userID = digest?.userID, !userID.isEmpty else { return }
-        dmtOpenPortal(.receivedGift(userID: userID))
+    private func handleGiftTasteTap() {
+        guard let userID = nookDigestCopy?.userID, !userID.isEmpty else { return }
+        dmtOpenHearth(.receivedGift(userID: userID))
     }
 
     @objc
-    private func handleStatsTap(_ sender: UIButton) {
+    private func handleStatsRailTap(_ sender: UIButton) {
         if sender.tag == 0 {
-            dmtOpenPortal(.fansList)
+            dmtOpenHearth(.fansList)
         } else {
-            dmtOpenPortal(.followingList)
+            dmtOpenHearth(.followingList)
         }
     }
 
-    private func styleSegments(showDynamic: Bool) {
-        dynamicButton.backgroundColor = showDynamic ? DMTPalette.sunrise : .clear
-        dynamicButton.setTitleColor(showDynamic ? .white : DMTPalette.ink, for: .normal)
-        videoButton.backgroundColor = showDynamic ? .clear : DMTPalette.sunrise
-        videoButton.setTitleColor(showDynamic ? DMTPalette.ink : .white, for: .normal)
+    private func styleProfileShelves(showDynamic: Bool) {
+        dynamicTasteButton.backgroundColor = showDynamic ? DMTPalette.sunrise : .clear
+        dynamicTasteButton.setTitleColor(showDynamic ? .white : DMTPalette.ink, for: .normal)
+        shortTasteButton.backgroundColor = showDynamic ? .clear : DMTPalette.sunrise
+        shortTasteButton.setTitleColor(showDynamic ? DMTPalette.ink : .white, for: .normal)
     }
 }

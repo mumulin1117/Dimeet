@@ -3,23 +3,23 @@ import UIKit
 final class DMTWelcomeAboardViewController: UIViewController {
     var onFinish: ((DMTSessionPayload) -> Void)?
 
-    private let service: DMTFeastService
+    private let hearthService: DMTFeastService
     private let draft: DMTSignUpDraft
-    private let profileStore: DMTTasteProfileStore
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
+    private let tasteLedger: DMTTasteProfileStore
+    private let courseScrollView = UIScrollView()
+    private let platingCanvas = UIView()
     private let gradientView = DMTGradientView(colors: [UIColor(red: 1, green: 0.96, blue: 0.86, alpha: 1), UIColor(red: 1, green: 0.76, blue: 0.7, alpha: 1), UIColor(red: 1, green: 0.9, blue: 0.9, alpha: 1)], startPoint: CGPoint(x: 0, y: 0.3), endPoint: CGPoint(x: 1, y: 1))
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let reminderStack = UIStackView()
     private let enterButton = DMTGlowButton()
-    private let spinner = UIActivityIndicatorView(style: .medium)
-    private var buttonTitle = "Enter"
+    private let simmerSpinner = UIActivityIndicatorView(style: .medium)
+    private var ctaCopy = "Enter"
 
-    init(service: DMTFeastService, draft: DMTSignUpDraft, profileStore: DMTTasteProfileStore) {
-        self.service = service
+    init(hearthService: DMTFeastService, draft: DMTSignUpDraft, tasteLedger: DMTTasteProfileStore) {
+        self.hearthService = hearthService
         self.draft = draft
-        self.profileStore = profileStore
+        self.tasteLedger = tasteLedger
         super.init(nibName: nil, bundle: nil)
         title = "Welcome Aboard"
     }
@@ -31,13 +31,13 @@ final class DMTWelcomeAboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DMTPalette.paper
-        configureLayout()
-        loadDeck()
+        composeLayout()
+        fetchDeckCopy()
     }
 
-    private func configureLayout() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+    private func composeLayout() {
+        courseScrollView.translatesAutoresizingMaskIntoConstraints = false
+        platingCanvas.translatesAutoresizingMaskIntoConstraints = false
         gradientView.translatesAutoresizingMaskIntoConstraints = false
         gradientView.layer.cornerRadius = DMTScale.r(30)
 
@@ -58,32 +58,32 @@ final class DMTWelcomeAboardViewController: UIViewController {
         enterButton.translatesAutoresizingMaskIntoConstraints = false
         enterButton.addTarget(self, action: #selector(handleEnter), for: .touchUpInside)
 
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.hidesWhenStopped = true
-        spinner.color = .white
+        simmerSpinner.translatesAutoresizingMaskIntoConstraints = false
+        simmerSpinner.hidesWhenStopped = true
+        simmerSpinner.color = .white
 
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(gradientView)
+        view.addSubview(courseScrollView)
+        courseScrollView.addSubview(platingCanvas)
+        platingCanvas.addSubview(gradientView)
         gradientView.addSubview(titleLabel)
         gradientView.addSubview(subtitleLabel)
         gradientView.addSubview(reminderStack)
         gradientView.addSubview(enterButton)
-        enterButton.addSubview(spinner)
+        enterButton.addSubview(simmerSpinner)
 
-        scrollView.dmtPinEdges(to: view)
+        courseScrollView.dmtPinCourseEdges(to: view)
 
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            platingCanvas.topAnchor.constraint(equalTo: courseScrollView.topAnchor),
+            platingCanvas.leadingAnchor.constraint(equalTo: courseScrollView.leadingAnchor),
+            platingCanvas.trailingAnchor.constraint(equalTo: courseScrollView.trailingAnchor),
+            platingCanvas.bottomAnchor.constraint(equalTo: courseScrollView.bottomAnchor),
+            platingCanvas.widthAnchor.constraint(equalTo: courseScrollView.widthAnchor),
 
-            gradientView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(18)),
-            gradientView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(18)),
-            gradientView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(18)),
-            gradientView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(18)),
+            gradientView.topAnchor.constraint(equalTo: platingCanvas.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(18)),
+            gradientView.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(18)),
+            gradientView.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(18)),
+            gradientView.bottomAnchor.constraint(equalTo: platingCanvas.bottomAnchor, constant: -DMTScale.h(18)),
 
             titleLabel.topAnchor.constraint(equalTo: gradientView.topAnchor, constant: DMTScale.h(34)),
             titleLabel.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: DMTScale.w(22)),
@@ -103,33 +103,33 @@ final class DMTWelcomeAboardViewController: UIViewController {
             enterButton.heightAnchor.constraint(equalToConstant: DMTScale.h(54)),
             enterButton.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -DMTScale.h(28)),
 
-            spinner.centerXAnchor.constraint(equalTo: enterButton.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: enterButton.centerYAnchor)
+            simmerSpinner.centerXAnchor.constraint(equalTo: enterButton.centerXAnchor),
+            simmerSpinner.centerYAnchor.constraint(equalTo: enterButton.centerYAnchor)
         ])
     }
 
-    private func loadDeck() {
+    private func fetchDeckCopy() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let bundle = try await service.fetchAuthBundle()
+                let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
-                    self.applyDeck(bundle.entry)
+                    self.presentDeckCopy(bundle.entry)
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtShowNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
                 }
             }
         }
     }
 
-    private func applyDeck(_ deck: DMTEntryDeck) {
+    private func presentDeckCopy(_ deck: DMTEntryDeck) {
         title = deck.title
-        buttonTitle = deck.buttonTitle
+        ctaCopy = deck.ctaCopy
         titleLabel.text = deck.title
         subtitleLabel.text = deck.subtitle
-        enterButton.setTitle(deck.buttonTitle, for: .normal)
+        enterButton.setTitle(deck.ctaCopy, for: .normal)
 
         reminderStack.arrangedSubviews.forEach {
             reminderStack.removeArrangedSubview($0)
@@ -165,8 +165,8 @@ final class DMTWelcomeAboardViewController: UIViewController {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let payload = try await service.login(email: draft.ticket.email, password: draft.ticket.password)
-                _ = profileStore.persistProfile(from: draft)
+                let payload = try await hearthService.login(email: draft.ticket.email, password: draft.ticket.password)
+                _ = tasteLedger.persistProfile(from: draft)
                 await MainActor.run {
                     self.setLoading(false)
                     self.onFinish?(payload)
@@ -174,7 +174,7 @@ final class DMTWelcomeAboardViewController: UIViewController {
             } catch {
                 await MainActor.run {
                     self.setLoading(false)
-                    self.dmtShowNotice(title: "Taste Pass Failed", message: error.localizedDescription)
+                    self.dmtServeNotice(title: "Taste Pass Failed", message: error.localizedDescription)
                 }
             }
         }
@@ -184,10 +184,10 @@ final class DMTWelcomeAboardViewController: UIViewController {
         enterButton.isEnabled = !isLoading
         if isLoading {
             enterButton.setTitle(nil, for: .normal)
-            spinner.startAnimating()
+            simmerSpinner.startAnimating()
         } else {
-            spinner.stopAnimating()
-            enterButton.setTitle(buttonTitle, for: .normal)
+            simmerSpinner.stopAnimating()
+            enterButton.setTitle(ctaCopy, for: .normal)
         }
     }
 }

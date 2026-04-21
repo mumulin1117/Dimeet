@@ -3,10 +3,10 @@ import Foundation
 final class DMTAppPantry {
     static let shared = DMTAppPantry()
 
-    let sessionStore = DMTSessionStore.shared
-    let profileStore = DMTTasteProfileStore.shared
-    let networkClient = DMTNetworkClient()
-    lazy var feastService = DMTFeastService(client: networkClient)
+    let seatSession = DMTSessionStore.shared
+    let tasteLedger = DMTTasteProfileStore.shared
+    let signalClient = DMTNetworkClient()
+    lazy var hearthService = DMTFeastService(client: signalClient)
 
     private init() {}
 }

@@ -1,7 +1,7 @@
 import UIKit
 
 extension UIViewController {
-    var dmtTopChromeSpacing: CGFloat {
+    var dmtTopHearthInset: CGFloat {
         DMTScale.h(8)
     }
 }

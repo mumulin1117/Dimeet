@@ -14,7 +14,7 @@ final class DMTRoomStageCardView: UIControl {
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
-        configureLayout()
+        composeLayout()
     }
 
     required init?(coder: NSCoder) {
@@ -57,7 +57,7 @@ final class DMTRoomStageCardView: UIControl {
         }
     }
 
-    private func configureLayout() {
+    private func composeLayout() {
         layer.cornerRadius = DMTScale.r(22)
         clipsToBounds = true
 

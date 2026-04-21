@@ -3,27 +3,27 @@ import UIKit
 final class DMTIdentityVerifyViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var onFinish: ((DMTSessionPayload) -> Void)?
 
-    private let service: DMTFeastService
-    private let profileStore: DMTTasteProfileStore
+    private let hearthService: DMTFeastService
+    private let tasteLedger: DMTTasteProfileStore
     private var draft: DMTSignUpDraft
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
+    private let courseScrollView = UIScrollView()
+    private let platingCanvas = UIView()
     private let headerView = DMTGradientView(colors: [UIColor(red: 0.53, green: 0.14, blue: 1, alpha: 1), UIColor(red: 1, green: 0.03, blue: 0.74, alpha: 1)], startPoint: CGPoint(x: 0, y: 0), endPoint: CGPoint(x: 1, y: 1))
     private let shieldView = UIImageView(image: UIImage(systemName: "checkmark.shield.fill"))
-    private let cardView = UIView()
+    private let servingCard = UIView()
     private let introLabel = UILabel()
     private let previewShell = UIView()
     private let previewImageView = UIImageView()
     private let frameView = UIImageView(image: UIImage(systemName: "viewfinder"))
     private let captionLabel = UILabel()
     private let actionButton = DMTGlowButton()
-    private let spinner = UIActivityIndicatorView(style: .medium)
-    private var buttonTitle = "Take a Selfie"
+    private let simmerSpinner = UIActivityIndicatorView(style: .medium)
+    private var ctaCopy = "Take a Selfie"
 
-    init(service: DMTFeastService, draft: DMTSignUpDraft, profileStore: DMTTasteProfileStore) {
-        self.service = service
+    init(hearthService: DMTFeastService, draft: DMTSignUpDraft, tasteLedger: DMTTasteProfileStore) {
+        self.hearthService = hearthService
         self.draft = draft
-        self.profileStore = profileStore
+        self.tasteLedger = tasteLedger
         super.init(nibName: nil, bundle: nil)
         title = "Verify Your Identity"
     }
@@ -35,23 +35,23 @@ final class DMTIdentityVerifyViewController: UIViewController, UIImagePickerCont
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = DMTPalette.paper
-        configureLayout()
-        loadDeck()
+        composeLayout()
+        fetchDeckCopy()
     }
 
-    private func configureLayout() {
-        scrollView.contentInsetAdjustmentBehavior = .never
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+    private func composeLayout() {
+        courseScrollView.contentInsetAdjustmentBehavior = .never
+        courseScrollView.translatesAutoresizingMaskIntoConstraints = false
+        platingCanvas.translatesAutoresizingMaskIntoConstraints = false
         headerView.translatesAutoresizingMaskIntoConstraints = false
 
         shieldView.translatesAutoresizingMaskIntoConstraints = false
         shieldView.tintColor = UIColor.white.withAlphaComponent(0.95)
         shieldView.contentMode = .scaleAspectFit
 
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        cardView.backgroundColor = .white
-        cardView.layer.cornerRadius = DMTScale.r(28)
+        servingCard.translatesAutoresizingMaskIntoConstraints = false
+        servingCard.backgroundColor = .white
+        servingCard.layer.cornerRadius = DMTScale.r(28)
 
         introLabel.translatesAutoresizingMaskIntoConstraints = false
         introLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
@@ -81,36 +81,36 @@ final class DMTIdentityVerifyViewController: UIViewController, UIImagePickerCont
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         actionButton.addTarget(self, action: #selector(handleSelfie), for: .touchUpInside)
 
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.hidesWhenStopped = true
-        spinner.color = .white
+        simmerSpinner.translatesAutoresizingMaskIntoConstraints = false
+        simmerSpinner.hidesWhenStopped = true
+        simmerSpinner.color = .white
 
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(headerView)
+        view.addSubview(courseScrollView)
+        courseScrollView.addSubview(platingCanvas)
+        platingCanvas.addSubview(headerView)
         headerView.addSubview(shieldView)
-        contentView.addSubview(cardView)
-        cardView.addSubview(introLabel)
-        cardView.addSubview(previewShell)
+        platingCanvas.addSubview(servingCard)
+        servingCard.addSubview(introLabel)
+        servingCard.addSubview(previewShell)
         previewShell.addSubview(previewImageView)
         previewShell.addSubview(frameView)
-        cardView.addSubview(captionLabel)
-        cardView.addSubview(actionButton)
-        actionButton.addSubview(spinner)
+        servingCard.addSubview(captionLabel)
+        servingCard.addSubview(actionButton)
+        actionButton.addSubview(simmerSpinner)
 
-        scrollView.dmtPinEdges(to: view)
-        previewImageView.dmtPinEdges(to: previewShell)
+        courseScrollView.dmtPinCourseEdges(to: view)
+        previewImageView.dmtPinCourseEdges(to: previewShell)
 
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            platingCanvas.topAnchor.constraint(equalTo: courseScrollView.topAnchor),
+            platingCanvas.leadingAnchor.constraint(equalTo: courseScrollView.leadingAnchor),
+            platingCanvas.trailingAnchor.constraint(equalTo: courseScrollView.trailingAnchor),
+            platingCanvas.bottomAnchor.constraint(equalTo: courseScrollView.bottomAnchor),
+            platingCanvas.widthAnchor.constraint(equalTo: courseScrollView.widthAnchor),
 
-            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            headerView.topAnchor.constraint(equalTo: platingCanvas.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor),
             headerView.heightAnchor.constraint(equalToConstant: DMTScale.h(290)),
 
             shieldView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
@@ -118,17 +118,17 @@ final class DMTIdentityVerifyViewController: UIViewController, UIImagePickerCont
             shieldView.widthAnchor.constraint(equalToConstant: DMTScale.w(112)),
             shieldView.heightAnchor.constraint(equalToConstant: DMTScale.w(112)),
 
-            cardView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -DMTScale.h(28)),
-            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            servingCard.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -DMTScale.h(28)),
+            servingCard.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor),
+            servingCard.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor),
+            servingCard.bottomAnchor.constraint(equalTo: platingCanvas.bottomAnchor),
 
-            introLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: DMTScale.h(24)),
-            introLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(24)),
-            introLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(24)),
+            introLabel.topAnchor.constraint(equalTo: servingCard.topAnchor, constant: DMTScale.h(24)),
+            introLabel.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(24)),
+            introLabel.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(24)),
 
             previewShell.topAnchor.constraint(equalTo: introLabel.bottomAnchor, constant: DMTScale.h(18)),
-            previewShell.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
+            previewShell.centerXAnchor.constraint(equalTo: servingCard.centerXAnchor),
             previewShell.widthAnchor.constraint(equalToConstant: DMTScale.w(144)),
             previewShell.heightAnchor.constraint(equalToConstant: DMTScale.w(144)),
 
@@ -138,35 +138,35 @@ final class DMTIdentityVerifyViewController: UIViewController, UIImagePickerCont
             frameView.heightAnchor.constraint(equalToConstant: DMTScale.w(88)),
 
             captionLabel.topAnchor.constraint(equalTo: previewShell.bottomAnchor, constant: DMTScale.h(18)),
-            captionLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(26)),
-            captionLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(26)),
+            captionLabel.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(26)),
+            captionLabel.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(26)),
 
             actionButton.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: DMTScale.h(28)),
-            actionButton.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(24)),
-            actionButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(24)),
+            actionButton.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(24)),
+            actionButton.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(24)),
             actionButton.heightAnchor.constraint(equalToConstant: DMTScale.h(54)),
-            actionButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -DMTScale.h(34)),
+            actionButton.bottomAnchor.constraint(equalTo: servingCard.bottomAnchor, constant: -DMTScale.h(34)),
 
-            spinner.centerXAnchor.constraint(equalTo: actionButton.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: actionButton.centerYAnchor)
+            simmerSpinner.centerXAnchor.constraint(equalTo: actionButton.centerXAnchor),
+            simmerSpinner.centerYAnchor.constraint(equalTo: actionButton.centerYAnchor)
         ])
     }
 
-    private func loadDeck() {
+    private func fetchDeckCopy() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let bundle = try await service.fetchAuthBundle()
+                let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
                     self.title = bundle.verify.title
-                    self.buttonTitle = bundle.verify.buttonTitle
+                    self.ctaCopy = bundle.verify.ctaCopy
                     self.introLabel.text = bundle.verify.intro
                     self.captionLabel.text = bundle.verify.caption
-                    self.actionButton.setTitle(bundle.verify.buttonTitle, for: .normal)
+                    self.actionButton.setTitle(bundle.verify.ctaCopy, for: .normal)
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtShowNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
                 }
             }
         }
@@ -200,7 +200,7 @@ final class DMTIdentityVerifyViewController: UIViewController, UIImagePickerCont
     }
 
     private func showEntryController() {
-        let controller = DMTWelcomeAboardViewController(service: service, draft: draft, profileStore: profileStore)
+        let controller = DMTWelcomeAboardViewController(hearthService: hearthService, draft: draft, tasteLedger: tasteLedger)
         controller.onFinish = { [weak self] payload in
             self?.onFinish?(payload)
         }

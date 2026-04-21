@@ -5,28 +5,28 @@ final class DMTWelcomeViewController: UIViewController {
     var onShowSignUp: (() -> Void)?
     var onShowAgreement: (() -> Void)?
 
-    private let service: DMTFeastService
-    private let heroView = UIImageView.init(image: UIImage.init(named: "aromaSenseScope"))
-    private let eulaButton = UIButton()
-    private let panelView = UIView()
-    private let primaryButton = DMTGlowButton()
-    private let secondaryButton = UIButton()
-    private let consentButton = UIButton()
-    private let consentLabel = UILabel()
+    private let hearthService: DMTFeastService
+    private let welcomeSplashView = UIImageView.init(image: UIImage.init(named: "aromaSenseScope"))
+    private let houseNoteButton = UIButton()
+    private let welcomeActionPlate = UIView()
+    private let freshSeatButton = DMTGlowButton()
+    private let returnSeatButton = UIButton()
+    private let consentMarkButton = UIButton()
+    private let consentCopyLabel = UILabel()
 
-    private var welcomeDeck: DMTWelcomeDeck?
-    private var consentGranted = false {
+    private var welcomeCourse: DMTWelcomeDeck?
+    private var hasConsentStamp = false {
         didSet {
-            let imageName = consentGranted ? "bitterCoreModulesel" : "bitterCoreModule"
-            consentButton.setImage(UIImage(named: imageName), for: .normal)
-            primaryButton.isEnabled = consentGranted
-            secondaryButton.isEnabled = consentGranted
-            secondaryButton.alpha = consentGranted ? 1 : 0.5
+            let imageName = hasConsentStamp ? "bitterCoreModulesel" : "bitterCoreModule"
+            consentMarkButton.setImage(UIImage(named: imageName), for: .normal)
+            freshSeatButton.isEnabled = hasConsentStamp
+            returnSeatButton.isEnabled = hasConsentStamp
+            returnSeatButton.alpha = hasConsentStamp ? 1 : 0.5
         }
     }
 
-    init(service: DMTFeastService) {
-        self.service = service
+    init(hearthService: DMTFeastService) {
+        self.hearthService = hearthService
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -38,16 +38,16 @@ final class DMTWelcomeViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = ""
        
-        let setingcover = CAGradientLayer()
-        setingcover.colors = [UIColor(red: 1, green: 0.6, blue: 0.47, alpha: 0).cgColor, UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor]
-        setingcover.locations = [0, 1]
-        setingcover.frame = view.bounds
-        setingcover.startPoint = CGPoint(x: 0.5, y: 0)
-        setingcover.endPoint = CGPoint(x: 1, y: 1)
-        view.layer.addSublayer(setingcover)
+        let welcomeGlowLayer = CAGradientLayer()
+        welcomeGlowLayer.colors = [UIColor(red: 1, green: 0.6, blue: 0.47, alpha: 0).cgColor, UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor]
+        welcomeGlowLayer.locations = [0, 1]
+        welcomeGlowLayer.frame = view.bounds
+        welcomeGlowLayer.startPoint = CGPoint(x: 0.5, y: 0)
+        welcomeGlowLayer.endPoint = CGPoint(x: 1, y: 1)
+        view.layer.addSublayer(welcomeGlowLayer)
         
-        configureLayout()
-        loadDeck()
+        composeLayout()
+        fetchWelcomeCopy()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -55,133 +55,133 @@ final class DMTWelcomeViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
-    private func configureLayout() {
-        heroView.contentMode = .scaleAspectFill
-        heroView.translatesAutoresizingMaskIntoConstraints = false
-        heroView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        heroView.layer.cornerRadius = DMTScale.r(36)
-        eulaButton.setImage(UIImage.init(named: "allooELUA"), for: .normal)
-        eulaButton.translatesAutoresizingMaskIntoConstraints = false
+    private func composeLayout() {
+        welcomeSplashView.contentMode = .scaleAspectFill
+        welcomeSplashView.translatesAutoresizingMaskIntoConstraints = false
+        welcomeSplashView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        welcomeSplashView.layer.cornerRadius = DMTScale.r(36)
+        houseNoteButton.setImage(UIImage.init(named: "allooELUA"), for: .normal)
+        houseNoteButton.translatesAutoresizingMaskIntoConstraints = false
      
-        eulaButton.addTarget(self, action: #selector(showAgreement), for: .touchUpInside)
+        houseNoteButton.addTarget(self, action: #selector(handleHouseNoteTap), for: .touchUpInside)
 
-        panelView.translatesAutoresizingMaskIntoConstraints = false
-        panelView.backgroundColor = .clear
-        panelView.layer.cornerRadius = DMTScale.r(28)
-        panelView.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
-        primaryButton.translatesAutoresizingMaskIntoConstraints = false
-        primaryButton.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
+        welcomeActionPlate.translatesAutoresizingMaskIntoConstraints = false
+        welcomeActionPlate.backgroundColor = .clear
+        welcomeActionPlate.layer.cornerRadius = DMTScale.r(28)
+        welcomeActionPlate.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
+        freshSeatButton.translatesAutoresizingMaskIntoConstraints = false
+        freshSeatButton.addTarget(self, action: #selector(handleFreshSeatTap), for: .touchUpInside)
 
-        secondaryButton.translatesAutoresizingMaskIntoConstraints = false
-        secondaryButton.backgroundColor = DMTPalette.blush
-        secondaryButton.setTitleColor(DMTPalette.sunrise, for: .normal)
-        secondaryButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        secondaryButton.layer.cornerRadius = DMTScale.r(22)
-        secondaryButton.addTarget(self, action: #selector(handleSignIn), for: .touchUpInside)
+        returnSeatButton.translatesAutoresizingMaskIntoConstraints = false
+        returnSeatButton.backgroundColor = DMTPalette.blush
+        returnSeatButton.setTitleColor(DMTPalette.sunrise, for: .normal)
+        returnSeatButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        returnSeatButton.layer.cornerRadius = DMTScale.r(22)
+        returnSeatButton.addTarget(self, action: #selector(handleKnownSeatTap), for: .touchUpInside)
 
-        consentButton.translatesAutoresizingMaskIntoConstraints = false
-        consentButton.tintColor = DMTPalette.sunrise
-        consentButton.addTarget(self, action: #selector(toggleConsent), for: .touchUpInside)
+        consentMarkButton.translatesAutoresizingMaskIntoConstraints = false
+        consentMarkButton.tintColor = DMTPalette.sunrise
+        consentMarkButton.addTarget(self, action: #selector(handleConsentToggle), for: .touchUpInside)
         
-        consentLabel.translatesAutoresizingMaskIntoConstraints = false
-        consentLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
-        consentLabel.textColor = DMTPalette.cloudInk
-        consentLabel.numberOfLines = 0
+        consentCopyLabel.translatesAutoresizingMaskIntoConstraints = false
+        consentCopyLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
+        consentCopyLabel.textColor = DMTPalette.cloudInk
+        consentCopyLabel.numberOfLines = 0
 
-        view.addSubview(heroView)
-        heroView.addSubview(eulaButton)
-        view.addSubview(panelView)
-        panelView.addSubview(primaryButton)
-        panelView.addSubview(secondaryButton)
-        panelView.addSubview(consentButton)
-        panelView.addSubview(consentLabel)
+        view.addSubview(welcomeSplashView)
+        welcomeSplashView.addSubview(houseNoteButton)
+        view.addSubview(welcomeActionPlate)
+        welcomeActionPlate.addSubview(freshSeatButton)
+        welcomeActionPlate.addSubview(returnSeatButton)
+        welcomeActionPlate.addSubview(consentMarkButton)
+        welcomeActionPlate.addSubview(consentCopyLabel)
 
         NSLayoutConstraint.activate([
-            heroView.topAnchor.constraint(equalTo: view.topAnchor),
-            heroView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            heroView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            heroView.heightAnchor.constraint(equalToConstant: DMTScale.h(379)),
+            welcomeSplashView.topAnchor.constraint(equalTo: view.topAnchor),
+            welcomeSplashView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            welcomeSplashView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            welcomeSplashView.heightAnchor.constraint(equalToConstant: DMTScale.h(379)),
 
-            eulaButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(14)),
-            eulaButton.trailingAnchor.constraint(equalTo: heroView.trailingAnchor, constant: -DMTScale.w(18)),
-            eulaButton.widthAnchor.constraint(equalToConstant: 80),
-            eulaButton.heightAnchor.constraint(equalToConstant: 36),
+            houseNoteButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(14)),
+            houseNoteButton.trailingAnchor.constraint(equalTo: welcomeSplashView.trailingAnchor, constant: -DMTScale.w(18)),
+            houseNoteButton.widthAnchor.constraint(equalToConstant: 80),
+            houseNoteButton.heightAnchor.constraint(equalToConstant: 36),
 
-            panelView.topAnchor.constraint(equalTo: heroView.bottomAnchor, constant: -DMTScale.h(64)),
-            panelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: DMTScale.w(20)),
-            panelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DMTScale.w(20)),
-            panelView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant:0),
+            welcomeActionPlate.topAnchor.constraint(equalTo: welcomeSplashView.bottomAnchor, constant: -DMTScale.h(64)),
+            welcomeActionPlate.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: DMTScale.w(20)),
+            welcomeActionPlate.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DMTScale.w(20)),
+            welcomeActionPlate.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant:0),
 
         
-            consentButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: DMTScale.h(-32)),
-            consentButton.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: DMTScale.w(18)),
-            consentButton.widthAnchor.constraint(equalToConstant: DMTScale.w(24)),
-            consentButton.heightAnchor.constraint(equalToConstant: DMTScale.w(24)),
+            consentMarkButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: DMTScale.h(-32)),
+            consentMarkButton.leadingAnchor.constraint(equalTo: welcomeActionPlate.leadingAnchor, constant: DMTScale.w(18)),
+            consentMarkButton.widthAnchor.constraint(equalToConstant: DMTScale.w(24)),
+            consentMarkButton.heightAnchor.constraint(equalToConstant: DMTScale.w(24)),
 
-            consentLabel.centerYAnchor.constraint(equalTo: consentButton.centerYAnchor),
-            consentLabel.leadingAnchor.constraint(equalTo: consentButton.trailingAnchor, constant: DMTScale.w(10)),
-            consentLabel.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -DMTScale.w(18)),
+            consentCopyLabel.centerYAnchor.constraint(equalTo: consentMarkButton.centerYAnchor),
+            consentCopyLabel.leadingAnchor.constraint(equalTo: consentMarkButton.trailingAnchor, constant: DMTScale.w(10)),
+            consentCopyLabel.trailingAnchor.constraint(equalTo: welcomeActionPlate.trailingAnchor, constant: -DMTScale.w(18)),
             
-            secondaryButton.bottomAnchor.constraint(equalTo: consentButton.topAnchor, constant: DMTScale.h(-72)),
-            secondaryButton.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: DMTScale.w(18)),
-            secondaryButton.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -DMTScale.w(18)),
-            secondaryButton.heightAnchor.constraint(equalToConstant: DMTScale.h(54)),
+            returnSeatButton.bottomAnchor.constraint(equalTo: consentMarkButton.topAnchor, constant: DMTScale.h(-72)),
+            returnSeatButton.leadingAnchor.constraint(equalTo: welcomeActionPlate.leadingAnchor, constant: DMTScale.w(18)),
+            returnSeatButton.trailingAnchor.constraint(equalTo: welcomeActionPlate.trailingAnchor, constant: -DMTScale.w(18)),
+            returnSeatButton.heightAnchor.constraint(equalToConstant: DMTScale.h(54)),
             
-            primaryButton.bottomAnchor.constraint(equalTo: secondaryButton.topAnchor, constant: DMTScale.h(-16)),
-            primaryButton.leadingAnchor.constraint(equalTo: panelView.leadingAnchor, constant: DMTScale.w(18)),
-            primaryButton.trailingAnchor.constraint(equalTo: panelView.trailingAnchor, constant: -DMTScale.w(18)),
-            primaryButton.heightAnchor.constraint(equalToConstant: DMTScale.h(54)),
+            freshSeatButton.bottomAnchor.constraint(equalTo: returnSeatButton.topAnchor, constant: DMTScale.h(-16)),
+            freshSeatButton.leadingAnchor.constraint(equalTo: welcomeActionPlate.leadingAnchor, constant: DMTScale.w(18)),
+            freshSeatButton.trailingAnchor.constraint(equalTo: welcomeActionPlate.trailingAnchor, constant: -DMTScale.w(18)),
+            freshSeatButton.heightAnchor.constraint(equalToConstant: DMTScale.h(54)),
 
            
 
         ])
 
-        consentGranted = false
+        hasConsentStamp = false
     }
 
-    private func loadDeck() {
+    private func fetchWelcomeCopy() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let bundle = try await service.fetchAuthBundle()
+                let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
-                    self.welcomeDeck = bundle.welcome
-                    self.applyDeck(bundle.welcome)
+                    self.welcomeCourse = bundle.welcome
+                    self.renderWelcomeCopy(bundle.welcome)
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtShowNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
                 }
             }
         }
     }
 
-    private func applyDeck(_ deck: DMTWelcomeDeck) {
-        eulaButton.setTitle(deck.eulaTitle, for: .normal)
-        primaryButton.setTitle(deck.primaryTitle, for: .normal)
-        secondaryButton.setTitle(deck.secondaryTitle, for: .normal)
-        consentLabel.text = deck.agreementHint
+    private func renderWelcomeCopy(_ deck: DMTWelcomeDeck) {
+        houseNoteButton.setTitle(deck.eulaTitle, for: .normal)
+        freshSeatButton.setTitle(deck.primaryTitle, for: .normal)
+        returnSeatButton.setTitle(deck.secondaryTitle, for: .normal)
+        consentCopyLabel.text = deck.agreementHint
     }
 
     @objc
-    private func showAgreement() {
+    private func handleHouseNoteTap() {
         onShowAgreement?()
     }
 
     @objc
-    private func handleSignUp() {
-        guard consentGranted else { return }
+    private func handleFreshSeatTap() {
+        guard hasConsentStamp else { return }
         onShowSignUp?()
     }
 
     @objc
-    private func handleSignIn() {
-        guard consentGranted else { return }
+    private func handleKnownSeatTap() {
+        guard hasConsentStamp else { return }
         onShowSignIn?()
     }
 
     @objc
-    private func toggleConsent() {
-        consentGranted.toggle()
+    private func handleConsentToggle() {
+        hasConsentStamp.toggle()
     }
 }

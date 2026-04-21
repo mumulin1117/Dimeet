@@ -1,13 +1,13 @@
 import UIKit
 
 final class DMTHearthTabController: UITabBarController {
-    init(service: DMTFeastService, sessionStore: DMTSessionStore, profileStore: DMTTasteProfileStore) {
+    init(hearthService: DMTFeastService, seatSession: DMTSessionStore, tasteLedger: DMTTasteProfileStore) {
         super.init(nibName: nil, bundle: nil)
 
-        let roomsController = UINavigationController(rootViewController:DMTMealRoomsViewController(service: service))
-        let buzzController = UINavigationController(rootViewController: DMTBiteFeedViewController(service: service))
-        let mateController = UINavigationController(rootViewController: DMTMealMateViewController(service: service))
-        let nookController = UINavigationController(rootViewController: DMTTasteNookViewController(service: service, sessionStore: sessionStore, profileStore: profileStore))
+        let roomsController = UINavigationController(rootViewController:DMTMealRoomsViewController(hearthService: hearthService))
+        let buzzController = UINavigationController(rootViewController: DMTBiteFeedViewController(hearthService: hearthService))
+        let mateController = UINavigationController(rootViewController: DMTMealMateViewController(hearthService: hearthService))
+        let nookController = UINavigationController(rootViewController: DMTTasteNookViewController(hearthService: hearthService, seatSession: seatSession, tasteLedger: tasteLedger))
 
         roomsController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "errorRef0")?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage(named: "errorRef0IOP")?.withRenderingMode(.alwaysOriginal))
         buzzController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "errorRef1")?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage(named: "errorRef1IOP")?.withRenderingMode(.alwaysOriginal))

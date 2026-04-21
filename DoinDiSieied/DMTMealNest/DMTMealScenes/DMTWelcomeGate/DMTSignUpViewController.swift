@@ -3,34 +3,34 @@ import UIKit
 final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var onFinish: ((DMTSessionPayload) -> Void)?
 
-    private let service: DMTFeastService
-    private let ticket: DMTLoginTicket
-    private let profileStore: DMTTasteProfileStore
-    private let preferredTitle: String
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
-    private let heroImageView = UIImageView.init(image: UIImage.init(named: "mealVibeContext"))
-    private let avatarButton = UIButton(type: .custom)
-    private let plusBadge = UIImageView(image: UIImage(systemName: "plus"))
-    private let cardView = UIView()
-    private let nicknameField = DMTInputField()
-    private let bioField = DMTInputField()
-    private let ageField = DMTInputField()
-    private let confirmButton = DMTGlowButton()
-    private let spinner = UIActivityIndicatorView(style: .medium)
-    private let birthPicker = UIDatePicker()
-    private var selectedBirthMonth = 0
-    private var selectedBirthYear = 0
-    private var selectedAvatar: UIImage?
-    private var buttonTitle = "Next"
+    private let hearthService: DMTFeastService
+    private let passTicket: DMTLoginTicket
+    private let tasteLedger: DMTTasteProfileStore
+    private let navCourseTitle: String
+    private let courseScrollView = UIScrollView()
+    private let platingCanvas = UIView()
+    private let profileCoverView = UIImageView.init(image: UIImage.init(named: "mealVibeContext"))
+    private let facePlateButton = UIButton(type: .custom)
+    private let avatarPlusBadge = UIImageView(image: UIImage(systemName: "plus"))
+    private let servingCard = UIView()
+    private let nicknamePlateField = DMTInputField()
+    private let bioPlateField = DMTInputField()
+    private let agePlateField = DMTInputField()
+    private let nextCourseButton = DMTGlowButton()
+    private let simmerSpinner = UIActivityIndicatorView(style: .medium)
+    private let birthdayWheel = UIDatePicker()
+    private var pickedBirthMonth = 0
+    private var pickedBirthYear = 0
+    private var pickedAvatarPhoto: UIImage?
+    private var ctaCopy = "Next"
 
-    init(service: DMTFeastService, ticket: DMTLoginTicket, profileStore: DMTTasteProfileStore, preferredTitle: String) {
-        self.service = service
-        self.ticket = ticket
-        self.profileStore = profileStore
-        self.preferredTitle = preferredTitle
+    init(hearthService: DMTFeastService, passTicket: DMTLoginTicket, tasteLedger: DMTTasteProfileStore, navCourseTitle: String) {
+        self.hearthService = hearthService
+        self.passTicket = passTicket
+        self.tasteLedger = tasteLedger
+        self.navCourseTitle = navCourseTitle
         super.init(nibName: nil, bundle: nil)
-        title = preferredTitle
+        title = navCourseTitle
     }
 
     required init?(coder: NSCoder) {
@@ -41,160 +41,160 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
         super.viewDidLoad()
         view.backgroundColor = DMTPalette.paper
         navigationItem.largeTitleDisplayMode = .never
-        configureLayout()
+        composeLayout()
         configureBirthPicker()
-        applyPlaceholderAvatar()
-        loadDeck()
+        primePlaceholderAvatar()
+        fetchSignUpCopy()
     }
 
-    private func configureLayout() {
-        scrollView.contentInsetAdjustmentBehavior = .never
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+    private func composeLayout() {
+        courseScrollView.contentInsetAdjustmentBehavior = .never
+        courseScrollView.translatesAutoresizingMaskIntoConstraints = false
+        platingCanvas.translatesAutoresizingMaskIntoConstraints = false
 
-        heroImageView.translatesAutoresizingMaskIntoConstraints = false
-        heroImageView.image = makeHeroPlaceholder()
-        heroImageView.contentMode = .scaleAspectFill
-        heroImageView.clipsToBounds = true
-        heroImageView.layer.cornerRadius = DMTScale.r(28)
+        profileCoverView.translatesAutoresizingMaskIntoConstraints = false
+        profileCoverView.image = makeHeroPlaceholder()
+        profileCoverView.contentMode = .scaleAspectFill
+        profileCoverView.clipsToBounds = true
+        profileCoverView.layer.cornerRadius = DMTScale.r(28)
 
-        avatarButton.translatesAutoresizingMaskIntoConstraints = false
-        avatarButton.backgroundColor = .white
-        avatarButton.layer.cornerRadius = DMTScale.r(40)
-        avatarButton.clipsToBounds = true
-        avatarButton.imageView?.contentMode = .scaleAspectFill
-        avatarButton.addTarget(self, action: #selector(pickAvatar), for: .touchUpInside)
+        facePlateButton.translatesAutoresizingMaskIntoConstraints = false
+        facePlateButton.backgroundColor = .white
+        facePlateButton.layer.cornerRadius = DMTScale.r(40)
+        facePlateButton.clipsToBounds = true
+        facePlateButton.imageView?.contentMode = .scaleAspectFill
+        facePlateButton.addTarget(self, action: #selector(handleAvatarPick), for: .touchUpInside)
 
-        plusBadge.translatesAutoresizingMaskIntoConstraints = false
-        plusBadge.tintColor = DMTPalette.lavender.withAlphaComponent(0.95)
-        plusBadge.contentMode = .scaleAspectFit
+        avatarPlusBadge.translatesAutoresizingMaskIntoConstraints = false
+        avatarPlusBadge.tintColor = DMTPalette.lavender.withAlphaComponent(0.95)
+        avatarPlusBadge.contentMode = .scaleAspectFit
 
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        cardView.backgroundColor = .white
-        cardView.layer.cornerRadius = DMTScale.r(28)
+        servingCard.translatesAutoresizingMaskIntoConstraints = false
+        servingCard.backgroundColor = .white
+        servingCard.layer.cornerRadius = DMTScale.r(28)
 
-        confirmButton.translatesAutoresizingMaskIntoConstraints = false
-        confirmButton.addTarget(self, action: #selector(handleConfirm), for: .touchUpInside)
+        nextCourseButton.translatesAutoresizingMaskIntoConstraints = false
+        nextCourseButton.addTarget(self, action: #selector(handleNextCourseTap), for: .touchUpInside)
 
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.hidesWhenStopped = true
-        spinner.color = .white
+        simmerSpinner.translatesAutoresizingMaskIntoConstraints = false
+        simmerSpinner.hidesWhenStopped = true
+        simmerSpinner.color = .white
 
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(heroImageView)
-        contentView.addSubview(avatarButton)
-        avatarButton.addSubview(plusBadge)
-        contentView.addSubview(cardView)
-        cardView.addSubview(nicknameField)
-        cardView.addSubview(bioField)
-        cardView.addSubview(ageField)
-        cardView.addSubview(confirmButton)
-        confirmButton.addSubview(spinner)
+        view.addSubview(courseScrollView)
+        courseScrollView.addSubview(platingCanvas)
+        platingCanvas.addSubview(profileCoverView)
+        platingCanvas.addSubview(facePlateButton)
+        facePlateButton.addSubview(avatarPlusBadge)
+        platingCanvas.addSubview(servingCard)
+        servingCard.addSubview(nicknamePlateField)
+        servingCard.addSubview(bioPlateField)
+        servingCard.addSubview(agePlateField)
+        servingCard.addSubview(nextCourseButton)
+        nextCourseButton.addSubview(simmerSpinner)
 
-        scrollView.dmtPinEdges(to: view)
+        courseScrollView.dmtPinCourseEdges(to: view)
 
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            platingCanvas.topAnchor.constraint(equalTo: courseScrollView.topAnchor),
+            platingCanvas.leadingAnchor.constraint(equalTo: courseScrollView.leadingAnchor),
+            platingCanvas.trailingAnchor.constraint(equalTo: courseScrollView.trailingAnchor),
+            platingCanvas.bottomAnchor.constraint(equalTo: courseScrollView.bottomAnchor),
+            platingCanvas.widthAnchor.constraint(equalTo: courseScrollView.widthAnchor),
 
-            heroImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant:0),
-            heroImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(0)),
-            heroImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(0)),
-            heroImageView.heightAnchor.constraint(equalToConstant: DMTScale.h(214)),
+            profileCoverView.topAnchor.constraint(equalTo: platingCanvas.topAnchor, constant:0),
+            profileCoverView.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(0)),
+            profileCoverView.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(0)),
+            profileCoverView.heightAnchor.constraint(equalToConstant: DMTScale.h(214)),
 
-            avatarButton.centerXAnchor.constraint(equalTo: heroImageView.centerXAnchor),
-            avatarButton.bottomAnchor.constraint(equalTo: heroImageView.bottomAnchor, constant: DMTScale.h(38)),
-            avatarButton.widthAnchor.constraint(equalToConstant: DMTScale.w(80)),
-            avatarButton.heightAnchor.constraint(equalToConstant: DMTScale.w(80)),
+            facePlateButton.centerXAnchor.constraint(equalTo: profileCoverView.centerXAnchor),
+            facePlateButton.bottomAnchor.constraint(equalTo: profileCoverView.bottomAnchor, constant: DMTScale.h(38)),
+            facePlateButton.widthAnchor.constraint(equalToConstant: DMTScale.w(80)),
+            facePlateButton.heightAnchor.constraint(equalToConstant: DMTScale.w(80)),
 
-            plusBadge.centerXAnchor.constraint(equalTo: avatarButton.centerXAnchor),
-            plusBadge.centerYAnchor.constraint(equalTo: avatarButton.centerYAnchor),
-            plusBadge.widthAnchor.constraint(equalToConstant: DMTScale.w(22)),
-            plusBadge.heightAnchor.constraint(equalToConstant: DMTScale.w(22)),
+            avatarPlusBadge.centerXAnchor.constraint(equalTo: facePlateButton.centerXAnchor),
+            avatarPlusBadge.centerYAnchor.constraint(equalTo: facePlateButton.centerYAnchor),
+            avatarPlusBadge.widthAnchor.constraint(equalToConstant: DMTScale.w(22)),
+            avatarPlusBadge.heightAnchor.constraint(equalToConstant: DMTScale.w(22)),
 
-            cardView.topAnchor.constraint(equalTo: heroImageView.bottomAnchor, constant: DMTScale.h(18)),
-            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            servingCard.topAnchor.constraint(equalTo: profileCoverView.bottomAnchor, constant: DMTScale.h(18)),
+            servingCard.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor),
+            servingCard.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor),
+            servingCard.bottomAnchor.constraint(equalTo: platingCanvas.bottomAnchor),
 
-            nicknameField.topAnchor.constraint(equalTo: cardView.topAnchor, constant: DMTScale.h(56)),
-            nicknameField.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(22)),
-            nicknameField.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(22)),
+            nicknamePlateField.topAnchor.constraint(equalTo: servingCard.topAnchor, constant: DMTScale.h(56)),
+            nicknamePlateField.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(22)),
+            nicknamePlateField.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(22)),
 
-            bioField.topAnchor.constraint(equalTo: nicknameField.bottomAnchor, constant: DMTScale.h(18)),
-            bioField.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(22)),
-            bioField.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(22)),
+            bioPlateField.topAnchor.constraint(equalTo: nicknamePlateField.bottomAnchor, constant: DMTScale.h(18)),
+            bioPlateField.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(22)),
+            bioPlateField.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(22)),
 
-            ageField.topAnchor.constraint(equalTo: bioField.bottomAnchor, constant: DMTScale.h(18)),
-            ageField.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(22)),
-            ageField.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(22)),
+            agePlateField.topAnchor.constraint(equalTo: bioPlateField.bottomAnchor, constant: DMTScale.h(18)),
+            agePlateField.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(22)),
+            agePlateField.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(22)),
 
-            confirmButton.topAnchor.constraint(equalTo: ageField.bottomAnchor, constant: DMTScale.h(30)),
-            confirmButton.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(22)),
-            confirmButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(22)),
-            confirmButton.heightAnchor.constraint(equalToConstant: DMTScale.h(54)),
-            confirmButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -DMTScale.h(34)),
+            nextCourseButton.topAnchor.constraint(equalTo: agePlateField.bottomAnchor, constant: DMTScale.h(30)),
+            nextCourseButton.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(22)),
+            nextCourseButton.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(22)),
+            nextCourseButton.heightAnchor.constraint(equalToConstant: DMTScale.h(54)),
+            nextCourseButton.bottomAnchor.constraint(equalTo: servingCard.bottomAnchor, constant: -DMTScale.h(34)),
 
-            spinner.centerXAnchor.constraint(equalTo: confirmButton.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: confirmButton.centerYAnchor)
+            simmerSpinner.centerXAnchor.constraint(equalTo: nextCourseButton.centerXAnchor),
+            simmerSpinner.centerYAnchor.constraint(equalTo: nextCourseButton.centerYAnchor)
         ])
     }
 
     private func configureBirthPicker() {
-        birthPicker.datePickerMode = .date
-        birthPicker.preferredDatePickerStyle = .wheels
-        birthPicker.maximumDate = Calendar.current.date(byAdding: .year, value: -18, to: Date())
-        birthPicker.minimumDate = Calendar.current.date(byAdding: .year, value: -70, to: Date())
-        birthPicker.locale = .current
+        birthdayWheel.datePickerMode = .date
+        birthdayWheel.preferredDatePickerStyle = .wheels
+        birthdayWheel.maximumDate = Calendar.current.date(byAdding: .year, value: -18, to: Date())
+        birthdayWheel.minimumDate = Calendar.current.date(byAdding: .year, value: -70, to: Date())
+        birthdayWheel.locale = .current
 
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         toolbar.items = [
             UIBarButtonItem(systemItem: .flexibleSpace),
-            UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(applyBirthSelection))
+            UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(commitBirthWheel))
         ]
 
-        ageField.entryField.inputView = birthPicker
-        ageField.entryField.inputAccessoryView = toolbar
-        ageField.entryField.tintColor = .clear
+        agePlateField.entryField.inputView = birthdayWheel
+        agePlateField.entryField.inputAccessoryView = toolbar
+        agePlateField.entryField.tintColor = .clear
     }
 
-    private func loadDeck() {
+    private func fetchSignUpCopy() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let bundle = try await service.fetchAuthBundle()
+                let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
-                    self.applyDeck(bundle.signUp)
+                    self.renderSignUpCopy(bundle.signUp)
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtShowNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
                 }
             }
         }
     }
 
-    private func applyDeck(_ deck: DMTSignUpDeck) {
-        title = preferredTitle
-        buttonTitle = deck.buttonTitle
-        nicknameField.apply(title: deck.nicknameTitle, placeholder: deck.nicknamePlaceholder)
-        bioField.apply(title: deck.bioTitle, placeholder: deck.bioPlaceholder)
-        ageField.apply(title: deck.ageTitle, placeholder: deck.agePlaceholder)
-        confirmButton.setTitle(deck.buttonTitle, for: .normal)
+    private func renderSignUpCopy(_ deck: DMTSignUpDeck) {
+        title = navCourseTitle
+        ctaCopy = deck.ctaCopy
+        nicknamePlateField.renderFieldCopy(title: deck.nicknameTitle, placeholder: deck.nicknamePlaceholder)
+        bioPlateField.renderFieldCopy(title: deck.bioTitle, placeholder: deck.bioPlaceholder)
+        agePlateField.renderFieldCopy(title: deck.ageTitle, placeholder: deck.agePlaceholder)
+        nextCourseButton.setTitle(deck.ctaCopy, for: .normal)
     }
 
-    private func applyPlaceholderAvatar() {
+    private func primePlaceholderAvatar() {
         let avatar = makeAvatarPlaceholder()
-        avatarButton.setBackgroundImage(avatar, for: .normal)
+        facePlateButton.setBackgroundImage(avatar, for: .normal)
     }
 
     @objc
-    private func pickAvatar() {
+    private func handleAvatarPick() {
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.sourceType = .photoLibrary
@@ -202,67 +202,67 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
     }
 
     @objc
-    private func applyBirthSelection() {
-        let components = Calendar.current.dateComponents([.month, .year], from: birthPicker.date)
-        selectedBirthMonth = components.month ?? 1
-        selectedBirthYear = components.year ?? 2000
+    private func commitBirthWheel() {
+        let components = Calendar.current.dateComponents([.month, .year], from: birthdayWheel.date)
+        pickedBirthMonth = components.month ?? 1
+        pickedBirthYear = components.year ?? 2000
 
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
-        ageField.entryField.text = formatter.string(from: birthPicker.date)
-        ageField.entryField.resignFirstResponder()
+        agePlateField.entryField.text = formatter.string(from: birthdayWheel.date)
+        agePlateField.entryField.resignFirstResponder()
     }
 
     @objc
-    private func handleConfirm() {
-        let nickname = nicknameField.text.trimmingCharacters(in: .whitespacesAndNewlines)
-        let bio = bioField.text.trimmingCharacters(in: .whitespacesAndNewlines)
-        let birthLine = ageField.text.trimmingCharacters(in: .whitespacesAndNewlines)
+    private func handleNextCourseTap() {
+        let nickname = nicknamePlateField.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let bio = bioPlateField.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let birthLine = agePlateField.text.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard !nickname.isEmpty, !bio.isEmpty, !birthLine.isEmpty else {
-            dmtShowNotice(title: "Incomplete Table Card", message: "Fill in nickname, bio, and your birth month before continuing.")
+            dmtServeNotice(title: "Incomplete Table Card", message: "Fill in nickname, bio, and your birth month before continuing.")
             return
         }
 
-        setLoading(true)
+        setSignUpLoadingState(true)
 
         let draft = DMTSignUpDraft(
-            ticket: ticket,
+            ticket: passTicket,
             nickname: nickname,
             bio: bio,
-            birthMonth: selectedBirthMonth == 0 ? 1 : selectedBirthMonth,
-            birthYear: selectedBirthYear == 0 ? 2000 : selectedBirthYear,
+            birthMonth: pickedBirthMonth == 0 ? 1 : pickedBirthMonth,
+            birthYear: pickedBirthYear == 0 ? 2000 : pickedBirthYear,
             birthLine: birthLine,
-            avatarImage: selectedAvatar,
+            avatarImage: pickedAvatarPhoto,
             verifyImage: nil
         )
 
-        setLoading(false)
+        setSignUpLoadingState(false)
 
-        let verifyController = DMTIdentityVerifyViewController(service: service, draft: draft, profileStore: profileStore)
+        let verifyController = DMTIdentityVerifyViewController(hearthService: hearthService, draft: draft, tasteLedger: tasteLedger)
         verifyController.onFinish = { [weak self] payload in
             self?.onFinish?(payload)
         }
         navigationController?.pushViewController(verifyController, animated: true)
     }
 
-    private func setLoading(_ isLoading: Bool) {
-        confirmButton.isEnabled = !isLoading
+    private func setSignUpLoadingState(_ isLoading: Bool) {
+        nextCourseButton.isEnabled = !isLoading
         if isLoading {
-            confirmButton.setTitle(nil, for: .normal)
-            spinner.startAnimating()
+            nextCourseButton.setTitle(nil, for: .normal)
+            simmerSpinner.startAnimating()
         } else {
-            spinner.stopAnimating()
-            confirmButton.setTitle(buttonTitle, for: .normal)
+            simmerSpinner.stopAnimating()
+            nextCourseButton.setTitle(ctaCopy, for: .normal)
         }
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = (info[.editedImage] ?? info[.originalImage]) as? UIImage
         if let image {
-            selectedAvatar = image
-            avatarButton.setBackgroundImage(image, for: .normal)
-            plusBadge.isHidden = true
+            pickedAvatarPhoto = image
+            facePlateButton.setBackgroundImage(image, for: .normal)
+            avatarPlusBadge.isHidden = true
         }
         picker.dismiss(animated: true)
     }

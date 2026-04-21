@@ -3,11 +3,11 @@ import UIKit
 import WebKit
 
 final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactionObserver, SKProductsRequestDelegate, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
-    private let route: DMTHearthPortalRoute
-    private let wallpaper = UIImageView(image: UIImage(named: "elsesbackg"))
-    private let spinner = UIActivityIndicatorView(style: .large)
-    private let pantry: DMTAppPantry
-    private let scriptNodes = [
+    private let portalRoute: DMTHearthPortalRoute
+    private let hearthBackdrop = UIImageView(image: UIImage(named: "elsesbackg"))
+    private let simmerSpinner = UIActivityIndicatorView(style: .large)
+    private let tablePantry: DMTAppPantry
+    private let jsBridgeNodes = [
       "foodLoversInteractionNest",
         "lunchBreakConversationHall",
         "flavorJourneyChatSphere",
@@ -15,17 +15,17 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
         "mealtimeBondingCompanion",
         "voiceRoomFoodieExperience","culinaryTogetherCircleSpace"
     ]
-    private var purchaseRequest: SKProductsRequest?
-    private var hidesNavigationBar = false
-    private var isPageLoading = false {
-        didSet { refreshSpinner() }
+    private var pendingPurchaseRequest: SKProductsRequest?
+    private var storedNavHiddenState = false
+    private var isPortalLoading = false {
+        didSet { refreshPortalSpinner() }
     }
-    private var isPurchaseLoading = false {
-        didSet { refreshSpinner() }
+    private var isCheckoutLoading = false {
+        didSet { refreshPortalSpinner() }
     }
 
-    private lazy var webView: WKWebView = {
-        let stage = WKWebView(frame: .zero, configuration: makeConfiguration())
+    private lazy var portalStage: WKWebView = {
+        let stage = WKWebView(frame: .zero, configuration: brewPortalConfiguration())
         stage.translatesAutoresizingMaskIntoConstraints = false
         stage.navigationDelegate = self
         stage.uiDelegate = self
@@ -36,11 +36,11 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
         return stage
     }()
 
-    init(route: DMTHearthPortalRoute, title: String? = nil, pantry: DMTAppPantry = .shared) {
-        self.route = route
-        self.pantry = pantry
+    init(portalRoute: DMTHearthPortalRoute, title: String? = nil, tablePantry: DMTAppPantry = .shared) {
+        self.portalRoute = portalRoute
+        self.tablePantry = tablePantry
         super.init(nibName: nil, bundle: nil)
-        self.title = title ?? route.navigationTitle
+        self.title = title ?? portalRoute.navigationTitle
     }
 
     required init?(coder: NSCoder) {
@@ -49,90 +49,90 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureLayout()
+        composeLayout()
         SKPaymentQueue.default().add(self)
-        loadRoute()
+        loadPortalRoute()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        hidesNavigationBar = navigationController?.isNavigationBarHidden ?? false
+        storedNavHiddenState = navigationController?.isNavigationBarHidden ?? false
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if isMovingFromParent || isBeingDismissed {
-            navigationController?.setNavigationBarHidden(hidesNavigationBar, animated: animated)
+            navigationController?.setNavigationBarHidden(storedNavHiddenState, animated: animated)
         }
     }
 
     deinit {
-        purchaseRequest?.cancel()
-        scriptNodes.forEach { webView.configuration.userContentController.removeScriptMessageHandler(forName: $0) }
+        pendingPurchaseRequest?.cancel()
+        jsBridgeNodes.forEach { portalStage.configuration.userContentController.removeScriptMessageHandler(forName: $0) }
         SKPaymentQueue.default().remove(self)
     }
 
-    private func makeConfiguration() -> WKWebViewConfiguration {
+    private func brewPortalConfiguration() -> WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
         configuration.defaultWebpagePreferences.allowsContentJavaScript = true
         configuration.mediaTypesRequiringUserActionForPlayback = []
         configuration.allowsInlineMediaPlayback = true
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
-        scriptNodes.forEach { configuration.userContentController.add(self, name: $0) }
+        jsBridgeNodes.forEach { configuration.userContentController.add(self, name: $0) }
         return configuration
     }
 
-    private func configureLayout() {
-        wallpaper.translatesAutoresizingMaskIntoConstraints = false
-        wallpaper.contentMode = .scaleToFill
+    private func composeLayout() {
+        hearthBackdrop.translatesAutoresizingMaskIntoConstraints = false
+        hearthBackdrop.contentMode = .scaleToFill
 
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.color = DMTPalette.ink
-        spinner.hidesWhenStopped = true
+        simmerSpinner.translatesAutoresizingMaskIntoConstraints = false
+        simmerSpinner.color = DMTPalette.ink
+        simmerSpinner.hidesWhenStopped = true
 
         view.backgroundColor = .white
-        view.addSubview(wallpaper)
-        view.addSubview(webView)
-        view.addSubview(spinner)
+        view.addSubview(hearthBackdrop)
+        view.addSubview(portalStage)
+        view.addSubview(simmerSpinner)
 
-        wallpaper.dmtPinEdges(to: view)
-        webView.dmtPinEdges(to: view)
+        hearthBackdrop.dmtPinCourseEdges(to: view)
+        portalStage.dmtPinCourseEdges(to: view)
 
         NSLayoutConstraint.activate([
-            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            simmerSpinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            simmerSpinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
-    private func loadRoute() {
-        guard let url = route.makeURL() else {
-            dmtShowNotice(title: "Page Missing", message: "The page address could not be created.")
+    private func loadPortalRoute() {
+        guard let url = portalRoute.makeURL() else {
+            dmtServeNotice(title: "Page Missing", message: "The page address could not be created.")
             return
         }
 
-        isPageLoading = true
+        isPortalLoading = true
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 30)
-        webView.load(request)
+        portalStage.load(request)
     }
 
-    private func refreshSpinner() {
-        let isLoading = isPageLoading || isPurchaseLoading
+    private func refreshPortalSpinner() {
+        let isLoading = isPortalLoading || isCheckoutLoading
         if isLoading {
-            spinner.startAnimating()
+            simmerSpinner.startAnimating()
         } else {
-            spinner.stopAnimating()
+            simmerSpinner.stopAnimating()
         }
-        webView.isUserInteractionEnabled = isPurchaseLoading == false
+        portalStage.isUserInteractionEnabled = isCheckoutLoading == false
     }
 
-    private func openEmbeddedRoute(_ rawPath: String) {
-        let controller = DMTHearthPortalViewController(route: .webEntry(path: rawPath), pantry: pantry)
+    private func pushEmbeddedPortal(_ rawPath: String) {
+        let controller = DMTHearthPortalViewController(portalRoute: .webEntry(path: rawPath), tablePantry: tablePantry)
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
 
-    private func closeStage() {
+    private func closePortalStage() {
         if presentingViewController != nil && navigationController?.viewControllers.first == self {
             dismiss(animated: true)
             return
@@ -140,62 +140,62 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
         navigationController?.popViewController(animated: true)
     }
 
-    private func startPurchase(productID: String) {
+    private func beginStorePurchase(productID: String) {
         guard SKPaymentQueue.canMakePayments() else {
-            dmtShowNotice(title: "Purchase Unavailable", message: "Payments are not allowed on this device.")
+            dmtServeNotice(title: "Purchase Unavailable", message: "Payments are not allowed on this device.")
             return
         }
 
-        isPurchaseLoading = true
+        isCheckoutLoading = true
         let request = SKProductsRequest(productIdentifiers: [productID])
         request.delegate = self
-        purchaseRequest = request
+        pendingPurchaseRequest = request
         request.start()
     }
 
-    private func finishPurchaseFlow(errorMessage: String? = nil, completed: Bool = false) {
-        isPurchaseLoading = false
-        purchaseRequest = nil
+    private func resolvePurchaseFlow(errorMessage: String? = nil, completed: Bool = false) {
+        isCheckoutLoading = false
+        pendingPurchaseRequest = nil
 
         if completed {
-            webView.evaluateJavaScript("foodLoversInteractionNest()")
+            portalStage.evaluateJavaScript("foodLoversInteractionNest()")
         }
 
         if let errorMessage {
-            dmtShowNotice(title: "Purchase Failed", message: errorMessage)
+            dmtServeNotice(title: "Purchase Failed", message: errorMessage)
         }
     }
 
-    private func relaunchAuthRoot() {
-        pantry.sessionStore.clear()
+    private func resetSeatRoot() {
+        tablePantry.seatSession.clear()
     }
 
-    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        isPageLoading = true
+    func webView(_ portalStage: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        isPortalLoading = true
     }
 
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        isPageLoading = false
+    func webView(_ portalStage: WKWebView, didFinish navigation: WKNavigation!) {
+        isPortalLoading = false
     }
 
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        isPageLoading = false
-        dmtShowNotice(title: "Page Unavailable", message: error.localizedDescription)
+    func webView(_ portalStage: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        isPortalLoading = false
+        dmtServeNotice(title: "Page Unavailable", message: error.localizedDescription)
     }
 
-    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        isPageLoading = false
-        dmtShowNotice(title: "Page Unavailable", message: error.localizedDescription)
+    func webView(_ portalStage: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        isPortalLoading = false
+        dmtServeNotice(title: "Page Unavailable", message: error.localizedDescription)
     }
 
-    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-        isPageLoading = false
+    func webViewWebContentProcessDidTerminate(_ portalStage: WKWebView) {
+        isPortalLoading = false
     }
 
-    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+    func webView(_ portalStage: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if navigationAction.targetFrame == nil, let requestURL = navigationAction.request.url {
-            isPageLoading = true
-            webView.load(URLRequest(url: requestURL))
+            isPortalLoading = true
+            portalStage.load(URLRequest(url: requestURL))
         }
         return nil
     }
@@ -204,14 +204,14 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
         switch message.name {
         case "lunchBreakConversationHall":
             guard let productID = message.body as? String, productID.isEmpty == false else { return }
-            startPurchase(productID: productID)
+            beginStorePurchase(productID: productID)
         case "flavorJourneyChatSphere":
             guard let rawPath = message.body as? String, rawPath.isEmpty == false else { return }
-            openEmbeddedRoute(rawPath)
+            pushEmbeddedPortal(rawPath)
         case "gastronomicCircleConnection", "voiceRoomFoodieExperience":
-            closeStage()
+            closePortalStage()
         case "culinaryTogetherCircleSpace":
-            relaunchAuthRoot()
+            resetSeatRoot()
         case "towInkLIopSparklingCider":
             break
         default:
@@ -222,7 +222,7 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
     nonisolated func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         guard let product = response.products.first else {
             Task { @MainActor [weak self] in
-                self?.finishPurchaseFlow(errorMessage: "The selected item is not available.")
+                self?.resolvePurchaseFlow(errorMessage: "The selected item is not available.")
             }
             return
         }
@@ -231,7 +231,7 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
 
     nonisolated func request(_ request: SKRequest, didFailWithError error: Error) {
         Task { @MainActor [weak self] in
-            self?.finishPurchaseFlow(errorMessage: error.localizedDescription)
+            self?.resolvePurchaseFlow(errorMessage: error.localizedDescription)
         }
     }
 
@@ -241,24 +241,24 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
             case .purchased:
                 queue.finishTransaction(transaction)
                 Task { @MainActor [weak self] in
-                    self?.finishPurchaseFlow(completed: true)
+                    self?.resolvePurchaseFlow(completed: true)
                 }
             case .failed:
                 queue.finishTransaction(transaction)
                 Task { @MainActor [weak self] in
-                    self?.finishPurchaseFlow(errorMessage: transaction.error?.localizedDescription ?? "The payment could not be completed.")
+                    self?.resolvePurchaseFlow(errorMessage: transaction.error?.localizedDescription ?? "The payment could not be completed.")
                 }
             case .restored:
                 queue.finishTransaction(transaction)
                 Task { @MainActor [weak self] in
-                    self?.finishPurchaseFlow(completed: true)
+                    self?.resolvePurchaseFlow(completed: true)
                 }
             case .deferred, .purchasing:
                 break
             @unknown default:
                 queue.finishTransaction(transaction)
                 Task { @MainActor [weak self] in
-                    self?.finishPurchaseFlow(errorMessage: "An unknown payment state was received.")
+                    self?.resolvePurchaseFlow(errorMessage: "An unknown payment state was received.")
                 }
             }
         }

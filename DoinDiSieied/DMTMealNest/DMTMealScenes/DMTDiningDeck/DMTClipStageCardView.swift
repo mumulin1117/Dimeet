@@ -18,7 +18,7 @@ final class DMTClipStageCardView: UIControl {
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
-        configureLayout()
+        composeLayout()
         focusButton.setImage(UIImage(named: "swipeDirMode"), for: .normal)
         playButton.isUserInteractionEnabled = false
         focusButton.isUserInteractionEnabled = false
@@ -75,7 +75,7 @@ final class DMTClipStageCardView: UIControl {
         }
     }
 
-    private func configureLayout() {
+    private func composeLayout() {
         layer.cornerRadius = DMTScale.r(28)
         clipsToBounds = true
         focusButton.translatesAutoresizingMaskIntoConstraints = false

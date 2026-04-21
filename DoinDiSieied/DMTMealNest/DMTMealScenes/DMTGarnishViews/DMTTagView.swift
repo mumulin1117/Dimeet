@@ -1,7 +1,7 @@
 import UIKit
 
 final class DMTTagView: UIView {
-    private let titleLabel = UILabel()
+    private let tagTitleLabel = UILabel()
 
     init(fillColor: UIColor = DMTPalette.blush, textColor: UIColor = DMTPalette.sunrise) {
         super.init(frame: .zero)
@@ -9,16 +9,16 @@ final class DMTTagView: UIView {
         backgroundColor = fillColor
         layer.cornerRadius = DMTScale.r(14)
 
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        titleLabel.textColor = textColor
-        addSubview(titleLabel)
+        tagTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        tagTitleLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        tagTitleLabel.textColor = textColor
+        addSubview(tagTitleLabel)
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: DMTScale.h(7)),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DMTScale.w(12)),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DMTScale.w(12)),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(7))
+            tagTitleLabel.topAnchor.constraint(equalTo: topAnchor, constant: DMTScale.h(7)),
+            tagTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DMTScale.w(12)),
+            tagTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DMTScale.w(12)),
+            tagTitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DMTScale.h(7))
         ])
     }
 
@@ -26,7 +26,7 @@ final class DMTTagView: UIView {
         nil
     }
 
-    func apply(text: String) {
-        titleLabel.text = text
+    func renderTagCopy(text: String) {
+        tagTitleLabel.text = text
     }
 }

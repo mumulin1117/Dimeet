@@ -8,7 +8,7 @@ final class DMTFeastService {
         self.client = client
     }
 
-    func fetchAuthBundle() async throws -> DMTAuthBundle {
+    func fetchWelcomeBundle() async throws -> DMTAuthBundle {
         if let cachedAuthBundle {
             return cachedAuthBundle
         }
@@ -27,15 +27,15 @@ final class DMTFeastService {
         return try await client.load("auth/signup", method: "POST", body: body)
     }
 
-    func fetchHomeDeck() async throws -> DMTHomeDeck {
+    func fetchHearthDeck() async throws -> DMTHomeDeck {
         try await TOWINKLIopVibeRoute.TOWINKLIopFetchHomeDeck()
     }
 
-    func fetchClipDeck() async throws -> DMTClipDeck {
+    func fetchClipCourse() async throws -> DMTClipDeck {
         try await TOWINKLIopVibeRoute.TOWINKLIopFetchClipDeck()
     }
 
-    func fetchDiscoverDeck() async throws -> DMTDiscoverDeck {
+    func fetchDiscoverCourse() async throws -> DMTDiscoverDeck {
         try await TOWINKLIopVibeRoute.TOWINKLIopFetchDiscoverDeck()
     }
 
@@ -47,7 +47,7 @@ final class DMTFeastService {
         try await client.load("plate-buzz")
     }
 
-    func fetchNookDigest() async throws -> DMTNookDigest {
+    func fetchNookCourse() async throws -> DMTNookDigest {
         try await TOWINKLIopVibeRoute.TOWINKLIopFetchNookDigest()
     }
 }

@@ -15,7 +15,7 @@ final class DMTDiscoverCardView: UIControl {
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
-        configureLayout()
+        composeLayout()
         rightBadge.isHidden = true
     }
 
@@ -58,7 +58,7 @@ final class DMTDiscoverCardView: UIControl {
         subtitleLabel.isHidden = true
     }
 
-    private func configureLayout() {
+    private func composeLayout() {
         layer.cornerRadius = DMTScale.r(20)
         clipsToBounds = true
 

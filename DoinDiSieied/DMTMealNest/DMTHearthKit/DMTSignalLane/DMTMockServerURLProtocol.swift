@@ -160,7 +160,7 @@ private enum DMTMockKitchen {
             emailPlaceholder: "Enter your email",
             passwordTitle: "Password",
             passwordPlaceholder: "Enter password",
-            buttonTitle: "Confirm",
+            ctaCopy: "Confirm",
             hintLine: "Known taste pass: test@gmail.com / 123456"
         ),
         signUp: DMTSignUpDeck(
@@ -171,13 +171,13 @@ private enum DMTMockKitchen {
             bioPlaceholder: "Say something tasty",
             ageTitle: "How old are you?",
             agePlaceholder: "Birth month and year",
-            buttonTitle: "Next"
+            ctaCopy: "Next"
         ),
         verify: DMTVerifyDeck(
             title: "Verify Your Identity",
             intro: "Take a clear self photo so we can verify your age and help keep the community safe.",
             caption: "By proceeding, you consent to the use of your self photo for verification purposes. Your photo will not be shared with third parties.",
-            buttonTitle: "Take a Selfie"
+            ctaCopy: "Take a Selfie"
         ),
         entry: DMTEntryDeck(
             title: "Welcome Aboard",
@@ -189,7 +189,7 @@ private enum DMTMockKitchen {
                 DMTEntryReminder(title: "18+ Only", subtitle: "Strictly for adults. No minors allowed"),
                 DMTEntryReminder(title: "Stay Informed", subtitle: "Review our Privacy Agreement before starting")
             ],
-            buttonTitle: "Enter"
+            ctaCopy: "Enter"
         )
     )
 
@@ -276,7 +276,7 @@ private enum DMTMockKitchen {
 //            hostLine: "Hosted by Nora Hale, maker of late snacks and longer conversations.",
 //            summary: "For night owls who want company while fixing one last bite before sleep and sharing random comfort cravings.",
 //            currentPlates: ["Honey toast", "Miso butter corn", "Sparkling yuzu"],
-//            tablePrompts: ["What late bite feels impossible to resist?", "Which pantry combo should not work but does?", "What snack belongs in every night drawer?"]
+//            tablePrompts: ["What late bite feels impossible to resist?", "Which tablePantry combo should not work but does?", "What snack belongs in every night drawer?"]
 //        )
 //    ]
 

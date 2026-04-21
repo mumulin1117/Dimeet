@@ -1,22 +1,22 @@
 import UIKit
 
 final class DMTMealRoomsViewController: UIViewController {
-    private let service: DMTFeastService
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
-    private let brandLabel = UIImageView()
-    private let actionButton = UIButton()
-    private let storyScrollView = UIScrollView()
-    private let storyStack = UIStackView()
-    private let mateButton = UIButton()
-    private let roomTitleLabel = UILabel()
-    private let roomStack = UIStackView()
-    private let spinner = UIActivityIndicatorView(style: .medium)
-    private let createRoomButton = UIButton()
-    private var homeDeck: DMTHomeDeck?
+    private let hearthService: DMTFeastService
+    private let courseScrollView = UIScrollView()
+    private let platingCanvas = UIView()
+    private let brandMarkView = UIImageView()
+    private let noticeOrbButton = UIButton()
+    private let storyRailView = UIScrollView()
+    private let storyRailStack = UIStackView()
+    private let mealRobotBanner = UIButton()
+    private let roomSectionLabel = UILabel()
+    private let roomDeckStack = UIStackView()
+    private let simmerSpinner = UIActivityIndicatorView(style: .medium)
+    private let forgeRoomButton = UIButton()
+    private var hearthDeck: DMTHomeDeck?
 
-    init(service: DMTFeastService) {
-        self.service = service
+    init(hearthService: DMTFeastService) {
+        self.hearthService = hearthService
         super.init(nibName: nil, bundle: nil)
         title = ""
     }
@@ -25,7 +25,7 @@ final class DMTMealRoomsViewController: UIViewController {
         nil
     }
 
-   private lazy var statementsevent: UIImageView = {
+   private lazy var backdropCanvas: UIImageView = {
         let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
         statement.contentMode = .scaleToFill
        statement.frame = UIScreen.main.bounds
@@ -33,161 +33,161 @@ final class DMTMealRoomsViewController: UIViewController {
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(statementsevent)
-        scrollView.contentInsetAdjustmentBehavior = .never
+        view.addSubview(backdropCanvas)
+        courseScrollView.contentInsetAdjustmentBehavior = .never
         navigationItem.largeTitleDisplayMode = .never
-        configureLayout()
-        fetchHomeDeck()
+        composeLayout()
+        fetchHearthDeck()
     }
 
-    private func configureLayout() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+    private func composeLayout() {
+        courseScrollView.translatesAutoresizingMaskIntoConstraints = false
+        platingCanvas.translatesAutoresizingMaskIntoConstraints = false
 
-        brandLabel.translatesAutoresizingMaskIntoConstraints = false
-        brandLabel.image = UIImage(named: "Dimmenter")
+        brandMarkView.translatesAutoresizingMaskIntoConstraints = false
+        brandMarkView.image = UIImage(named: "Dimmenter")
 
-        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        noticeOrbButton.translatesAutoresizingMaskIntoConstraints = false
      
-        actionButton.setImage(UIImage(named: "nitoaniIconb"), for: .normal)
-        actionButton.addTarget(self, action: #selector(handleQuickAction), for: .touchUpInside)
+        noticeOrbButton.setImage(UIImage(named: "nitoaniIconb"), for: .normal)
+        noticeOrbButton.addTarget(self, action: #selector(handleNoticeOrbTap), for: .touchUpInside)
 
-        storyScrollView.translatesAutoresizingMaskIntoConstraints = false
-        storyScrollView.showsHorizontalScrollIndicator = false
+        storyRailView.translatesAutoresizingMaskIntoConstraints = false
+        storyRailView.showsHorizontalScrollIndicator = false
 
-        storyStack.translatesAutoresizingMaskIntoConstraints = false
-        storyStack.axis = .horizontal
-        storyStack.spacing = DMTScale.w(14)
+        storyRailStack.translatesAutoresizingMaskIntoConstraints = false
+        storyRailStack.axis = .horizontal
+        storyRailStack.spacing = DMTScale.w(14)
 
-        mateButton.translatesAutoresizingMaskIntoConstraints = false
-        mateButton.setBackgroundImage(UIImage.init(named: "RobotRoomds"), for: .normal)
-        mateButton.addTarget(self, action: #selector(handleMateTap), for: .touchUpInside)
+        mealRobotBanner.translatesAutoresizingMaskIntoConstraints = false
+        mealRobotBanner.setBackgroundImage(UIImage.init(named: "RobotRoomds"), for: .normal)
+        mealRobotBanner.addTarget(self, action: #selector(handleMealRobotTap), for: .touchUpInside)
 
-        roomTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        roomTitleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        roomTitleLabel.textColor = DMTPalette.ink
+        roomSectionLabel.translatesAutoresizingMaskIntoConstraints = false
+        roomSectionLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        roomSectionLabel.textColor = DMTPalette.ink
 
-        roomStack.translatesAutoresizingMaskIntoConstraints = false
-        roomStack.axis = .vertical
-        roomStack.spacing = DMTScale.h(14)
+        roomDeckStack.translatesAutoresizingMaskIntoConstraints = false
+        roomDeckStack.axis = .vertical
+        roomDeckStack.spacing = DMTScale.h(14)
 
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.startAnimating()
+        simmerSpinner.translatesAutoresizingMaskIntoConstraints = false
+        simmerSpinner.startAnimating()
 
-        createRoomButton.translatesAutoresizingMaskIntoConstraints = false
-        createRoomButton.setBackgroundImage(UIImage(named: "createrRoom"), for: .normal)
-        createRoomButton.addTarget(self, action: #selector(handleCreateRoom), for: .touchUpInside)
+        forgeRoomButton.translatesAutoresizingMaskIntoConstraints = false
+        forgeRoomButton.setBackgroundImage(UIImage(named: "createrRoom"), for: .normal)
+        forgeRoomButton.addTarget(self, action: #selector(handleForgeRoomTap), for: .touchUpInside)
 
-        view.addSubview(scrollView)
-        view.addSubview(createRoomButton)
-        view.addSubview(spinner)
-        scrollView.addSubview(contentView)
-        storyScrollView.addSubview(storyStack)
-        contentView.addSubview(brandLabel)
-        contentView.addSubview(actionButton)
-        contentView.addSubview(storyScrollView)
-        contentView.addSubview(mateButton)
-        contentView.addSubview(roomTitleLabel)
-        contentView.addSubview(roomStack)
+        view.addSubview(courseScrollView)
+        view.addSubview(forgeRoomButton)
+        view.addSubview(simmerSpinner)
+        courseScrollView.addSubview(platingCanvas)
+        storyRailView.addSubview(storyRailStack)
+        platingCanvas.addSubview(brandMarkView)
+        platingCanvas.addSubview(noticeOrbButton)
+        platingCanvas.addSubview(storyRailView)
+        platingCanvas.addSubview(mealRobotBanner)
+        platingCanvas.addSubview(roomSectionLabel)
+        platingCanvas.addSubview(roomDeckStack)
 
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            courseScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            courseScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            courseScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            courseScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            brandLabel.widthAnchor.constraint(equalToConstant: 87),
-            brandLabel.heightAnchor.constraint(equalToConstant: 36),
+            platingCanvas.topAnchor.constraint(equalTo: courseScrollView.topAnchor),
+            platingCanvas.leadingAnchor.constraint(equalTo: courseScrollView.leadingAnchor),
+            platingCanvas.trailingAnchor.constraint(equalTo: courseScrollView.trailingAnchor),
+            platingCanvas.bottomAnchor.constraint(equalTo: courseScrollView.bottomAnchor),
+            platingCanvas.widthAnchor.constraint(equalTo: courseScrollView.widthAnchor),
+            brandMarkView.widthAnchor.constraint(equalToConstant: 87),
+            brandMarkView.heightAnchor.constraint(equalToConstant: 36),
             
-            brandLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: dmtTopChromeSpacing),
-            brandLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
+            brandMarkView.topAnchor.constraint(equalTo: platingCanvas.topAnchor, constant: dmtTopHearthInset),
+            brandMarkView.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(16)),
 
-            actionButton.centerYAnchor.constraint(equalTo: brandLabel.centerYAnchor),
-            actionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(18)),
-            actionButton.widthAnchor.constraint(equalToConstant: DMTScale.w(42)),
-            actionButton.heightAnchor.constraint(equalToConstant: DMTScale.w(42)),
+            noticeOrbButton.centerYAnchor.constraint(equalTo: brandMarkView.centerYAnchor),
+            noticeOrbButton.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(18)),
+            noticeOrbButton.widthAnchor.constraint(equalToConstant: DMTScale.w(42)),
+            noticeOrbButton.heightAnchor.constraint(equalToConstant: DMTScale.w(42)),
 
-            storyScrollView.topAnchor.constraint(equalTo: brandLabel.bottomAnchor, constant: DMTScale.h(18)),
-            storyScrollView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            storyScrollView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            storyScrollView.heightAnchor.constraint(equalToConstant: DMTScale.h(104)),
+            storyRailView.topAnchor.constraint(equalTo: brandMarkView.bottomAnchor, constant: DMTScale.h(18)),
+            storyRailView.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor),
+            storyRailView.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor),
+            storyRailView.heightAnchor.constraint(equalToConstant: DMTScale.h(104)),
 
-            storyStack.topAnchor.constraint(equalTo: storyScrollView.topAnchor),
-            storyStack.leadingAnchor.constraint(equalTo: storyScrollView.leadingAnchor, constant: DMTScale.w(12)),
-            storyStack.trailingAnchor.constraint(equalTo: storyScrollView.trailingAnchor, constant: -DMTScale.w(12)),
-            storyStack.bottomAnchor.constraint(equalTo: storyScrollView.bottomAnchor),
-            storyStack.heightAnchor.constraint(equalTo: storyScrollView.heightAnchor),
+            storyRailStack.topAnchor.constraint(equalTo: storyRailView.topAnchor),
+            storyRailStack.leadingAnchor.constraint(equalTo: storyRailView.leadingAnchor, constant: DMTScale.w(12)),
+            storyRailStack.trailingAnchor.constraint(equalTo: storyRailView.trailingAnchor, constant: -DMTScale.w(12)),
+            storyRailStack.bottomAnchor.constraint(equalTo: storyRailView.bottomAnchor),
+            storyRailStack.heightAnchor.constraint(equalTo: storyRailView.heightAnchor),
 
-            mateButton.topAnchor.constraint(equalTo: storyScrollView.bottomAnchor, constant: DMTScale.h(12)),
-            mateButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(15)),
-            mateButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(15)),
-            mateButton.heightAnchor.constraint(equalToConstant: DMTScale.h(79)),
+            mealRobotBanner.topAnchor.constraint(equalTo: storyRailView.bottomAnchor, constant: DMTScale.h(12)),
+            mealRobotBanner.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(15)),
+            mealRobotBanner.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(15)),
+            mealRobotBanner.heightAnchor.constraint(equalToConstant: DMTScale.h(79)),
 
-            roomTitleLabel.topAnchor.constraint(equalTo: mateButton.bottomAnchor, constant: DMTScale.h(18)),
-            roomTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(16)),
-            roomTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(16)),
+            roomSectionLabel.topAnchor.constraint(equalTo: mealRobotBanner.bottomAnchor, constant: DMTScale.h(18)),
+            roomSectionLabel.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(16)),
+            roomSectionLabel.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(16)),
 
-            roomStack.topAnchor.constraint(equalTo: roomTitleLabel.bottomAnchor, constant: DMTScale.h(14)),
-            roomStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(14)),
-            roomStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(14)),
-            roomStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(120)),
+            roomDeckStack.topAnchor.constraint(equalTo: roomSectionLabel.bottomAnchor, constant: DMTScale.h(14)),
+            roomDeckStack.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(14)),
+            roomDeckStack.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(14)),
+            roomDeckStack.bottomAnchor.constraint(equalTo: platingCanvas.bottomAnchor, constant: -DMTScale.h(120)),
 
-            createRoomButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DMTScale.w(16)),
-            createRoomButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -DMTScale.h(26)),
-            createRoomButton.widthAnchor.constraint(equalToConstant: DMTScale.w(118)),
-            createRoomButton.heightAnchor.constraint(equalToConstant: DMTScale.h(50)),
+            forgeRoomButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DMTScale.w(16)),
+            forgeRoomButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -DMTScale.h(26)),
+            forgeRoomButton.widthAnchor.constraint(equalToConstant: DMTScale.w(118)),
+            forgeRoomButton.heightAnchor.constraint(equalToConstant: DMTScale.h(50)),
 
-            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            simmerSpinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            simmerSpinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
-    private func fetchHomeDeck() {
+    private func fetchHearthDeck() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let deck = try await service.fetchHomeDeck()
+                let deck = try await hearthService.fetchHearthDeck()
                 await MainActor.run {
-                    self.spinner.stopAnimating()
-                    self.homeDeck = deck
-                    self.apply(deck: deck)
+                    self.simmerSpinner.stopAnimating()
+                    self.hearthDeck = deck
+                    self.renderRoomDeck(deck: deck)
                 }
             } catch {
                 await MainActor.run {
-                    self.spinner.stopAnimating()
-                    self.dmtShowNotice(title: "Home Unavailable", message: error.localizedDescription)
+                    self.simmerSpinner.stopAnimating()
+                    self.dmtServeNotice(title: "Home Unavailable", message: error.localizedDescription)
                 }
             }
         }
     }
 
-    private func apply(deck: DMTHomeDeck) {
-        roomTitleLabel.text = deck.sectionTitle
+    private func renderRoomDeck(deck: DMTHomeDeck) {
+        roomSectionLabel.text = deck.sectionTitle
 
-        storyStack.arrangedSubviews.forEach {
-            storyStack.removeArrangedSubview($0)
+        storyRailStack.arrangedSubviews.forEach {
+            storyRailStack.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
 
         for story in deck.stories {
             let storyView = DMTStoryChipView()
-            storyView.apply(story: story)
+            storyView.renderStoryChip(story: story)
             storyView.tag = deck.stories.firstIndex(where: { $0.id == story.id }) ?? 0
             storyView.isUserInteractionEnabled = true
-            storyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleStoryTap(_:))))
+            storyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleStoryRailTap(_:))))
             NSLayoutConstraint.activate([
                 storyView.widthAnchor.constraint(equalToConstant: DMTScale.w(72))
             ])
-            storyStack.addArrangedSubview(storyView)
+            storyRailStack.addArrangedSubview(storyView)
         }
 
-        roomStack.arrangedSubviews.forEach {
-            roomStack.removeArrangedSubview($0)
+        roomDeckStack.arrangedSubviews.forEach {
+            roomDeckStack.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
 
@@ -197,49 +197,49 @@ final class DMTMealRoomsViewController: UIViewController {
             card.onInfoTap = { [weak self] in
                 self?.showRoomDetail(roomID: room.id)
             }
-            card.addTarget(self, action: #selector(handleRoomTap(_:)), for: .touchUpInside)
+            card.addTarget(self, action: #selector(handleRoomCardTap(_:)), for: .touchUpInside)
             card.tag = deck.rooms.firstIndex(where: { $0.id == room.id }) ?? 0
             NSLayoutConstraint.activate([
                 card.heightAnchor.constraint(equalToConstant: DMTScale.h(266))
             ])
-            roomStack.addArrangedSubview(card)
+            roomDeckStack.addArrangedSubview(card)
         }
     }
 
     @objc
-    private func handleQuickAction() {
-        dmtOpenPortal(.noticeCenter)
+    private func handleNoticeOrbTap() {
+        dmtOpenHearth(.noticeCenter)
     }
 
     @objc
-    private func handleMateTap() {
-        dmtOpenPortal(.mealRobot)
+    private func handleMealRobotTap() {
+        dmtOpenHearth(.mealRobot)
     }
 
     @objc
-    private func handleCreateRoom() {
-        dmtOpenPortal(.createRoom)
+    private func handleForgeRoomTap() {
+        dmtOpenHearth(.createRoom)
     }
 
     @objc
-    private func handleRoomTap(_ sender: UIControl) {
-        guard let room = homeDeck?.rooms[sender.tag] else { return }
-        dmtOpenPortal(.joinRoom(channel: room.id, hostUserID: room.hostUserID))
+    private func handleRoomCardTap(_ sender: UIControl) {
+        guard let room = hearthDeck?.rooms[sender.tag] else { return }
+        dmtOpenHearth(.joinRoom(channel: room.id, hostUserID: room.hostUserID))
     }
 
     @objc
-    private func handleStoryTap(_ recognizer: UITapGestureRecognizer) {
+    private func handleStoryRailTap(_ recognizer: UITapGestureRecognizer) {
         guard
             let storyView = recognizer.view,
-            let story = homeDeck?.stories[storyView.tag]
+            let story = hearthDeck?.stories[storyView.tag]
         else {
             return
         }
 
-        dmtOpenPortal(.userHomepage(userID: story.id))
+        dmtOpenHearth(.userHomepage(userID: story.id))
     }
 
     private func showRoomDetail(roomID: String) {
-        dmtOpenPortal(.tableLounge(liveID: roomID))
+        dmtOpenHearth(.tableLounge(liveID: roomID))
     }
 }

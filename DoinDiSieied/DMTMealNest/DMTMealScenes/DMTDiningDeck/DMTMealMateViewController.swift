@@ -6,27 +6,27 @@ final class DMTMealMateViewController: UIViewController {
         case secondary
     }
 
-    private let service: DMTFeastService
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
-    private let titleLabel = UILabel()
-    private let addButton = UIButton(type: .system)
-    private let filterStack = UIStackView()
-    private let primaryButton = UIButton(type: .system)
-    private let secondaryButton = UIButton(type: .system)
-    private let spotlightStack = UIStackView()
-    private let promoCard = UIControl()
-    private let promoImageView = UIImageView()
-    private let promoTitleLabel = UILabel()
-    private let galleryStack = UIStackView()
-    private let spinner = UIActivityIndicatorView(style: .medium)
-    private var discoverDeck: DMTDiscoverDeck?
-    private var visibleSpotlight: [DMTMomentCard] = []
-    private var visibleGallery: [DMTMomentCard] = []
-    private var selectedSegment: DMTDiscoverSegment = .primary
+    private let hearthService: DMTFeastService
+    private let courseScrollView = UIScrollView()
+    private let platingCanvas = UIView()
+    private let discoverTitleLabel = UILabel()
+    private let composerOrbButton = UIButton(type: .system)
+    private let filterRail = UIStackView()
+    private let freshFilterButton = UIButton(type: .system)
+    private let followFilterButton = UIButton(type: .system)
+    private let spotlightRail = UIStackView()
+    private let rechargePromoCard = UIControl()
+    private let promoBackdropView = UIImageView()
+    private let promoHeadlineLabel = UILabel()
+    private let galleryRail = UIStackView()
+    private let simmerSpinner = UIActivityIndicatorView(style: .medium)
+    private var discoverDeckCopy: DMTDiscoverDeck?
+    private var spotlightMoments: [DMTMomentCard] = []
+    private var galleryMoments: [DMTMomentCard] = []
+    private var activeDiscoverSegment: DMTDiscoverSegment = .primary
 
-    init(service: DMTFeastService) {
-        self.service = service
+    init(hearthService: DMTFeastService) {
+        self.hearthService = hearthService
         super.init(nibName: nil, bundle: nil)
         title = ""
     }
@@ -35,7 +35,7 @@ final class DMTMealMateViewController: UIViewController {
         nil
     }
 
-    private lazy var statementsevent: UIImageView = {
+    private lazy var backdropCanvas: UIImageView = {
          let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
          statement.contentMode = .scaleToFill
         statement.frame = UIScreen.main.bounds
@@ -43,231 +43,231 @@ final class DMTMealMateViewController: UIViewController {
      }()
      override func viewDidLoad() {
          super.viewDidLoad()
-         view.addSubview(statementsevent)
+         view.addSubview(backdropCanvas)
         navigationItem.largeTitleDisplayMode = .never
-        configureLayout()
-         scrollView.contentInsetAdjustmentBehavior = .never
-        fetchDiscoverDeck()
+        composeLayout()
+         courseScrollView.contentInsetAdjustmentBehavior = .never
+        fetchDiscoverCourse()
     }
 
-    private func configureLayout() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+    private func composeLayout() {
+        courseScrollView.translatesAutoresizingMaskIntoConstraints = false
+        platingCanvas.translatesAutoresizingMaskIntoConstraints = false
 
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
-        titleLabel.textColor = DMTPalette.ink
-        titleLabel.textAlignment = .center
+        discoverTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        discoverTitleLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
+        discoverTitleLabel.textColor = DMTPalette.ink
+        discoverTitleLabel.textAlignment = .center
 
-        addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.setBackgroundImage(UIImage(named: "menuPageLayout"), for: .normal)
-        addButton.addTarget(self, action: #selector(handleAdd), for: .touchUpInside)
+        composerOrbButton.translatesAutoresizingMaskIntoConstraints = false
+        composerOrbButton.setBackgroundImage(UIImage(named: "menuPageLayout"), for: .normal)
+        composerOrbButton.addTarget(self, action: #selector(handleComposerOrbTap), for: .touchUpInside)
 
-        filterStack.translatesAutoresizingMaskIntoConstraints = false
-        filterStack.axis = .horizontal
-        filterStack.spacing = DMTScale.w(18)
+        filterRail.translatesAutoresizingMaskIntoConstraints = false
+        filterRail.axis = .horizontal
+        filterRail.spacing = DMTScale.w(18)
 
-        [primaryButton, secondaryButton].forEach {
+        [freshFilterButton, followFilterButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.setTitleColor(DMTPalette.ink, for: .normal)
             $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         }
-        primaryButton.addTarget(self, action: #selector(handlePrimaryFilter), for: .touchUpInside)
-        secondaryButton.addTarget(self, action: #selector(handleSecondaryFilter), for: .touchUpInside)
+        freshFilterButton.addTarget(self, action: #selector(handleFreshFilterTap), for: .touchUpInside)
+        followFilterButton.addTarget(self, action: #selector(handleFollowFilterTap), for: .touchUpInside)
 
-        spotlightStack.translatesAutoresizingMaskIntoConstraints = false
-        spotlightStack.axis = .vertical
-        spotlightStack.spacing = DMTScale.h(12)
+        spotlightRail.translatesAutoresizingMaskIntoConstraints = false
+        spotlightRail.axis = .vertical
+        spotlightRail.spacing = DMTScale.h(12)
 
-        promoCard.translatesAutoresizingMaskIntoConstraints = false
-        promoCard.layer.cornerRadius = DMTScale.r(18)
-        promoCard.clipsToBounds = true
-        promoCard.addTarget(self, action: #selector(handlePromoTap), for: .touchUpInside)
+        rechargePromoCard.translatesAutoresizingMaskIntoConstraints = false
+        rechargePromoCard.layer.cornerRadius = DMTScale.r(18)
+        rechargePromoCard.clipsToBounds = true
+        rechargePromoCard.addTarget(self, action: #selector(handleRechargePromoTap), for: .touchUpInside)
 
-        promoImageView.translatesAutoresizingMaskIntoConstraints = false
-        promoImageView.contentMode = .scaleAspectFill
+        promoBackdropView.translatesAutoresizingMaskIntoConstraints = false
+        promoBackdropView.contentMode = .scaleAspectFill
 
-        promoTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        promoTitleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        promoTitleLabel.textColor = .white
-        promoTitleLabel.numberOfLines = 0
+        promoHeadlineLabel.translatesAutoresizingMaskIntoConstraints = false
+        promoHeadlineLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        promoHeadlineLabel.textColor = .white
+        promoHeadlineLabel.numberOfLines = 0
 
-        galleryStack.translatesAutoresizingMaskIntoConstraints = false
-        galleryStack.axis = .horizontal
-        galleryStack.spacing = DMTScale.w(12)
-        galleryStack.distribution = .fillEqually
+        galleryRail.translatesAutoresizingMaskIntoConstraints = false
+        galleryRail.axis = .horizontal
+        galleryRail.spacing = DMTScale.w(12)
+        galleryRail.distribution = .fillEqually
 
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.startAnimating()
+        simmerSpinner.translatesAutoresizingMaskIntoConstraints = false
+        simmerSpinner.startAnimating()
 
-        view.addSubview(scrollView)
-        view.addSubview(spinner)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(addButton)
-        contentView.addSubview(filterStack)
-        contentView.addSubview(spotlightStack)
-        contentView.addSubview(promoCard)
-        contentView.addSubview(galleryStack)
-        filterStack.addArrangedSubview(primaryButton)
-        filterStack.addArrangedSubview(secondaryButton)
-        promoCard.addSubview(promoImageView)
-        promoCard.addSubview(promoTitleLabel)
+        view.addSubview(courseScrollView)
+        view.addSubview(simmerSpinner)
+        courseScrollView.addSubview(platingCanvas)
+        platingCanvas.addSubview(discoverTitleLabel)
+        platingCanvas.addSubview(composerOrbButton)
+        platingCanvas.addSubview(filterRail)
+        platingCanvas.addSubview(spotlightRail)
+        platingCanvas.addSubview(rechargePromoCard)
+        platingCanvas.addSubview(galleryRail)
+        filterRail.addArrangedSubview(freshFilterButton)
+        filterRail.addArrangedSubview(followFilterButton)
+        rechargePromoCard.addSubview(promoBackdropView)
+        rechargePromoCard.addSubview(promoHeadlineLabel)
 
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            courseScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            courseScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            courseScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            courseScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            platingCanvas.topAnchor.constraint(equalTo: courseScrollView.topAnchor),
+            platingCanvas.leadingAnchor.constraint(equalTo: courseScrollView.leadingAnchor),
+            platingCanvas.trailingAnchor.constraint(equalTo: courseScrollView.trailingAnchor),
+            platingCanvas.bottomAnchor.constraint(equalTo: courseScrollView.bottomAnchor),
+            platingCanvas.widthAnchor.constraint(equalTo: courseScrollView.widthAnchor),
 
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: dmtTopChromeSpacing),
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            discoverTitleLabel.topAnchor.constraint(equalTo: platingCanvas.topAnchor, constant: dmtTopHearthInset),
+            discoverTitleLabel.centerXAnchor.constraint(equalTo: platingCanvas.centerXAnchor),
 
-            addButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            addButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(18)),
-            addButton.widthAnchor.constraint(equalToConstant: DMTScale.w(38)),
-            addButton.heightAnchor.constraint(equalToConstant: DMTScale.w(38)),
+            composerOrbButton.centerYAnchor.constraint(equalTo: discoverTitleLabel.centerYAnchor),
+            composerOrbButton.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(18)),
+            composerOrbButton.widthAnchor.constraint(equalToConstant: DMTScale.w(38)),
+            composerOrbButton.heightAnchor.constraint(equalToConstant: DMTScale.w(38)),
 
-            filterStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: DMTScale.h(20)),
-            filterStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(18)),
+            filterRail.topAnchor.constraint(equalTo: discoverTitleLabel.bottomAnchor, constant: DMTScale.h(20)),
+            filterRail.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(18)),
 
-            spotlightStack.topAnchor.constraint(equalTo: filterStack.bottomAnchor, constant: DMTScale.h(14)),
-            spotlightStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(14)),
-            spotlightStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(14)),
+            spotlightRail.topAnchor.constraint(equalTo: filterRail.bottomAnchor, constant: DMTScale.h(14)),
+            spotlightRail.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(14)),
+            spotlightRail.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(14)),
 
-            promoCard.topAnchor.constraint(equalTo: spotlightStack.bottomAnchor, constant: DMTScale.h(16)),
-            promoCard.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(14)),
-            promoCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(14)),
-            promoCard.heightAnchor.constraint(equalToConstant: DMTScale.h(104)),
+            rechargePromoCard.topAnchor.constraint(equalTo: spotlightRail.bottomAnchor, constant: DMTScale.h(16)),
+            rechargePromoCard.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(14)),
+            rechargePromoCard.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(14)),
+            rechargePromoCard.heightAnchor.constraint(equalToConstant: DMTScale.h(104)),
 
-            promoImageView.topAnchor.constraint(equalTo: promoCard.topAnchor),
-            promoImageView.leadingAnchor.constraint(equalTo: promoCard.leadingAnchor),
-            promoImageView.trailingAnchor.constraint(equalTo: promoCard.trailingAnchor),
-            promoImageView.bottomAnchor.constraint(equalTo: promoCard.bottomAnchor),
+            promoBackdropView.topAnchor.constraint(equalTo: rechargePromoCard.topAnchor),
+            promoBackdropView.leadingAnchor.constraint(equalTo: rechargePromoCard.leadingAnchor),
+            promoBackdropView.trailingAnchor.constraint(equalTo: rechargePromoCard.trailingAnchor),
+            promoBackdropView.bottomAnchor.constraint(equalTo: rechargePromoCard.bottomAnchor),
 
-            promoTitleLabel.trailingAnchor.constraint(equalTo: promoCard.trailingAnchor, constant: -DMTScale.w(16)),
-            promoTitleLabel.centerYAnchor.constraint(equalTo: promoCard.centerYAnchor),
-            promoTitleLabel.widthAnchor.constraint(equalToConstant: DMTScale.w(132)),
+            promoHeadlineLabel.trailingAnchor.constraint(equalTo: rechargePromoCard.trailingAnchor, constant: -DMTScale.w(16)),
+            promoHeadlineLabel.centerYAnchor.constraint(equalTo: rechargePromoCard.centerYAnchor),
+            promoHeadlineLabel.widthAnchor.constraint(equalToConstant: DMTScale.w(132)),
 
-            galleryStack.topAnchor.constraint(equalTo: promoCard.bottomAnchor, constant: DMTScale.h(16)),
-            galleryStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(14)),
-            galleryStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(14)),
-            galleryStack.heightAnchor.constraint(equalToConstant: DMTScale.h(204)),
-            galleryStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(120)),
+            galleryRail.topAnchor.constraint(equalTo: rechargePromoCard.bottomAnchor, constant: DMTScale.h(16)),
+            galleryRail.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(14)),
+            galleryRail.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(14)),
+            galleryRail.heightAnchor.constraint(equalToConstant: DMTScale.h(204)),
+            galleryRail.bottomAnchor.constraint(equalTo: platingCanvas.bottomAnchor, constant: -DMTScale.h(120)),
 
-            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            simmerSpinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            simmerSpinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
-    private func fetchDiscoverDeck() {
+    private func fetchDiscoverCourse() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let deck = try await service.fetchDiscoverDeck()
+                let deck = try await hearthService.fetchDiscoverCourse()
                 await MainActor.run {
-                    self.spinner.stopAnimating()
-                    self.discoverDeck = deck
-                    self.applyBase(deck: deck)
-                    self.renderMoments(using: deck, selectedSegment: .primary, animated: false)
+                    self.simmerSpinner.stopAnimating()
+                    self.discoverDeckCopy = deck
+                    self.styleDiscoverHeader(deck: deck)
+                    self.renderMoments(using: deck, activeDiscoverSegment: .primary, animated: false)
                 }
             } catch {
                 await MainActor.run {
-                    self.spinner.stopAnimating()
-                    self.dmtShowNotice(title: "Discover Unavailable", message: error.localizedDescription)
+                    self.simmerSpinner.stopAnimating()
+                    self.dmtServeNotice(title: "Discover Unavailable", message: error.localizedDescription)
                 }
             }
         }
     }
 
-    private func applyBase(deck: DMTDiscoverDeck) {
-        titleLabel.text = deck.title
-        primaryButton.setTitle(deck.primaryTitle, for: .normal)
-        secondaryButton.setTitle(deck.secondaryTitle, for: .normal)
+    private func styleDiscoverHeader(deck: DMTDiscoverDeck) {
+        discoverTitleLabel.text = deck.title
+        freshFilterButton.setTitle(deck.primaryTitle, for: .normal)
+        followFilterButton.setTitle(deck.secondaryTitle, for: .normal)
 
-        promoImageView.image = UIImage(named: deck.promo.artKey) ?? DMTMainArtworkFactory.sceneImage(for: deck.promo.artKey, size: CGSize(width: 700, height: 220))
-        promoTitleLabel.text = deck.promo.title
-        promoTitleLabel.isHidden = true
+        promoBackdropView.image = UIImage(named: deck.promo.artKey) ?? DMTMainArtworkFactory.sceneImage(for: deck.promo.artKey, size: CGSize(width: 700, height: 220))
+        promoHeadlineLabel.text = deck.promo.title
+        promoHeadlineLabel.isHidden = true
     }
 
     @objc
-    private func handleAdd() {
+    private func handleComposerOrbTap() {
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: "Issue Dynamic", style: .default) { [weak self] _ in
-            self?.dmtOpenPortal(.publishDynamic)
+            self?.dmtOpenHearth(.publishDynamic)
         })
         sheet.addAction(UIAlertAction(title: "Post Video", style: .default) { [weak self] _ in
-            self?.dmtOpenPortal(.publishVideo)
+            self?.dmtOpenHearth(.publishVideo)
         })
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         if let popover = sheet.popoverPresentationController {
-            popover.sourceView = addButton
-            popover.sourceRect = addButton.bounds
+            popover.sourceView = composerOrbButton
+            popover.sourceRect = composerOrbButton.bounds
         }
         present(sheet, animated: true)
     }
 
     @objc
-    private func handlePrimaryFilter() {
-        guard let deck = discoverDeck, selectedSegment != .primary else { return }
-        renderMoments(using: deck, selectedSegment: .primary, animated: true)
+    private func handleFreshFilterTap() {
+        guard let deck = discoverDeckCopy, activeDiscoverSegment != .primary else { return }
+        renderMoments(using: deck, activeDiscoverSegment: .primary, animated: true)
     }
 
     @objc
-    private func handleSecondaryFilter() {
-        guard let deck = discoverDeck, selectedSegment != .secondary else { return }
-        renderMoments(using: deck, selectedSegment: .secondary, animated: true)
+    private func handleFollowFilterTap() {
+        guard let deck = discoverDeckCopy, activeDiscoverSegment != .secondary else { return }
+        renderMoments(using: deck, activeDiscoverSegment: .secondary, animated: true)
     }
 
     @objc
-    private func handleMomentTap(_ sender: UIControl) {
-        guard visibleSpotlight.indices.contains(sender.tag) else { return }
-        let momentID = visibleSpotlight[sender.tag].id
-        dmtOpenPortal(.dynamicDetail(dynamicID: momentID))
+    private func handleSpotlightTap(_ sender: UIControl) {
+        guard spotlightMoments.indices.contains(sender.tag) else { return }
+        let momentID = spotlightMoments[sender.tag].id
+        dmtOpenHearth(.dynamicDetail(dynamicID: momentID))
     }
 
     @objc
-    private func handleGalleryTap(_ sender: UIControl) {
-        guard visibleGallery.indices.contains(sender.tag) else { return }
-        let momentID = visibleGallery[sender.tag].id
-        dmtOpenPortal(.dynamicDetail(dynamicID: momentID))
+    private func handleGalleryCardTap(_ sender: UIControl) {
+        guard galleryMoments.indices.contains(sender.tag) else { return }
+        let momentID = galleryMoments[sender.tag].id
+        dmtOpenHearth(.dynamicDetail(dynamicID: momentID))
     }
 
     @objc
-    private func handlePromoTap() {
-        dmtOpenPortal(.walletCenter)
+    private func handleRechargePromoTap() {
+        dmtOpenHearth(.walletCenter)
     }
 
-    private func styleFilters(selectedPrimary: Bool) {
+    private func styleDiscoverRail(selectedPrimary: Bool) {
         let selectedColor = DMTPalette.ink
         let deselectedColor = DMTPalette.cloudInk.withAlphaComponent(0.6)
-        primaryButton.setTitleColor(selectedPrimary ? selectedColor : deselectedColor, for: .normal)
-        secondaryButton.setTitleColor(selectedPrimary ? deselectedColor : selectedColor, for: .normal)
+        freshFilterButton.setTitleColor(selectedPrimary ? selectedColor : deselectedColor, for: .normal)
+        followFilterButton.setTitleColor(selectedPrimary ? deselectedColor : selectedColor, for: .normal)
     }
 
-    private func renderMoments(using deck: DMTDiscoverDeck, selectedSegment: DMTDiscoverSegment, animated: Bool) {
-        self.selectedSegment = selectedSegment
-        styleFilters(selectedPrimary: selectedSegment == .primary)
+    private func renderMoments(using deck: DMTDiscoverDeck, activeDiscoverSegment: DMTDiscoverSegment, animated: Bool) {
+        self.activeDiscoverSegment = activeDiscoverSegment
+        styleDiscoverRail(selectedPrimary: activeDiscoverSegment == .primary)
 
-        let bucket = momentSubset(from: deck, selectedSegment: selectedSegment)
-        visibleSpotlight = Array(bucket.prefix(4))
+        let bucket = discoverMomentSlice(from: deck, activeDiscoverSegment: activeDiscoverSegment)
+        spotlightMoments = Array(bucket.prefix(4))
         let overflow = Array(bucket.dropFirst(4).prefix(2))
-        visibleGallery = overflow.isEmpty ? Array(visibleSpotlight.prefix(2)) : overflow
+        galleryMoments = overflow.isEmpty ? Array(spotlightMoments.prefix(2)) : overflow
 
         let spotlightRefresh = { [self] in
-            spotlightStack.arrangedSubviews.forEach {
-                spotlightStack.removeArrangedSubview($0)
+            spotlightRail.arrangedSubviews.forEach {
+                spotlightRail.removeArrangedSubview($0)
                 $0.removeFromSuperview()
             }
 
-            let rows = stride(from: 0, to: visibleSpotlight.count, by: 2).map {
-                Array(visibleSpotlight[$0..<min($0 + 2, visibleSpotlight.count)])
+            let rows = stride(from: 0, to: spotlightMoments.count, by: 2).map {
+                Array(spotlightMoments[$0..<min($0 + 2, spotlightMoments.count)])
             }
 
             for row in rows {
@@ -276,55 +276,55 @@ final class DMTMealMateViewController: UIViewController {
                 rowStack.spacing = DMTScale.w(12)
                 rowStack.distribution = .fillEqually
                 for card in row {
-                    let cardView = DMTDiscoverCardView()
-                    cardView.apply(moment: card)
-                    cardView.onAvatarTap = { [weak self, weak cardView] in
-                        guard let self, let cardView else { return }
-                        self.dmtPresentProfileSheet(userID: card.authorUserID, anchor: cardView)
+                    let servingCard = DMTDiscoverCardView()
+                    servingCard.apply(moment: card)
+                    servingCard.onAvatarTap = { [weak self, weak servingCard] in
+                        guard let self, let servingCard else { return }
+                        self.dmtPresentGuestSheet(userID: card.authorUserID, anchor: servingCard)
                     }
-                    cardView.tag = visibleSpotlight.firstIndex(where: { $0.id == card.id }) ?? 0
-                    cardView.addTarget(self, action: #selector(handleMomentTap(_:)), for: .touchUpInside)
+                    servingCard.tag = spotlightMoments.firstIndex(where: { $0.id == card.id }) ?? 0
+                    servingCard.addTarget(self, action: #selector(handleSpotlightTap(_:)), for: .touchUpInside)
                     NSLayoutConstraint.activate([
-                        cardView.heightAnchor.constraint(equalToConstant: DMTScale.h(204))
+                        servingCard.heightAnchor.constraint(equalToConstant: DMTScale.h(204))
                     ])
-                    rowStack.addArrangedSubview(cardView)
+                    rowStack.addArrangedSubview(servingCard)
                 }
-                spotlightStack.addArrangedSubview(rowStack)
+                spotlightRail.addArrangedSubview(rowStack)
             }
         }
 
         let galleryRefresh = { [self] in
-            galleryStack.arrangedSubviews.forEach {
-                galleryStack.removeArrangedSubview($0)
+            galleryRail.arrangedSubviews.forEach {
+                galleryRail.removeArrangedSubview($0)
                 $0.removeFromSuperview()
             }
 
-            for (index, card) in visibleGallery.enumerated() {
+            for (index, card) in galleryMoments.enumerated() {
                 let galleryView = DMTDiscoverCardView()
                 galleryView.apply(moment: card)
                 galleryView.onAvatarTap = { [weak self, weak galleryView] in
                     guard let self, let galleryView else { return }
-                    self.dmtPresentProfileSheet(userID: card.authorUserID, anchor: galleryView)
+                    self.dmtPresentGuestSheet(userID: card.authorUserID, anchor: galleryView)
                 }
                 galleryView.tag = index
-                galleryView.addTarget(self, action: #selector(handleGalleryTap(_:)), for: .touchUpInside)
-                galleryStack.addArrangedSubview(galleryView)
+                galleryView.addTarget(self, action: #selector(handleGalleryCardTap(_:)), for: .touchUpInside)
+                galleryRail.addArrangedSubview(galleryView)
             }
         }
 
         if animated {
-            UIView.transition(with: spotlightStack, duration: 0.22, options: [.transitionCrossDissolve, .allowAnimatedContent], animations: spotlightRefresh)
-            UIView.transition(with: galleryStack, duration: 0.22, options: [.transitionCrossDissolve, .allowAnimatedContent], animations: galleryRefresh)
+            UIView.transition(with: spotlightRail, duration: 0.22, options: [.transitionCrossDissolve, .allowAnimatedContent], animations: spotlightRefresh)
+            UIView.transition(with: galleryRail, duration: 0.22, options: [.transitionCrossDissolve, .allowAnimatedContent], animations: galleryRefresh)
         } else {
             spotlightRefresh()
             galleryRefresh()
         }
     }
 
-    private func momentSubset(from deck: DMTDiscoverDeck, selectedSegment: DMTDiscoverSegment) -> [DMTMomentCard] {
+    private func discoverMomentSlice(from deck: DMTDiscoverDeck, activeDiscoverSegment: DMTDiscoverSegment) -> [DMTMomentCard] {
         let combined = deck.spotlight + deck.gallery
         let filtered = combined.enumerated().compactMap { index, moment in
-            switch selectedSegment {
+            switch activeDiscoverSegment {
             case .primary:
                 return index.isMultiple(of: 2) ? moment : nil
             case .secondary:

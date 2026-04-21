@@ -31,7 +31,7 @@ struct DMTLoginDeck: Codable {
     let emailPlaceholder: String
     let passwordTitle: String
     let passwordPlaceholder: String
-    let buttonTitle: String
+    let ctaCopy: String
     let hintLine: String
 }
 
@@ -43,21 +43,21 @@ struct DMTSignUpDeck: Codable {
     let bioPlaceholder: String
     let ageTitle: String
     let agePlaceholder: String
-    let buttonTitle: String
+    let ctaCopy: String
 }
 
 struct DMTVerifyDeck: Codable {
     let title: String
     let intro: String
     let caption: String
-    let buttonTitle: String
+    let ctaCopy: String
 }
 
 struct DMTEntryDeck: Codable {
     let title: String
     let subtitle: String
     let reminders: [DMTEntryReminder]
-    let buttonTitle: String
+    let ctaCopy: String
 }
 
 struct DMTEntryReminder: Codable {

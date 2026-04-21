@@ -4,28 +4,28 @@ final class DMTLoginViewController: UIViewController {
     var onFinish: ((DMTSessionPayload) -> Void)?
     var onNeedSignUp: ((DMTLoginTicket) -> Void)?
 
-    private let service: DMTFeastService
-    private let profileStore: DMTTasteProfileStore
-    private let preferredTitle: String
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
-    private let headerView = UIImageView.init(image: UIImage.init(named: "cravingsLogicAction"))
-    private let symbolShell = UIImageView.init(image: UIImage.init(named: "voiceEchoInstance"))
+    private let hearthService: DMTFeastService
+    private let tasteLedger: DMTTasteProfileStore
+    private let navCourseTitle: String
+    private let courseScrollView = UIScrollView()
+    private let platingCanvas = UIView()
+    private let bannerTasteView = UIImageView.init(image: UIImage.init(named: "cravingsLogicAction"))
+    private let mascotPulseView = UIImageView.init(image: UIImage.init(named: "voiceEchoInstance"))
     
-    private let cardView = UIView()
-    private let emailField = DMTInputField()
-    private let passwordField = DMTInputField()
-    private let hintLabel = UILabel()
-    private let confirmButton = DMTGlowButton()
-    private let spinner = UIActivityIndicatorView(style: .medium)
-    private var buttonTitle = "Confirm"
+    private let servingCard = UIView()
+    private let emailPassField = DMTInputField()
+    private let secretPassField = DMTInputField()
+    private let pantryHintLabel = UILabel()
+    private let servePassButton = DMTGlowButton()
+    private let simmerSpinner = UIActivityIndicatorView(style: .medium)
+    private var ctaCopy = "Confirm"
 
-    init(service: DMTFeastService, profileStore: DMTTasteProfileStore, preferredTitle: String) {
-        self.service = service
-        self.profileStore = profileStore
-        self.preferredTitle = preferredTitle
+    init(hearthService: DMTFeastService, tasteLedger: DMTTasteProfileStore, navCourseTitle: String) {
+        self.hearthService = hearthService
+        self.tasteLedger = tasteLedger
+        self.navCourseTitle = navCourseTitle
         super.init(nibName: nil, bundle: nil)
-        title = preferredTitle
+        title = navCourseTitle
     }
 
     required init?(coder: NSCoder) {
@@ -34,190 +34,190 @@ final class DMTLoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        hintLabel.isHidden = true
+        pantryHintLabel.isHidden = true
         view.backgroundColor = DMTPalette.cream
         navigationItem.largeTitleDisplayMode = .never
-        configureLayout()
-        loadDeck()
+        composeLayout()
+        fetchLoginCopy()
     }
 
-    private func configureLayout() {
-        headerView.contentMode = .scaleToFill
+    private func composeLayout() {
+        bannerTasteView.contentMode = .scaleToFill
         
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.translatesAutoresizingMaskIntoConstraints = false
+        courseScrollView.translatesAutoresizingMaskIntoConstraints = false
+        platingCanvas.translatesAutoresizingMaskIntoConstraints = false
+        bannerTasteView.translatesAutoresizingMaskIntoConstraints = false
 
-        symbolShell.translatesAutoresizingMaskIntoConstraints = false
-        symbolShell.backgroundColor = UIColor.white.withAlphaComponent(0.16)
-        symbolShell.layer.cornerRadius = DMTScale.r(32)
+        mascotPulseView.translatesAutoresizingMaskIntoConstraints = false
+        mascotPulseView.backgroundColor = UIColor.white.withAlphaComponent(0.16)
+        mascotPulseView.layer.cornerRadius = DMTScale.r(32)
 
        
 
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        cardView.backgroundColor = .white
-        cardView.layer.cornerRadius = DMTScale.r(28)
-        cardView.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
-        hintLabel.translatesAutoresizingMaskIntoConstraints = false
-        hintLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
-        hintLabel.textColor = DMTPalette.cloudInk
-        hintLabel.numberOfLines = 0
+        servingCard.translatesAutoresizingMaskIntoConstraints = false
+        servingCard.backgroundColor = .white
+        servingCard.layer.cornerRadius = DMTScale.r(28)
+        servingCard.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
+        pantryHintLabel.translatesAutoresizingMaskIntoConstraints = false
+        pantryHintLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
+        pantryHintLabel.textColor = DMTPalette.cloudInk
+        pantryHintLabel.numberOfLines = 0
 
-        confirmButton.translatesAutoresizingMaskIntoConstraints = false
-        confirmButton.addTarget(self, action: #selector(handleConfirm), for: .touchUpInside)
+        servePassButton.translatesAutoresizingMaskIntoConstraints = false
+        servePassButton.addTarget(self, action: #selector(handlePassServeTap), for: .touchUpInside)
 
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.hidesWhenStopped = true
-        spinner.color = .white
+        simmerSpinner.translatesAutoresizingMaskIntoConstraints = false
+        simmerSpinner.hidesWhenStopped = true
+        simmerSpinner.color = .white
 
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(headerView)
-        headerView.addSubview(symbolShell)
+        view.addSubview(courseScrollView)
+        courseScrollView.addSubview(platingCanvas)
+        platingCanvas.addSubview(bannerTasteView)
+        bannerTasteView.addSubview(mascotPulseView)
        
-        contentView.addSubview(cardView)
-        cardView.addSubview(emailField)
-        cardView.addSubview(passwordField)
-        cardView.addSubview(hintLabel)
-        cardView.addSubview(confirmButton)
-        confirmButton.addSubview(spinner)
+        platingCanvas.addSubview(servingCard)
+        servingCard.addSubview(emailPassField)
+        servingCard.addSubview(secretPassField)
+        servingCard.addSubview(pantryHintLabel)
+        servingCard.addSubview(servePassButton)
+        servePassButton.addSubview(simmerSpinner)
 
-        scrollView.dmtPinEdges(to: view)
-        scrollView.contentInsetAdjustmentBehavior = .never
+        courseScrollView.dmtPinCourseEdges(to: view)
+        courseScrollView.contentInsetAdjustmentBehavior = .never
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            platingCanvas.topAnchor.constraint(equalTo: courseScrollView.topAnchor),
+            platingCanvas.leadingAnchor.constraint(equalTo: courseScrollView.leadingAnchor),
+            platingCanvas.trailingAnchor.constraint(equalTo: courseScrollView.trailingAnchor),
+            platingCanvas.bottomAnchor.constraint(equalTo: courseScrollView.bottomAnchor),
+            platingCanvas.widthAnchor.constraint(equalTo: courseScrollView.widthAnchor),
 
-            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: DMTScale.h(390)),
+            bannerTasteView.topAnchor.constraint(equalTo: platingCanvas.topAnchor),
+            bannerTasteView.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor),
+            bannerTasteView.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor),
+            bannerTasteView.heightAnchor.constraint(equalToConstant: DMTScale.h(390)),
 
-            symbolShell.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            symbolShell.centerYAnchor.constraint(equalTo: headerView.centerYAnchor, constant: DMTScale.h(-8)),
-            symbolShell.widthAnchor.constraint(equalToConstant: DMTScale.w(120)),
-            symbolShell.heightAnchor.constraint(equalToConstant: DMTScale.w(120)),
+            mascotPulseView.centerXAnchor.constraint(equalTo: bannerTasteView.centerXAnchor),
+            mascotPulseView.centerYAnchor.constraint(equalTo: bannerTasteView.centerYAnchor, constant: DMTScale.h(-8)),
+            mascotPulseView.widthAnchor.constraint(equalToConstant: DMTScale.w(120)),
+            mascotPulseView.heightAnchor.constraint(equalToConstant: DMTScale.w(120)),
 
-            cardView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -DMTScale.h(54)),
-            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            servingCard.topAnchor.constraint(equalTo: bannerTasteView.bottomAnchor, constant: -DMTScale.h(54)),
+            servingCard.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor),
+            servingCard.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor),
+            servingCard.bottomAnchor.constraint(equalTo: platingCanvas.bottomAnchor),
 
-            emailField.topAnchor.constraint(equalTo: cardView.topAnchor, constant: DMTScale.h(32)),
-            emailField.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(20)),
-            emailField.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(20)),
+            emailPassField.topAnchor.constraint(equalTo: servingCard.topAnchor, constant: DMTScale.h(32)),
+            emailPassField.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(20)),
+            emailPassField.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(20)),
 
-            passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: DMTScale.h(20)),
-            passwordField.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(20)),
-            passwordField.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(20)),
+            secretPassField.topAnchor.constraint(equalTo: emailPassField.bottomAnchor, constant: DMTScale.h(20)),
+            secretPassField.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(20)),
+            secretPassField.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(20)),
 
-            hintLabel.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: DMTScale.h(12)),
-            hintLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(20)),
-            hintLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(20)),
+            pantryHintLabel.topAnchor.constraint(equalTo: secretPassField.bottomAnchor, constant: DMTScale.h(12)),
+            pantryHintLabel.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(20)),
+            pantryHintLabel.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(20)),
 
-            confirmButton.topAnchor.constraint(equalTo: hintLabel.bottomAnchor, constant: DMTScale.h(22)),
-            confirmButton.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: DMTScale.w(20)),
-            confirmButton.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -DMTScale.w(20)),
-            confirmButton.heightAnchor.constraint(equalToConstant: DMTScale.h(54)),
-            confirmButton.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -DMTScale.h(38)),
+            servePassButton.topAnchor.constraint(equalTo: pantryHintLabel.bottomAnchor, constant: DMTScale.h(22)),
+            servePassButton.leadingAnchor.constraint(equalTo: servingCard.leadingAnchor, constant: DMTScale.w(20)),
+            servePassButton.trailingAnchor.constraint(equalTo: servingCard.trailingAnchor, constant: -DMTScale.w(20)),
+            servePassButton.heightAnchor.constraint(equalToConstant: DMTScale.h(54)),
+            servePassButton.bottomAnchor.constraint(equalTo: servingCard.bottomAnchor, constant: -DMTScale.h(38)),
 
-            spinner.centerXAnchor.constraint(equalTo: confirmButton.centerXAnchor),
-            spinner.centerYAnchor.constraint(equalTo: confirmButton.centerYAnchor)
+            simmerSpinner.centerXAnchor.constraint(equalTo: servePassButton.centerXAnchor),
+            simmerSpinner.centerYAnchor.constraint(equalTo: servePassButton.centerYAnchor)
         ])
     }
 
-    private func loadDeck() {
+    private func fetchLoginCopy() {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let bundle = try await service.fetchAuthBundle()
+                let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
-                    self.applyDeck(bundle.login)
+                    self.renderLoginCopy(bundle.login)
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtShowNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
                 }
             }
         }
     }
 
-    private func applyDeck(_ deck: DMTLoginDeck) {
-        title = preferredTitle
-        buttonTitle = deck.buttonTitle
-        emailField.apply(title: deck.emailTitle, placeholder: deck.emailPlaceholder)
-        emailField.entryField.keyboardType = .emailAddress
-        emailField.entryField.textContentType = .username
-        passwordField.apply(title: deck.passwordTitle, placeholder: deck.passwordPlaceholder, isSecure: true)
-        passwordField.entryField.textContentType = .password
-        hintLabel.text = deck.hintLine
-        confirmButton.setTitle(deck.buttonTitle, for: .normal)
+    private func renderLoginCopy(_ deck: DMTLoginDeck) {
+        title = navCourseTitle
+        ctaCopy = deck.ctaCopy
+        emailPassField.renderFieldCopy(title: deck.emailTitle, placeholder: deck.emailPlaceholder)
+        emailPassField.entryField.keyboardType = .emailAddress
+        emailPassField.entryField.textContentType = .username
+        secretPassField.renderFieldCopy(title: deck.passwordTitle, placeholder: deck.passwordPlaceholder, isSecure: true)
+        secretPassField.entryField.textContentType = .password
+        pantryHintLabel.text = deck.hintLine
+        servePassButton.setTitle(deck.ctaCopy, for: .normal)
     }
 
     @objc
-    private func handleConfirm() {
-        let email = profileStore.normalizedEmail(emailField.text)
-        let password = passwordField.text.trimmingCharacters(in: .whitespacesAndNewlines)
+    private func handlePassServeTap() {
+        let email = tasteLedger.normalizedEmail(emailPassField.text)
+        let password = secretPassField.text.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard !email.isEmpty, !password.isEmpty else {
-            dmtShowNotice(title: "Missing Taste Pass", message: "Fill in both email and password.")
+            dmtServeNotice(title: "Missing Taste Pass", message: "Fill in both email and password.")
             return
         }
 
-        setLoading(true)
+        setPassLoadingState(true)
 
-        let ticket = DMTLoginTicket(email: email, password: password)
+        let passTicket = DMTLoginTicket(email: email, password: password)
 
-        if profileStore.isTestAccount(email: email, password: password) {
-            profileStore.ensureTestProfile()
-            performLogin(ticket: ticket)
+        if tasteLedger.isTestAccount(email: email, password: password) {
+            tasteLedger.ensureTestProfile()
+            pourLoginSignal(passTicket: passTicket)
             return
         }
 
-        if profileStore.canDirectLogin(email: email, password: password) {
-            performLogin(ticket: ticket)
+        if tasteLedger.canDirectLogin(email: email, password: password) {
+            pourLoginSignal(passTicket: passTicket)
             return
         }
 
-        if profileStore.hasPasswordMismatch(email: email, password: password) {
-            setLoading(false)
-            dmtShowNotice(title: "Taste Pass Failed", message: "This account was saved locally with a different password.")
+        if tasteLedger.hasPasswordMismatch(email: email, password: password) {
+            setPassLoadingState(false)
+            dmtServeNotice(title: "Taste Pass Failed", message: "This account was saved locally with a different password.")
             return
         }
 
-        setLoading(false)
-        onNeedSignUp?(ticket)
+        setPassLoadingState(false)
+        onNeedSignUp?(passTicket)
     }
 
-    private func performLogin(ticket: DMTLoginTicket) {
+    private func pourLoginSignal(passTicket: DMTLoginTicket) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let payload = try await service.login(email: ticket.email, password: ticket.password)
+                let payload = try await hearthService.login(email: passTicket.email, password: passTicket.password)
                 await MainActor.run {
-                    self.setLoading(false)
+                    self.setPassLoadingState(false)
                     self.onFinish?(payload)
                 }
             } catch {
                 await MainActor.run {
-                    self.setLoading(false)
-                    self.dmtShowNotice(title: "Taste Pass Failed", message: error.localizedDescription)
+                    self.setPassLoadingState(false)
+                    self.dmtServeNotice(title: "Taste Pass Failed", message: error.localizedDescription)
                 }
             }
         }
     }
 
-    private func setLoading(_ isLoading: Bool) {
-        confirmButton.isEnabled = !isLoading
+    private func setPassLoadingState(_ isLoading: Bool) {
+        servePassButton.isEnabled = !isLoading
         if isLoading {
-            confirmButton.setTitle(nil, for: .normal)
-            spinner.startAnimating()
+            servePassButton.setTitle(nil, for: .normal)
+            simmerSpinner.startAnimating()
         } else {
-            spinner.stopAnimating()
-            confirmButton.setTitle(buttonTitle, for: .normal)
+            simmerSpinner.stopAnimating()
+            servePassButton.setTitle(ctaCopy, for: .normal)
         }
     }
 }

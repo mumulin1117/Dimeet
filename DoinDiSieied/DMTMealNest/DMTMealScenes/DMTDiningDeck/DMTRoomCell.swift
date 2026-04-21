@@ -3,6 +3,7 @@ import UIKit
 final class DMTRoomCell: UITableViewCell {
     static let reuseID = "DMTRoomCell"
 
+    private var platingCanvas: UIView { contentView }
     private let shellView = UIView()
     private let titleLabel = UILabel()
     private let topicLabel = UILabel()
@@ -22,7 +23,7 @@ final class DMTRoomCell: UITableViewCell {
         titleLabel.text = room.title
         topicLabel.text = room.topic
         seatLabel.text = room.seatLine
-        paceTag.apply(text: room.pace)
+        paceTag.renderTagCopy(text: room.pace)
     }
 
     private func configure() {
@@ -47,17 +48,17 @@ final class DMTRoomCell: UITableViewCell {
         seatLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
         seatLabel.textColor = DMTPalette.sunrise
 
-        contentView.addSubview(shellView)
+        platingCanvas.addSubview(shellView)
         shellView.addSubview(titleLabel)
         shellView.addSubview(topicLabel)
         shellView.addSubview(seatLabel)
         shellView.addSubview(paceTag)
 
         NSLayoutConstraint.activate([
-            shellView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: DMTScale.h(6)),
-            shellView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            shellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            shellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -DMTScale.h(6)),
+            shellView.topAnchor.constraint(equalTo: platingCanvas.topAnchor, constant: DMTScale.h(6)),
+            shellView.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor),
+            shellView.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor),
+            shellView.bottomAnchor.constraint(equalTo: platingCanvas.bottomAnchor, constant: -DMTScale.h(6)),
 
             titleLabel.topAnchor.constraint(equalTo: shellView.topAnchor, constant: DMTScale.h(18)),
             titleLabel.leadingAnchor.constraint(equalTo: shellView.leadingAnchor, constant: DMTScale.w(18)),

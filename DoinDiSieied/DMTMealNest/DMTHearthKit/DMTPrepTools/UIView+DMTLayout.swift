@@ -1,7 +1,7 @@
 import UIKit
 
 extension UIView {
-    func dmtPinEdges(to view: UIView, inset: UIEdgeInsets = .zero) {
+    func dmtPinCourseEdges(to view: UIView, inset: UIEdgeInsets = .zero) {
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             topAnchor.constraint(equalTo: view.topAnchor, constant: inset.top),

@@ -1,114 +1,114 @@
 import UIKit
 
 final class DMTAppCoordinator {
-    private let window: UIWindow
-    private let pantry: DMTAppPantry
+    private let launchWindow: UIWindow
+    private let tablePantry: DMTAppPantry
 
-    init(window: UIWindow, pantry: DMTAppPantry = .shared) {
-        self.window = window
-        self.pantry = pantry
+    init(launchWindow: UIWindow, tablePantry: DMTAppPantry = .shared) {
+        self.launchWindow = launchWindow
+        self.tablePantry = tablePantry
     }
 
-    func start() {
-        applyTasteAppearance()
-        pantry.sessionStore.onStateChange = { [weak self] _ in
-            self?.swapRoot(animated: true)
+    func plateLaunch() {
+        seasonGlobalChrome()
+        tablePantry.seatSession.onStateChange = { [weak self] _ in
+            self?.refreshTableRoot(animated: true)
         }
-        swapRoot(animated: false)
-        window.makeKeyAndVisible()
+        refreshTableRoot(animated: false)
+        launchWindow.makeKeyAndVisible()
     }
 
-    private func swapRoot(animated: Bool) {
-        let nextRoot = pantry.sessionStore.isSignedIn ? makeMainRoot() : makeAuthRoot()
+    private func refreshTableRoot(animated: Bool) {
+        let nextRoot = tablePantry.seatSession.isSignedIn ? craftDiningRoot() : craftWelcomeRoot()
         guard animated else {
-            window.rootViewController = nextRoot
+            launchWindow.rootViewController = nextRoot
             return
         }
 
-        UIView.transition(with: window, duration: 0.32, options: [.transitionCrossDissolve, .allowAnimatedContent]) {
-            self.window.rootViewController = nextRoot
+        UIView.transition(with: launchWindow, duration: 0.32, options: [.transitionCrossDissolve, .allowAnimatedContent]) {
+            self.launchWindow.rootViewController = nextRoot
         }
     }
 
-    private func makeAuthRoot() -> UIViewController {
-        let welcomeController = DMTWelcomeViewController(service: pantry.feastService)
+    private func craftWelcomeRoot() -> UIViewController {
+        let welcomeController = DMTWelcomeViewController(hearthService: tablePantry.hearthService)
         let navigationController = UINavigationController(rootViewController: welcomeController)
 
         welcomeController.onShowSignIn = { [weak self, weak navigationController] in
             guard let self else { return }
-            navigationController?.pushViewController(self.makeLoginController("Sign in"), animated: true)
+            navigationController?.pushViewController(self.craftPassageController("Sign in"), animated: true)
         }
 
         welcomeController.onShowSignUp = { [weak self, weak navigationController] in
             guard let self else { return }
-            navigationController?.pushViewController(self.makeLoginController("Sign up"), animated: true)
+            navigationController?.pushViewController(self.craftPassageController("Sign up"), animated: true)
         }
 
         welcomeController.onShowAgreement = { [weak self, weak navigationController] in
             guard let self else { return }
-            let agreementController = self.makeAgreementController()
+            let agreementController = self.craftNotesController()
             navigationController?.present(agreementController, animated: true)
         }
 
         return navigationController
     }
 
-    private func makeAgreementController() -> UIViewController {
-        let agreementController = DMTEulaViewController(service: pantry.feastService)
+    private func craftNotesController() -> UIViewController {
+        let agreementController = DMTEulaViewController(hearthService: tablePantry.hearthService)
         agreementController.modalPresentationStyle = .overFullScreen
         return agreementController
     }
 
-    private func makeLoginController(_ preferredTitle: String) -> UIViewController {
-        let loginController = DMTLoginViewController(service: pantry.feastService, profileStore: pantry.profileStore, preferredTitle: preferredTitle)
+    private func craftPassageController(_ preferredTitle: String) -> UIViewController {
+        let loginController = DMTLoginViewController(hearthService: tablePantry.hearthService, tasteLedger: tablePantry.tasteLedger, navCourseTitle: preferredTitle)
         loginController.onFinish = { [weak self] payload in
-            self?.pantry.sessionStore.store(payload)
+            self?.tablePantry.seatSession.store(payload)
         }
        
         loginController.onNeedSignUp = { [weak self, weak loginController] ticket in
             guard let self else { return }
-            let signUpController = self.makeSignUpController(ticket: ticket, preferredTitle: preferredTitle)
+            let signUpController = self.craftGuestCardController(ticket: ticket, preferredTitle: preferredTitle)
             loginController?.navigationController?.pushViewController(signUpController, animated: true)
         }
         return loginController
     }
 
-    private func makeSignUpController(ticket: DMTLoginTicket, preferredTitle: String) -> UIViewController {
-        let signUpController = DMTSignUpViewController(service: pantry.feastService, ticket: ticket, profileStore: pantry.profileStore, preferredTitle: preferredTitle)
+    private func craftGuestCardController(ticket: DMTLoginTicket, preferredTitle: String) -> UIViewController {
+        let signUpController = DMTSignUpViewController(hearthService: tablePantry.hearthService, passTicket: ticket, tasteLedger: tablePantry.tasteLedger, navCourseTitle: preferredTitle)
         signUpController.onFinish = { [weak self] payload in
-            self?.pantry.sessionStore.store(payload)
+            self?.tablePantry.seatSession.store(payload)
         }
         return signUpController
     }
 
-    private func makeMainRoot() -> UIViewController {
-        DMTHearthTabController(service: pantry.feastService, sessionStore: pantry.sessionStore, profileStore: pantry.profileStore)
+    private func craftDiningRoot() -> UIViewController {
+        DMTHearthTabController(hearthService: tablePantry.hearthService, seatSession: tablePantry.seatSession, tasteLedger: tablePantry.tasteLedger)
     }
 
-    private func applyTasteAppearance() {
-        let navigationAppearance = UINavigationBarAppearance()
-        navigationAppearance.configureWithTransparentBackground()
-        navigationAppearance.backgroundColor = .clear
-        navigationAppearance.shadowColor = .clear
-        navigationAppearance.titleTextAttributes = [
+    private func seasonGlobalChrome() {
+        let hearthBarAppearance = UINavigationBarAppearance()
+        hearthBarAppearance.configureWithTransparentBackground()
+        hearthBarAppearance.backgroundColor = .clear
+        hearthBarAppearance.shadowColor = .clear
+        hearthBarAppearance.titleTextAttributes = [
             .foregroundColor: DMTPalette.ink,
             .font: UIFont.systemFont(ofSize: 17, weight: .semibold)
         ]
-        navigationAppearance.largeTitleTextAttributes = [
+        hearthBarAppearance.largeTitleTextAttributes = [
             .foregroundColor: DMTPalette.ink,
             .font: UIFont.systemFont(ofSize: 30, weight: .bold)
         ]
-        UINavigationBar.appearance().standardAppearance = navigationAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = navigationAppearance
-        UINavigationBar.appearance().compactAppearance = navigationAppearance
+        UINavigationBar.appearance().standardAppearance = hearthBarAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = hearthBarAppearance
+        UINavigationBar.appearance().compactAppearance = hearthBarAppearance
         UINavigationBar.appearance().tintColor = DMTPalette.ink
 
-        let tabAppearance = UITabBarAppearance()
-        tabAppearance.configureWithOpaqueBackground()
-        tabAppearance.backgroundColor = .white
-        tabAppearance.shadowColor = UIColor.black.withAlphaComponent(0.06)
-        UITabBar.appearance().standardAppearance = tabAppearance
-        UITabBar.appearance().scrollEdgeAppearance = tabAppearance
+        let feastTabAppearance = UITabBarAppearance()
+        feastTabAppearance.configureWithOpaqueBackground()
+        feastTabAppearance.backgroundColor = .white
+        feastTabAppearance.shadowColor = UIColor.black.withAlphaComponent(0.06)
+        UITabBar.appearance().standardAppearance = feastTabAppearance
+        UITabBar.appearance().scrollEdgeAppearance = feastTabAppearance
         UITabBar.appearance().tintColor = DMTPalette.sunrise
         UITabBar.appearance().unselectedItemTintColor = DMTPalette.cloudInk
     }

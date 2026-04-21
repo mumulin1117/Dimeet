@@ -67,8 +67,8 @@ private enum DMTMockKitchen {
         let path = request.url?.path ?? ""
 
         switch (method, path) {
-//        case ("GET", "/auth/bootstrap"):
-//            return try encode(authBundle)
+        case ("GET", "/auth/bootstrap"):
+            return try encode(authBundle)
 //        case ("GET", "/meal-hearth"):
 //            return try encode(homeDeck)
 //        case ("GET", "/taste-clips"):

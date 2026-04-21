@@ -3,9 +3,6 @@ import Foundation
 final class DMTFeastService {
     private let client: DMTNetworkClient
     private var cachedAuthBundle: DMTAuthBundle?
-    private var cachedRooms: [DMTRoomCard] = []
-    private var cachedClips: [DMTClipCard] = []
-    private var cachedMoments: [DMTMomentCard] = []
 
     init(client: DMTNetworkClient) {
         self.client = client
@@ -31,42 +28,23 @@ final class DMTFeastService {
     }
 
     func fetchHomeDeck() async throws -> DMTHomeDeck {
-        let deck = try await TOWINKLIopVibeRoute.TOWINKLIopFetchHomeDeck()
-        cachedRooms = deck.rooms
-        return deck
+        try await TOWINKLIopVibeRoute.TOWINKLIopFetchHomeDeck()
     }
 
     func fetchClipDeck() async throws -> DMTClipDeck {
-        let deck = try await TOWINKLIopVibeRoute.TOWINKLIopFetchClipDeck()
-        cachedClips = deck.clips
-        return deck
+        try await TOWINKLIopVibeRoute.TOWINKLIopFetchClipDeck()
     }
 
     func fetchDiscoverDeck() async throws -> DMTDiscoverDeck {
-        let deck = try await TOWINKLIopVibeRoute.TOWINKLIopFetchDiscoverDeck()
-        cachedMoments = deck.spotlight
-        return deck
+        try await TOWINKLIopVibeRoute.TOWINKLIopFetchDiscoverDeck()
     }
 
     func fetchRooms() async throws -> [DMTRoomCard] {
-        let rooms = try await TOWINKLIopVibeRoute.TOWINKLIopFetchRooms()
-        cachedRooms = rooms
-        return rooms
+        try await TOWINKLIopVibeRoute.TOWINKLIopFetchRooms()
     }
-
 
     func fetchMoments() async throws -> [DMTMomentCard] {
         try await client.load("plate-buzz")
-    }
-
-
-
-    func fetchMateDeck() async throws -> DMTMateDeck {
-        try await client.load("meal-mate")
-    }
-
-    func fetchMateReply(id: String) async throws -> DMTMateReply {
-        try await client.load("meal-mate/\(id)")
     }
 
     func fetchNookDigest() async throws -> DMTNookDigest {

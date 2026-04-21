@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		047E373B2F8E47E700391973 /* Exceptions for "DoinDiSieied" folder in "DoinDiSieied" target */ = {
+		047E373B2F8E47E700391973 /* Exceptions for "DMTMealNest" folder in "DoinDiSieied" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -24,9 +24,9 @@
 		047E372B2F8E47E400391973 /* DoinDiSieied */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				047E373B2F8E47E700391973 /* Exceptions for "DoinDiSieied" folder in "DoinDiSieied" target */,
+				047E373B2F8E47E700391973 /* Exceptions for "DMTMealNest" folder in "DoinDiSieied" target */,
 			);
-			path = DoinDiSieied;
+			path = DMTMealNest;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -146,7 +146,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DoinDiSieied/Info.plist;
+				INFOPLIST_FILE = DMTMealNest/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Capture your meal cover.Used to snap your daily culinary highlights and show friends what's on your plate.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Join audio meal rooms.Used for real-time voice interactions to enjoy a warm, shared dining atmosphere.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose a plate memory.Select your saved gourmet moments to update your mealtime status.";
@@ -185,7 +185,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DoinDiSieied/Info.plist;
+				INFOPLIST_FILE = DMTMealNest/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Capture your meal cover.Used to snap your daily culinary highlights and show friends what's on your plate.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Join audio meal rooms.Used for real-time voice interactions to enjoy a warm, shared dining atmosphere.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose a plate memory.Select your saved gourmet moments to update your mealtime status.";

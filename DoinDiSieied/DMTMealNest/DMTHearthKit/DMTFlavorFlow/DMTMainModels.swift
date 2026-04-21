@@ -29,15 +29,6 @@ struct DMTRoomCard: Codable {
     let trailingAccent: String?
 }
 
-//struct DMTRoomDetail: Codable {
-//    let id: String
-//    let title: String
-//    let hostLine: String
-//    let summary: String
-//    let currentPlates: [String]
-//    let tablePrompts: [String]
-//}
-
 struct DMTClipDeck: Codable {
     let primaryTitle: String
     let secondaryTitle: String
@@ -70,27 +61,6 @@ struct DMTMomentCard: Codable {
     let avatarKey: String
     let modeTag: String
     let sideTag: String
-}
-
-
-struct DMTMateDeck: Codable {
-    let greeting: String
-    let intro: String
-    let prompts: [DMTMatePrompt]
-}
-
-struct DMTMatePrompt: Codable {
-    let id: String
-    let title: String
-    let subtitle: String
-    let seed: String
-}
-
-struct DMTMateReply: Codable {
-    let id: String
-    let title: String
-    let lead: String
-    let replies: [String]
 }
 
 struct DMTDiscoverDeck: Codable {

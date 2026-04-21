@@ -10,9 +10,6 @@ struct DMTAuthBundle: Codable {
 }
 
 struct DMTWelcomeDeck: Codable {
-    let eyebrow: String
-    let title: String
-    let subtitle: String
     let primaryTitle: String
     let secondaryTitle: String
     let agreementHint: String

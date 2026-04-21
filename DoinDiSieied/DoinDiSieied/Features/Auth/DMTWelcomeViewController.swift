@@ -7,18 +7,12 @@ final class DMTWelcomeViewController: UIViewController {
 
     private let service: DMTFeastService
     private let heroView = UIImageView.init(image: UIImage.init(named: "aromaSenseScope"))
-//    private let eyebrowLabel = UILabel()
-//    private let titleLabel = UILabel()
-//    private let subtitleLabel = UILabel()
-//    private let symbolShell = UIView()
-//    private let symbolView = UIImageView(image: UIImage(systemName: "fork.knife.circle.fill"))
     private let eulaButton = UIButton()
     private let panelView = UIView()
     private let primaryButton = DMTGlowButton()
     private let secondaryButton = UIButton()
     private let consentButton = UIButton()
     private let consentLabel = UILabel()
-//    private let activityView = UIActivityIndicatorView(style: .medium)
 
     private var welcomeDeck: DMTWelcomeDeck?
     private var consentGranted = false {
@@ -71,28 +65,6 @@ final class DMTWelcomeViewController: UIViewController {
      
         eulaButton.addTarget(self, action: #selector(showAgreement), for: .touchUpInside)
 
-//        symbolShell.translatesAutoresizingMaskIntoConstraints = false
-//        symbolShell.backgroundColor = UIColor.white.withAlphaComponent(0.18)
-//        symbolShell.layer.cornerRadius = DMTScale.r(42)
-
-//        symbolView.translatesAutoresizingMaskIntoConstraints = false
-//        symbolView.tintColor = .white
-//        symbolView.contentMode = .scaleAspectFit
-//
-//        eyebrowLabel.translatesAutoresizingMaskIntoConstraints = false
-//        eyebrowLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-//        eyebrowLabel.textColor = UIColor.white.withAlphaComponent(0.92)
-//
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        titleLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
-//        titleLabel.textColor = .white
-//        titleLabel.numberOfLines = 0
-//
-//        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        subtitleLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-//        subtitleLabel.textColor = UIColor.white.withAlphaComponent(0.9)
-//        subtitleLabel.numberOfLines = 0
-
         panelView.translatesAutoresizingMaskIntoConstraints = false
         panelView.backgroundColor = .clear
         panelView.layer.cornerRadius = DMTScale.r(28)
@@ -116,18 +88,8 @@ final class DMTWelcomeViewController: UIViewController {
         consentLabel.textColor = DMTPalette.cloudInk
         consentLabel.numberOfLines = 0
 
-//        activityView.translatesAutoresizingMaskIntoConstraints = false
-//        activityView.color = .white
-//        activityView.startAnimating()
-
         view.addSubview(heroView)
         heroView.addSubview(eulaButton)
-//        heroView.addSubview(symbolShell)
-//        symbolShell.addSubview(symbolView)
-//        heroView.addSubview(eyebrowLabel)
-//        heroView.addSubview(titleLabel)
-//        heroView.addSubview(subtitleLabel)
-//        heroView.addSubview(activityView)
         view.addSubview(panelView)
         panelView.addSubview(primaryButton)
         panelView.addSubview(secondaryButton)
@@ -144,34 +106,7 @@ final class DMTWelcomeViewController: UIViewController {
             eulaButton.trailingAnchor.constraint(equalTo: heroView.trailingAnchor, constant: -DMTScale.w(18)),
             eulaButton.widthAnchor.constraint(equalToConstant: 80),
             eulaButton.heightAnchor.constraint(equalToConstant: 36),
-            
-            
-//            symbolShell.topAnchor.constraint(equalTo: eulaButton.bottomAnchor, constant: DMTScale.h(38)),
-//            symbolShell.leadingAnchor.constraint(equalTo: heroView.leadingAnchor, constant: DMTScale.w(28)),
-//            symbolShell.widthAnchor.constraint(equalToConstant: DMTScale.w(84)),
-//            symbolShell.heightAnchor.constraint(equalToConstant: DMTScale.w(84)),
 
-//            symbolView.centerXAnchor.constraint(equalTo: symbolShell.centerXAnchor),
-//            symbolView.centerYAnchor.constraint(equalTo: symbolShell.centerYAnchor),
-//            symbolView.widthAnchor.constraint(equalToConstant: DMTScale.w(44)),
-//            symbolView.heightAnchor.constraint(equalToConstant: DMTScale.w(44)),
-//
-//            eyebrowLabel.topAnchor.constraint(equalTo: symbolShell.bottomAnchor, constant: DMTScale.h(26)),
-//            eyebrowLabel.leadingAnchor.constraint(equalTo: heroView.leadingAnchor, constant: DMTScale.w(28)),
-//            eyebrowLabel.trailingAnchor.constraint(equalTo: heroView.trailingAnchor, constant: -DMTScale.w(28)),
-//
-//            titleLabel.topAnchor.constraint(equalTo: eyebrowLabel.bottomAnchor, constant: DMTScale.h(12)),
-//            titleLabel.leadingAnchor.constraint(equalTo: heroView.leadingAnchor, constant: DMTScale.w(28)),
-//            titleLabel.trailingAnchor.constraint(equalTo: heroView.trailingAnchor, constant: -DMTScale.w(28)),
-//
-//            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: DMTScale.h(14)),
-//            subtitleLabel.leadingAnchor.constraint(equalTo: heroView.leadingAnchor, constant: DMTScale.w(28)),
-//            subtitleLabel.trailingAnchor.constraint(equalTo: heroView.trailingAnchor, constant: -DMTScale.w(28)),
-
-//            activityView.topAnchor.constraint(equalTo: heroView.bottomAnchor, constant: DMTScale.h(18)),
-//            activityView.leadingAnchor.constraint(equalTo: heroView.leadingAnchor, constant: DMTScale.w(28)),
-//
-//
             panelView.topAnchor.constraint(equalTo: heroView.bottomAnchor, constant: -DMTScale.h(64)),
             panelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: DMTScale.w(20)),
             panelView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DMTScale.w(20)),
@@ -215,7 +150,6 @@ final class DMTWelcomeViewController: UIViewController {
                 }
             } catch {
                 await MainActor.run {
-//                    self.activityView.stopAnimating()
                     self.dmtShowNotice(title: "Signal Lost", message: error.localizedDescription)
                 }
             }
@@ -223,10 +157,6 @@ final class DMTWelcomeViewController: UIViewController {
     }
 
     private func applyDeck(_ deck: DMTWelcomeDeck) {
-//        activityView.stopAnimating()
-//        eyebrowLabel.text = deck.eyebrow
-//        titleLabel.text = deck.title
-//        subtitleLabel.text = deck.subtitle
         eulaButton.setTitle(deck.eulaTitle, for: .normal)
         primaryButton.setTitle(deck.primaryTitle, for: .normal)
         secondaryButton.setTitle(deck.secondaryTitle, for: .normal)

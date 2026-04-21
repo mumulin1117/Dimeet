@@ -9,7 +9,6 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
     private let preferredTitle: String
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-//    private let titleLabel = UILabel()
     private let heroImageView = UIImageView.init(image: UIImage.init(named: "mealVibeContext"))
     private let avatarButton = UIButton(type: .custom)
     private let plusBadge = UIImageView(image: UIImage(systemName: "plus"))
@@ -53,11 +52,6 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
 
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        titleLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
-//        titleLabel.textColor = DMTPalette.ink
-//        titleLabel.text = preferredTitle
-
         heroImageView.translatesAutoresizingMaskIntoConstraints = false
         heroImageView.image = makeHeroPlaceholder()
         heroImageView.contentMode = .scaleAspectFill
@@ -88,7 +82,6 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
 
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-//        contentView.addSubview(titleLabel)
         contentView.addSubview(heroImageView)
         contentView.addSubview(avatarButton)
         avatarButton.addSubview(plusBadge)
@@ -107,10 +100,6 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-
-//            titleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(8)),
-//            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(22)),
-//            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -DMTScale.w(22)),
 
             heroImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant:0),
             heroImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: DMTScale.w(0)),
@@ -192,7 +181,6 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
 
     private func applyDeck(_ deck: DMTSignUpDeck) {
         title = preferredTitle
-//        titleLabel.text = preferredTitle
         buttonTitle = deck.buttonTitle
         nicknameField.apply(title: deck.nicknameTitle, placeholder: deck.nicknamePlaceholder)
         bioField.apply(title: deck.bioTitle, placeholder: deck.bioPlaceholder)
@@ -273,7 +261,6 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
         let image = (info[.editedImage] ?? info[.originalImage]) as? UIImage
         if let image {
             selectedAvatar = image
-//            heroImageView.image = image
             avatarButton.setBackgroundImage(image, for: .normal)
             plusBadge.isHidden = true
         }

@@ -82,17 +82,9 @@ enum TOWINKLIopVibeRoute {
         let TOWINKLIopRooms = TOWINKLIopRows.compactMap(TOWINKLIopMapRoomCard)
         let TOWINKLIopProfiles = try await TOWINKLIopFetchStoryProfiles(TOWINKLIopRows: TOWINKLIopRows)
         return DMTHomeDeck(
-            brandTitle: "Dimeet",
             stories: TOWINKLIopProfiles,
-            mateBanner: DMTMateBanner(
-                title: "Gourmet Robot",
-                subtitle: "Ask for a dish mood or a next bite.",
-                artKey: "mate-robot",
-                promptID: "craving-compass"
-            ),
             sectionTitle: "Chat Room",
-            rooms: TOWINKLIopRooms,
-            createRoomTitle: "Create\nRoom"
+            rooms: TOWINKLIopRooms
         )
     }
 
@@ -153,29 +145,17 @@ enum TOWINKLIopVibeRoute {
         let TOWINKLIopAvatar = TOWINKLIopString(TOWINKLIopProfile["audioQuality"]) ?? ""
         let TOWINKLIopFollower = TOWINKLIopInt(TOWINKLIopProfile["privacyControl"]) ?? 0
         let TOWINKLIopFollowing = TOWINKLIopInt(TOWINKLIopProfile["profileCustomization"]) ?? 0
-        let TOWINKLIopLikes = TOWINKLIopInt(TOWINKLIopProfile["bioWriting"]) ?? 0
         let TOWINKLIopWallet = TOWINKLIopInt(TOWINKLIopProfile["avatarSelection"]) ?? 0
-        let TOWINKLIopAbout = TOWINKLIopString(TOWINKLIopProfile["seamlessConnection"]) ?? ""
 
         return DMTNookDigest(
             userID: "\(TOWINKLIopInterestTag)",
             displayName: TOWINKLIopDisplay,
             avatarKey: TOWINKLIopAvatar,
-            handle: "@\(TOWINKLIopDisplay.lowercased().replacingOccurrences(of: " ", with: ""))",
-            moodLine: "",
-            about: TOWINKLIopAbout,
-            highlights: [
-                DMTStatChip(label: "Likes", value: "\(TOWINKLIopLikes)"),
-                DMTStatChip(label: "Followers", value: "\(TOWINKLIopFollower)")
-            ],
-            actions: ["Edit"],
             walletTitle: "Wallet",
             walletBalance: TOWINKLIopWallet,
             followerCount: TOWINKLIopFollower,
             followingCount: TOWINKLIopFollowing,
-            giftLine: "Gifts Received \(TOWINKLIopLikes)",
             segmentTitles: ["Dynamic", "Short Video"],
-            emptyTitle: "No Record",
             emptyArtKey: "sliderThumbPosNOdata"
         )
     }
@@ -427,7 +407,7 @@ enum TOWINKLIopVibeRoute {
         }
     }
 
-    private static func TOWINKLIopString(_ TOWINKLIopValue: Any?) -> String? {
+    nonisolated private static func TOWINKLIopString(_ TOWINKLIopValue: Any?) -> String? {
         switch TOWINKLIopValue {
         case let value as String:
             return value
@@ -438,7 +418,7 @@ enum TOWINKLIopVibeRoute {
         }
     }
 
-    private static func TOWINKLIopInt(_ TOWINKLIopValue: Any?) -> Int? {
+    nonisolated private static func TOWINKLIopInt(_ TOWINKLIopValue: Any?) -> Int? {
         switch TOWINKLIopValue {
         case let value as Int:
             return value
@@ -451,7 +431,7 @@ enum TOWINKLIopVibeRoute {
         }
     }
 
-    private static func TOWINKLIopInt64(_ TOWINKLIopValue: Any?) -> Int64? {
+    nonisolated private static func TOWINKLIopInt64(_ TOWINKLIopValue: Any?) -> Int64? {
         switch TOWINKLIopValue {
         case let value as Int64:
             return value
@@ -466,11 +446,11 @@ enum TOWINKLIopVibeRoute {
         }
     }
 
-    private static func TOWINKLIopFirstMediaURL(_ TOWINKLIopValue: Any?) -> String? {
+    nonisolated private static func TOWINKLIopFirstMediaURL(_ TOWINKLIopValue: Any?) -> String? {
         TOWINKLIopMediaList(TOWINKLIopValue).first
     }
 
-    private static func TOWINKLIopFusionSource(_ TOWINKLIopValue: Any?) -> String? {
+    nonisolated private static func TOWINKLIopFusionSource(_ TOWINKLIopValue: Any?) -> String? {
         if let TOWINKLIopMedia = TOWINKLIopMediaList(TOWINKLIopValue)
             .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
             .first(where: { $0.isEmpty == false  }) {
@@ -486,7 +466,7 @@ enum TOWINKLIopVibeRoute {
         return nil
     }
 
-    private static func TOWINKLIopImageSource(primary: String, fallback: String?) -> String {
+    nonisolated private static func TOWINKLIopImageSource(primary: String, fallback: String?) -> String {
         if TOWINKLIopLooksLikeImageURL(primary) {
             return primary
         }
@@ -498,12 +478,12 @@ enum TOWINKLIopVibeRoute {
         return primary
     }
 
-    private static func TOWINKLIopLooksLikeImageURL(_ TOWINKLIopValue: String) -> Bool {
+    nonisolated private static func TOWINKLIopLooksLikeImageURL(_ TOWINKLIopValue: String) -> Bool {
         let TOWINKLIopLower = TOWINKLIopValue.lowercased()
         return [".png", ".jpg", ".jpeg", ".webp", ".jfif"].contains { TOWINKLIopLower.contains($0) }
     }
 
-    private static func TOWINKLIopMediaList(_ TOWINKLIopValue: Any?) -> [String] {
+    nonisolated private static func TOWINKLIopMediaList(_ TOWINKLIopValue: Any?) -> [String] {
         if let TOWINKLIopArray = TOWINKLIopValue as? [String] {
             return TOWINKLIopArray
         }
@@ -515,11 +495,11 @@ enum TOWINKLIopVibeRoute {
         return []
     }
 
-    private static func TOWINKLIopFirstImageURL(_ TOWINKLIopValues: [String]) -> String? {
+    nonisolated private static func TOWINKLIopFirstImageURL(_ TOWINKLIopValues: [String]) -> String? {
         TOWINKLIopValues.first(where: TOWINKLIopLooksLikeImageURL)
     }
 
-    private static func TOWINKLIopHasAudio(_ TOWINKLIopRow: [String: Any]) -> Bool {
+    nonisolated private static func TOWINKLIopHasAudio(_ TOWINKLIopRow: [String: Any]) -> Bool {
         let TOWINKLIopFusion = TOWINKLIopString(TOWINKLIopRow["fusionCuisine"]) ?? ""
         let TOWINKLIopImages = TOWINKLIopMediaList(TOWINKLIopRow["foodCulture"])
         return ([TOWINKLIopFusion] + TOWINKLIopImages).contains { $0.lowercased().contains(".mp3") }

@@ -1,12 +1,9 @@
 import Foundation
 
 struct DMTHomeDeck: Codable {
-    let brandTitle: String
     let stories: [DMTStoryChip]
-    let mateBanner: DMTMateBanner
     let sectionTitle: String
     let rooms: [DMTRoomCard]
-    let createRoomTitle: String
 }
 
 struct DMTStoryChip: Codable {
@@ -14,13 +11,6 @@ struct DMTStoryChip: Codable {
     let name: String
     let artKey: String
     let isActive: Bool
-}
-
-struct DMTMateBanner: Codable {
-    let title: String
-    let subtitle: String
-    let artKey: String
-    let promptID: String
 }
 
 struct DMTRoomCard: Codable {
@@ -39,14 +29,14 @@ struct DMTRoomCard: Codable {
     let trailingAccent: String?
 }
 
-struct DMTRoomDetail: Codable {
-    let id: String
-    let title: String
-    let hostLine: String
-    let summary: String
-    let currentPlates: [String]
-    let tablePrompts: [String]
-}
+//struct DMTRoomDetail: Codable {
+//    let id: String
+//    let title: String
+//    let hostLine: String
+//    let summary: String
+//    let currentPlates: [String]
+//    let tablePrompts: [String]
+//}
 
 struct DMTClipDeck: Codable {
     let primaryTitle: String
@@ -82,14 +72,6 @@ struct DMTMomentCard: Codable {
     let sideTag: String
 }
 
-struct DMTMomentDetail: Codable {
-    let id: String
-    let author: String
-    let dish: String
-    let story: String
-    let tags: [String]
-    let pairings: [String]
-}
 
 struct DMTMateDeck: Codable {
     let greeting: String
@@ -130,22 +112,10 @@ struct DMTNookDigest: Codable {
     let userID: String
     let displayName: String
     let avatarKey: String
-    let handle: String
-    let moodLine: String
-    let about: String
-    let highlights: [DMTStatChip]
-    let actions: [String]
     let walletTitle: String
     let walletBalance: Int
     let followerCount: Int
     let followingCount: Int
-    let giftLine: String
     let segmentTitles: [String]
-    let emptyTitle: String
     let emptyArtKey: String
-}
-
-struct DMTStatChip: Codable {
-    let label: String
-    let value: String
 }

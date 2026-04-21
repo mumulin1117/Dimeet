@@ -219,35 +219,47 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
         }
     }
 
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+    nonisolated func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         guard let product = response.products.first else {
-            finishPurchaseFlow(errorMessage: "The selected item is not available.")
+            Task { @MainActor [weak self] in
+                self?.finishPurchaseFlow(errorMessage: "The selected item is not available.")
+            }
             return
         }
         SKPaymentQueue.default().add(SKPayment(product: product))
     }
 
-    func request(_ request: SKRequest, didFailWithError error: Error) {
-        finishPurchaseFlow(errorMessage: error.localizedDescription)
+    nonisolated func request(_ request: SKRequest, didFailWithError error: Error) {
+        Task { @MainActor [weak self] in
+            self?.finishPurchaseFlow(errorMessage: error.localizedDescription)
+        }
     }
 
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+    nonisolated func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             switch transaction.transactionState {
             case .purchased:
                 queue.finishTransaction(transaction)
-                finishPurchaseFlow(completed: true)
+                Task { @MainActor [weak self] in
+                    self?.finishPurchaseFlow(completed: true)
+                }
             case .failed:
                 queue.finishTransaction(transaction)
-                finishPurchaseFlow(errorMessage: transaction.error?.localizedDescription ?? "The payment could not be completed.")
+                Task { @MainActor [weak self] in
+                    self?.finishPurchaseFlow(errorMessage: transaction.error?.localizedDescription ?? "The payment could not be completed.")
+                }
             case .restored:
                 queue.finishTransaction(transaction)
-                finishPurchaseFlow(completed: true)
+                Task { @MainActor [weak self] in
+                    self?.finishPurchaseFlow(completed: true)
+                }
             case .deferred, .purchasing:
                 break
             @unknown default:
                 queue.finishTransaction(transaction)
-                finishPurchaseFlow(errorMessage: "An unknown payment state was received.")
+                Task { @MainActor [weak self] in
+                    self?.finishPurchaseFlow(errorMessage: "An unknown payment state was received.")
+                }
             }
         }
     }

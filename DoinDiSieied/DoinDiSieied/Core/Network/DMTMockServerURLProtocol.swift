@@ -67,52 +67,52 @@ private enum DMTMockKitchen {
         let path = request.url?.path ?? ""
 
         switch (method, path) {
-        case ("GET", "/auth/bootstrap"):
-            return try encode(authBundle)
-        case ("GET", "/meal-hearth"):
-            return try encode(homeDeck)
-        case ("GET", "/taste-clips"):
-            return try encode(clipDeck)
-        case ("GET", "/plate-discover"):
-            return try encode(discoverDeck)
+//        case ("GET", "/auth/bootstrap"):
+//            return try encode(authBundle)
+//        case ("GET", "/meal-hearth"):
+//            return try encode(homeDeck)
+//        case ("GET", "/taste-clips"):
+//            return try encode(clipDeck)
+//        case ("GET", "/plate-discover"):
+//            return try encode(discoverDeck)
         case ("POST", "/auth/login"):
             let body = try decode(DMTLoginBody.self, from: request.httpBody)
             return try encode(sessionPayload(email: body.email, name: body.email.split(separator: "@").first.map(String.init) ?? "guest"))
         case ("POST", "/auth/signup"):
             let body = try decode(DMTSignUpBody.self, from: request.httpBody)
             return try encode(sessionPayload(email: body.email, name: body.nickname.isEmpty ? "tastefriend" : body.nickname))
-        case ("GET", "/meal-rooms"):
-            return try encode(roomCards)
-        case ("GET", "/plate-buzz"):
-            return try encode(momentCards)
-        case ("GET", "/meal-mate"):
-            return try encode(mateDeck)
-        case ("GET", "/taste-nook"):
-            return try encode(nookDigest)
+//        case ("GET", "/meal-rooms"):
+//            return try encode(roomCards)
+//        case ("GET", "/plate-buzz"):
+//            return try encode(momentCards)
+//        case ("GET", "/meal-mate"):
+//            return try encode(mateDeck)
+//        case ("GET", "/taste-nook"):
+//            return try encode(nookDigest)
         default:
-            if method == "GET", path.hasPrefix("/meal-rooms/") {
-                let roomID = String(path.dropFirst("/meal-rooms/".count))
-                guard let detail = roomDetails[roomID] else {
-                    throw ErrorSignal(code: 404, message: "Room not found")
-                }
-                return try encode(detail)
-            }
-
-            if method == "GET", path.hasPrefix("/plate-buzz/") {
-                let momentID = String(path.dropFirst("/plate-buzz/".count))
-                guard let detail = momentDetails[momentID] else {
-                    throw ErrorSignal(code: 404, message: "Moment not found")
-                }
-                return try encode(detail)
-            }
-
-            if method == "GET", path.hasPrefix("/meal-mate/") {
-                let promptID = String(path.dropFirst("/meal-mate/".count))
-                guard let reply = mateReplies[promptID] else {
-                    throw ErrorSignal(code: 404, message: "Prompt not found")
-                }
-                return try encode(reply)
-            }
+//            if method == "GET", path.hasPrefix("/meal-rooms/") {
+//                let roomID = String(path.dropFirst("/meal-rooms/".count))
+//                guard let detail = roomDetails[roomID] else {
+//                    throw ErrorSignal(code: 404, message: "Room not found")
+//                }
+//                return try encode(detail)
+//            }
+//
+//            if method == "GET", path.hasPrefix("/plate-buzz/") {
+//                let momentID = String(path.dropFirst("/plate-buzz/".count))
+//                guard let detail = momentDetails[momentID] else {
+//                    throw ErrorSignal(code: 404, message: "Moment not found")
+//                }
+//                return try encode(detail)
+//            }
+//
+//            if method == "GET", path.hasPrefix("/meal-mate/") {
+//                let promptID = String(path.dropFirst("/meal-mate/".count))
+//                guard let reply = mateReplies[promptID] else {
+//                    throw ErrorSignal(code: 404, message: "Prompt not found")
+//                }
+//                return try encode(reply)
+//            }
 
             throw ErrorSignal(code: 404, message: "Plate missing")
         }
@@ -136,9 +136,6 @@ private enum DMTMockKitchen {
 
     private static let authBundle = DMTAuthBundle(
         welcome: DMTWelcomeDeck(
-            eyebrow: "Talk over meals",
-            title: "Dimeet keeps every bite social",
-            subtitle: "Step into audio-first meal rooms, swap plate stories, and find easy company from breakfast to late-night snacks.",
             primaryTitle: "I'm new",
             secondaryTitle: "Sign in",
             agreementHint: "Agree to House Notes and Privacy Notes before entering the table.",
@@ -197,7 +194,6 @@ private enum DMTMockKitchen {
     )
 
     private static let homeDeck = DMTHomeDeck(
-        brandTitle: "Dimeet",
         stories: [
             DMTStoryChip(id: "story-vasquez", name: "Vasquez", artKey: "story-vasquez", isActive: true),
             DMTStoryChip(id: "story-mccoya", name: "McCoya", artKey: "story-mccoya", isActive: false),
@@ -205,12 +201,6 @@ private enum DMTMockKitchen {
             DMTStoryChip(id: "story-matheus", name: "Matheus", artKey: "story-matheus", isActive: false),
             DMTStoryChip(id: "story-bernard", name: "Bernard", artKey: "story-bernard", isActive: false)
         ],
-        mateBanner: DMTMateBanner(
-            title: "Gourmet Robot",
-            subtitle: "Ask for a dish mood or a next bite.",
-            artKey: "mate-robot",
-            promptID: "craving-compass"
-        ),
         sectionTitle: "Chat Room",
         rooms: [
             DMTRoomCard(
@@ -258,190 +248,178 @@ private enum DMTMockKitchen {
                 attendeeKeys: ["story-vasquez", "story-ruiz", "story-matheus"],
                 trailingAccent: nil
             )
-        ],
-        createRoomTitle: "Create\nRoom"
+        ]
     )
 
     private static let roomCards = homeDeck.rooms
 
-    private static let roomDetails = [
-        "sunrise-broth": DMTRoomDetail(
-            id: "sunrise-broth",
-            title: "Cocoa Corner",
-            hostLine: "Hosted by Evelyn Drake, who always brings one more flavor story to the table.",
-            summary: "A warm room for people who like comfort bites, quick check-ins, and a little playful commentary while they eat.",
-            currentPlates: ["Scallion pancake", "Soy milk", "Egg porridge"],
-            tablePrompts: ["What breakfast makes you feel grounded?", "Which aroma means home to you?", "What tiny ritual starts your day right?"]
-        ),
-        "noodle-noon": DMTRoomDetail(
-            id: "noodle-noon",
-            title: "Bite Breakers",
-            hostLine: "Hosted by Heart breaker, who keeps the room playful and fast-moving.",
-            summary: "A brighter room for people who want a casual speaking slot, a quick bite, and a lively reaction loop while they eat.",
-            currentPlates: ["Sesame noodles", "Cold brew", "Pickled cucumbers"],
-            tablePrompts: ["What desk lunch do you secretly love?", "Which topping upgrades any noodle bowl?", "What is your perfect ten-minute meal?"]
-        ),
-        "midnight-toast": DMTRoomDetail(
-            id: "midnight-toast",
-            title: "After Bite",
-            hostLine: "Hosted by Nora Hale, maker of late snacks and longer conversations.",
-            summary: "For night owls who want company while fixing one last bite before sleep and sharing random comfort cravings.",
-            currentPlates: ["Honey toast", "Miso butter corn", "Sparkling yuzu"],
-            tablePrompts: ["What late bite feels impossible to resist?", "Which pantry combo should not work but does?", "What snack belongs in every night drawer?"]
-        )
-    ]
+//    private static let roomDetails = [
+//        "sunrise-broth": DMTRoomDetail(
+//            id: "sunrise-broth",
+//            title: "Cocoa Corner",
+//            hostLine: "Hosted by Evelyn Drake, who always brings one more flavor story to the table.",
+//            summary: "A warm room for people who like comfort bites, quick check-ins, and a little playful commentary while they eat.",
+//            currentPlates: ["Scallion pancake", "Soy milk", "Egg porridge"],
+//            tablePrompts: ["What breakfast makes you feel grounded?", "Which aroma means home to you?", "What tiny ritual starts your day right?"]
+//        ),
+//        "noodle-noon": DMTRoomDetail(
+//            id: "noodle-noon",
+//            title: "Bite Breakers",
+//            hostLine: "Hosted by Heart breaker, who keeps the room playful and fast-moving.",
+//            summary: "A brighter room for people who want a casual speaking slot, a quick bite, and a lively reaction loop while they eat.",
+//            currentPlates: ["Sesame noodles", "Cold brew", "Pickled cucumbers"],
+//            tablePrompts: ["What desk lunch do you secretly love?", "Which topping upgrades any noodle bowl?", "What is your perfect ten-minute meal?"]
+//        ),
+//        "midnight-toast": DMTRoomDetail(
+//            id: "midnight-toast",
+//            title: "After Bite",
+//            hostLine: "Hosted by Nora Hale, maker of late snacks and longer conversations.",
+//            summary: "For night owls who want company while fixing one last bite before sleep and sharing random comfort cravings.",
+//            currentPlates: ["Honey toast", "Miso butter corn", "Sparkling yuzu"],
+//            tablePrompts: ["What late bite feels impossible to resist?", "Which pantry combo should not work but does?", "What snack belongs in every night drawer?"]
+//        )
+//    ]
 
-    private static let momentCards = [
-        DMTMomentCard(id: "pepper-sizzle", authorUserID: "moment-user-evelyn", author: "Evelyn Drake", dish: "After all, tomorrow is a...", note: "A night plate with camera-first energy.", stamp: "12m ago", heatTag: "Video", artKey: "moment-evelyn", avatarKey: "story-vasquez", modeTag: "Video", sideTag: "Live"),
-        DMTMomentCard(id: "berry-waffle", authorUserID: "moment-user-evelyn", author: "Evelyn Drake", dish: "Where Every Meal Tells...", note: "An audio-led bite story for people staying late.", stamp: "34m ago", heatTag: "Audio", artKey: "moment-denim", avatarKey: "story-vasquez", modeTag: "Audio", sideTag: "Live"),
-        DMTMomentCard(id: "curry-cloud", authorUserID: "moment-user-florence", author: "Florence Sutton", dish: "Exploring the World...", note: "A quick dish clip from a soft outdoor table.", stamp: "58m ago", heatTag: "Video", artKey: "moment-florence", avatarKey: "story-mccoya", modeTag: "Video", sideTag: "Live"),
-        DMTMomentCard(id: "garden-bite", authorUserID: "moment-user-jorge", author: "Jorge Hicks", dish: "Sharing My Food, My...", note: "Low-key table energy with a close-up bite.", stamp: "1h ago", heatTag: "Video", artKey: "moment-jorge", avatarKey: "story-ruiz", modeTag: "Video", sideTag: "Live")
-    ]
+//    private static let momentCards = [
+//        DMTMomentCard(id: "pepper-sizzle", authorUserID: "moment-user-evelyn", author: "Evelyn Drake", dish: "After all, tomorrow is a...", note: "A night plate with camera-first energy.", stamp: "12m ago", heatTag: "Video", artKey: "moment-evelyn", avatarKey: "story-vasquez", modeTag: "Video", sideTag: "Live"),
+//        DMTMomentCard(id: "berry-waffle", authorUserID: "moment-user-evelyn", author: "Evelyn Drake", dish: "Where Every Meal Tells...", note: "An audio-led bite story for people staying late.", stamp: "34m ago", heatTag: "Audio", artKey: "moment-denim", avatarKey: "story-vasquez", modeTag: "Audio", sideTag: "Live"),
+//        DMTMomentCard(id: "curry-cloud", authorUserID: "moment-user-florence", author: "Florence Sutton", dish: "Exploring the World...", note: "A quick dish clip from a soft outdoor table.", stamp: "58m ago", heatTag: "Video", artKey: "moment-florence", avatarKey: "story-mccoya", modeTag: "Video", sideTag: "Live"),
+//        DMTMomentCard(id: "garden-bite", authorUserID: "moment-user-jorge", author: "Jorge Hicks", dish: "Sharing My Food, My...", note: "Low-key table energy with a close-up bite.", stamp: "1h ago", heatTag: "Video", artKey: "moment-jorge", avatarKey: "story-ruiz", modeTag: "Video", sideTag: "Live")
+//    ]
 
-    private static let momentDetails = [
-        "pepper-sizzle": DMTMomentDetail(
-            id: "pepper-sizzle",
-            author: "Evelyn Drake",
-            dish: "After all, tomorrow is a...",
-            story: "I wanted something with camera energy but still rooted in a real bite, so I kept the setup casual and let the plate do the work.",
-            tags: ["Pepper hit", "After-work plate", "Skillet mood"],
-            pairings: ["Sparkling citrus", "Pickled onion", "Soft egg"]
-        ),
-        "berry-waffle": DMTMomentDetail(
-            id: "berry-waffle",
-            author: "Evelyn Drake",
-            dish: "Where Every Meal Tells...",
-            story: "This one leaned warmer and more conversational. I wanted the bite to feel like an easy opener for people joining halfway through.",
-            tags: ["Weekend energy", "Brunch wish", "Berry gloss"],
-            pairings: ["Vanilla yogurt", "Iced latte", "Mint sugar"]
-        ),
-        "curry-cloud": DMTMomentDetail(
-            id: "curry-cloud",
-            author: "Florence Sutton",
-            dish: "Exploring the World...",
-            story: "I filmed this one outside because the light was soft and the food carried the whole mood. It felt playful without needing a big setup.",
-            tags: ["Cozy bowl", "Silky broth", "Rainy-night wish"],
-            pairings: ["Sesame greens", "Soft tofu", "Mango lassi"]
-        ),
-        "garden-bite": DMTMomentDetail(
-            id: "garden-bite",
-            author: "Jorge Hicks",
-            dish: "Sharing My Food, My...",
-            story: "This plate worked because it felt familiar and close. I kept the framing simple and let the bite and expression carry the post.",
-            tags: ["Soft light", "Casual share", "Table mood"],
-            pairings: ["Lemon soda", "Roasted tomato", "Honey ricotta"]
-        )
-    ]
+//    private static let momentDetails = [
+//        "pepper-sizzle": DMTMomentDetail(
+//            id: "pepper-sizzle",
+//            author: "Evelyn Drake",
+//            dish: "After all, tomorrow is a...",
+//            story: "I wanted something with camera energy but still rooted in a real bite, so I kept the setup casual and let the plate do the work.",
+//            tags: ["Pepper hit", "After-work plate", "Skillet mood"],
+//            pairings: ["Sparkling citrus", "Pickled onion", "Soft egg"]
+//        ),
+//        "berry-waffle": DMTMomentDetail(
+//            id: "berry-waffle",
+//            author: "Evelyn Drake",
+//            dish: "Where Every Meal Tells...",
+//            story: "This one leaned warmer and more conversational. I wanted the bite to feel like an easy opener for people joining halfway through.",
+//            tags: ["Weekend energy", "Brunch wish", "Berry gloss"],
+//            pairings: ["Vanilla yogurt", "Iced latte", "Mint sugar"]
+//        ),
+//        "curry-cloud": DMTMomentDetail(
+//            id: "curry-cloud",
+//            author: "Florence Sutton",
+//            dish: "Exploring the World...",
+//            story: "I filmed this one outside because the light was soft and the food carried the whole mood. It felt playful without needing a big setup.",
+//            tags: ["Cozy bowl", "Silky broth", "Rainy-night wish"],
+//            pairings: ["Sesame greens", "Soft tofu", "Mango lassi"]
+//        ),
+//        "garden-bite": DMTMomentDetail(
+//            id: "garden-bite",
+//            author: "Jorge Hicks",
+//            dish: "Sharing My Food, My...",
+//            story: "This plate worked because it felt familiar and close. I kept the framing simple and let the bite and expression carry the post.",
+//            tags: ["Soft light", "Casual share", "Table mood"],
+//            pairings: ["Lemon soda", "Roasted tomato", "Honey ricotta"]
+//        )
+//    ]
 
-    private static let clipDeck = DMTClipDeck(
-        primaryTitle: "Clip",
-        secondaryTitle: "Following",
-        clips: [
-            DMTClipCard(
-                id: "clip-heartbreaker",
-                creatorUserID: "clip-user-heartbreaker",
-                creatorName: "Heart breaker",
-                title: "Heart breaker ❤️",
-                subtitle: "Pick your role and speak your part.",
-                artKey: "clip-heartbreaker",
-                avatarKey: "story-vasquez",
-                likesLine: "3.4k",
-                talksLine: "3.4k",
-                accentTitle: "+",
-                linkedMomentID: "pepper-sizzle"
-            ),
-            DMTClipCard(
-                id: "clip-florence",
-                creatorUserID: "clip-user-florence",
-                creatorName: "Florence Sutton",
-                title: "Night cravings only",
-                subtitle: "Join when the table feels too quiet.",
-                artKey: "clip-florence",
-                avatarKey: "story-mccoya",
-                likesLine: "2.6k",
-                talksLine: "1.8k",
-                accentTitle: "+",
-                linkedMomentID: "curry-cloud"
-            )
-        ]
-    )
+//    private static let clipDeck = DMTClipDeck(
+//        primaryTitle: "Clip",
+//        secondaryTitle: "Following",
+//        clips: [
+//            DMTClipCard(
+//                id: "clip-heartbreaker",
+//                creatorUserID: "clip-user-heartbreaker",
+//                creatorName: "Heart breaker",
+//                title: "Heart breaker ❤️",
+//                subtitle: "Pick your role and speak your part.",
+//                artKey: "clip-heartbreaker",
+//                avatarKey: "story-vasquez",
+//                likesLine: "3.4k",
+//                talksLine: "3.4k",
+//                accentTitle: "+",
+//                linkedMomentID: "pepper-sizzle"
+//            ),
+//            DMTClipCard(
+//                id: "clip-florence",
+//                creatorUserID: "clip-user-florence",
+//                creatorName: "Florence Sutton",
+//                title: "Night cravings only",
+//                subtitle: "Join when the table feels too quiet.",
+//                artKey: "clip-florence",
+//                avatarKey: "story-mccoya",
+//                likesLine: "2.6k",
+//                talksLine: "1.8k",
+//                accentTitle: "+",
+//                linkedMomentID: "curry-cloud"
+//            )
+//        ]
+//    )
 
-    private static let mateDeck = DMTMateDeck(
-        greeting: "Meal Mate is ready",
-        intro: "Pick a prompt and get a playful food-minded reply for cravings, dish ideas, or table talk starters.",
-        prompts: [
-            DMTMatePrompt(id: "craving-compass", title: "Craving Compass", subtitle: "Name your mood and get a dish direction.", seed: "I want something rich but not heavy."),
-            DMTMatePrompt(id: "plate-riff", title: "Plate Riff", subtitle: "Turn one ingredient into a full bite idea.", seed: "I only have mushrooms and rice."),
-            DMTMatePrompt(id: "table-icebreaker", title: "Table Icebreaker", subtitle: "Find a friendly prompt for your next room.", seed: "Give me a warm opener for a breakfast room.")
-        ]
-    )
+//    private static let mateDeck = DMTMateDeck(
+//        greeting: "Meal Mate is ready",
+//        intro: "Pick a prompt and get a playful food-minded reply for cravings, dish ideas, or table talk starters.",
+//        prompts: [
+//            DMTMatePrompt(id: "craving-compass", title: "Craving Compass", subtitle: "Name your mood and get a dish direction.", seed: "I want something rich but not heavy."),
+//            DMTMatePrompt(id: "plate-riff", title: "Plate Riff", subtitle: "Turn one ingredient into a full bite idea.", seed: "I only have mushrooms and rice."),
+//            DMTMatePrompt(id: "table-icebreaker", title: "Table Icebreaker", subtitle: "Find a friendly prompt for your next room.", seed: "Give me a warm opener for a breakfast room.")
+//        ]
+//    )
 
-    private static let discoverDeck = DMTDiscoverDeck(
-        title: "Discover",
-        primaryTitle: "New",
-        secondaryTitle: "Follow",
-        spotlight: momentCards,
-        promo: DMTDiscoverPromo(
-            title: "Out of coins. Recharge now!",
-            subtitle: "Keep the room glowing and the prompts moving.",
-            artKey: "outofcoingsj"
-        ),
-        gallery: Array(momentCards.dropFirst(4).prefix(2))
-    )
+//    private static let discoverDeck = DMTDiscoverDeck(
+//        title: "Discover",
+//        primaryTitle: "New",
+//        secondaryTitle: "Follow",
+//        spotlight: momentCards,
+//        promo: DMTDiscoverPromo(
+//            title: "Out of coins. Recharge now!",
+//            subtitle: "Keep the room glowing and the prompts moving.",
+//            artKey: "outofcoingsj"
+//        ),
+//        gallery: Array(momentCards.dropFirst(4).prefix(2))
+//    )
 
-    private static let mateReplies = [
-        "craving-compass": DMTMateReply(
-            id: "craving-compass",
-            title: "Craving Compass",
-            lead: "You sound like you want comfort with lift.",
-            replies: [
-                "Try lemony butter pasta with pepper greens so the finish stays bright.",
-                "A roasted chicken rice bowl with crunchy herbs would feel full without dragging.",
-                "If you want soup, a creamy corn chowder with chili oil keeps the texture rich and the finish sharp."
-            ]
-        ),
-        "plate-riff": DMTMateReply(
-            id: "plate-riff",
-            title: "Plate Riff",
-            lead: "Mushrooms and rice can go far with a little contrast.",
-            replies: [
-                "Sear the mushrooms hard, fold them into soy butter rice, and finish with scallions.",
-                "Turn the rice into a crisp-edged pan cake and crown it with garlicky mushrooms.",
-                "Build a quick congee-style bowl and top it with pepper mushrooms plus a jammy egg."
-            ]
-        ),
-        "table-icebreaker": DMTMateReply(
-            id: "table-icebreaker",
-            title: "Table Icebreaker",
-            lead: "Start with something sensory and easy to answer.",
-            replies: [
-                "Ask which breakfast smell feels most like a good morning.",
-                "Try: what is the one bite that can reset a rough day?",
-                "Open with a fun tradeoff: sweet breakfast forever or savory breakfast forever?"
-            ]
-        )
-    ]
+//    private static let mateReplies = [
+//        "craving-compass": DMTMateReply(
+//            id: "craving-compass",
+//            title: "Craving Compass",
+//            lead: "You sound like you want comfort with lift.",
+//            replies: [
+//                "Try lemony butter pasta with pepper greens so the finish stays bright.",
+//                "A roasted chicken rice bowl with crunchy herbs would feel full without dragging.",
+//                "If you want soup, a creamy corn chowder with chili oil keeps the texture rich and the finish sharp."
+//            ]
+//        ),
+//        "plate-riff": DMTMateReply(
+//            id: "plate-riff",
+//            title: "Plate Riff",
+//            lead: "Mushrooms and rice can go far with a little contrast.",
+//            replies: [
+//                "Sear the mushrooms hard, fold them into soy butter rice, and finish with scallions.",
+//                "Turn the rice into a crisp-edged pan cake and crown it with garlicky mushrooms.",
+//                "Build a quick congee-style bowl and top it with pepper mushrooms plus a jammy egg."
+//            ]
+//        ),
+//        "table-icebreaker": DMTMateReply(
+//            id: "table-icebreaker",
+//            title: "Table Icebreaker",
+//            lead: "Start with something sensory and easy to answer.",
+//            replies: [
+//                "Ask which breakfast smell feels most like a good morning.",
+//                "Try: what is the one bite that can reset a rough day?",
+//                "Open with a fun tradeoff: sweet breakfast forever or savory breakfast forever?"
+//            ]
+//        )
+//    ]
 
     private static let nookDigest = DMTNookDigest(
         userID: "taste-scout-id",
         displayName: "Taste Scout",
         avatarKey: "story-vasquez",
-        handle: "@taste.scout",
-        moodLine: "Always finds a reason to stay for one more bite.",
-        about: "This nook tracks your current table streak, the dish moods you share, and a few shortcuts for tuning your Dimeet rhythm.",
-        highlights: [
-            DMTStatChip(label: "Table Streak", value: "08 days"),
-            DMTStatChip(label: "Dish Notes", value: "14"),
-            DMTStatChip(label: "Favorite Mood", value: "Cozy")
-        ],
-        actions: ["Edit intro", "Tune notifications", "Review house notes"],
         walletTitle: "Wallet",
         walletBalance: 1340,
         followerCount: 120,
         followingCount: 33,
-        giftLine: "Gifts Received 0",
         segmentTitles: ["Dynamic", "Short Video"],
-        emptyTitle: "No Record",
         emptyArtKey: "sliderThumbPosNOdata"
     )
 }

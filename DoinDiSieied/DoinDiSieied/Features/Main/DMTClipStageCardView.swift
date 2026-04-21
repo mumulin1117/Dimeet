@@ -37,7 +37,6 @@ final class DMTClipStageCardView: UIControl {
             source: clip.avatarKey,
             placeholder: DMTMainArtworkFactory.avatarImage(for: clip.creatorName, size: CGSize(width: 72, height: 72))
         )
-//        creatorLabel.text = clip.creatorName
         titleLabel.text = clip.title
         subtitleLabel.text = clip.subtitle
 

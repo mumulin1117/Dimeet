@@ -44,7 +44,6 @@ enum DMTMainArtworkFactory {
         let glyph = glyphForKey(key)
         let renderer = UIGraphicsImageRenderer(size: size)
         return renderer.image { context in
-            let bounds = CGRect(origin: .zero, size: size)
             let gradient = CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [palette.0.cgColor, palette.1.cgColor] as CFArray,

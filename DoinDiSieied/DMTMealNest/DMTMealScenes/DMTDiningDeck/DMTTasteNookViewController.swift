@@ -36,7 +36,7 @@ final class DMTTasteNookViewController: UIViewController {
     }
 
     private lazy var backdropCanvas: UIImageView = {
-         let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
+         let statement = UIImageView.init(image: UIImage.dmtMealAsset(named: DMTPlateStamp.hearthBackdrop))
          statement.contentMode = .scaleToFill
         statement.frame = UIScreen.main.bounds
          return statement
@@ -57,7 +57,7 @@ final class DMTTasteNookViewController: UIViewController {
         nookTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         nookTitleLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
         nookTitleLabel.textColor = DMTPalette.ink
-        nookTitleLabel.text = "Me"
+        nookTitleLabel.text = DMTStringCellar.shared.serve("copy.me")
 
         spiceGearButton.translatesAutoresizingMaskIntoConstraints = false
         spiceGearButton.tintColor = DMTPalette.ink
@@ -72,7 +72,7 @@ final class DMTTasteNookViewController: UIViewController {
         profileTasteView.backgroundColor = UIColor.white.withAlphaComponent(0.4)
 
         editTasteButton.translatesAutoresizingMaskIntoConstraints = false
-        editTasteButton.setBackgroundImage(UIImage(named: "toppingExtraSide"), for: .normal)
+        editTasteButton.setBackgroundImage(UIImage.dmtMealAsset(named: DMTPlateStamp.editTasteButton), for: .normal)
         editTasteButton.addTarget(self, action: #selector(handleEditTasteTap), for: .touchUpInside)
 
         profileNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +86,7 @@ final class DMTTasteNookViewController: UIViewController {
         walletTasteCard.isUserInteractionEnabled = true
 
         walletBackdropView.translatesAutoresizingMaskIntoConstraints = false
-        walletBackdropView.image = UIImage(named: "safeAreaInsets")
+        walletBackdropView.image = UIImage.dmtMealAsset(named: DMTPlateStamp.walletCard)
         walletBackdropView.contentMode = .scaleToFill
 
         walletCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -102,7 +102,7 @@ final class DMTTasteNookViewController: UIViewController {
         statsRail.distribution = .fillEqually
 
         giftTasteCard.translatesAutoresizingMaskIntoConstraints = false
-        giftTasteCard.setBackgroundImage(UIImage(named: "longPressTime"), for: .normal)
+        giftTasteCard.setBackgroundImage(UIImage.dmtMealAsset(named: DMTPlateStamp.giftCard), for: .normal)
         giftTasteCard.clipsToBounds = true
         giftTasteCard.addTarget(self, action: #selector(handleGiftTasteTap), for: .touchUpInside)
 
@@ -237,8 +237,7 @@ final class DMTTasteNookViewController: UIViewController {
                 }
             } catch {
                 await MainActor.run {
-                   
-                    self.dmtServeNotice(title: "Profile Unavailable", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.profileUnavailableTitle"), message: error.localizedDescription)
                 }
             }
         }
@@ -258,7 +257,7 @@ final class DMTTasteNookViewController: UIViewController {
         profileNameLabel.text = nookDigestCopy.displayName.isEmpty ? (localProfile?.nickname ?? "") : nookDigestCopy.displayName
         walletCaptionLabel.text = nookDigestCopy.walletTitle
         walletAmountLabel.text = "\(nookDigestCopy.walletBalance)"
-        emptyTasteView.image = UIImage(named: nookDigestCopy.emptyArtKey) ?? DMTMainArtworkFactory.sceneImage(for: nookDigestCopy.emptyArtKey, size: CGSize(width: 240, height: 240))
+        emptyTasteView.image = UIImage.dmtMealAsset(named: nookDigestCopy.emptyArtKey) ?? DMTMainArtworkFactory.sceneImage(for: nookDigestCopy.emptyArtKey, size: CGSize(width: 240, height: 240))
 
         statsRail.arrangedSubviews.forEach {
             statsRail.removeArrangedSubview($0)
@@ -266,8 +265,8 @@ final class DMTTasteNookViewController: UIViewController {
         }
 
         let items = [
-            ("Followers", "\(nookDigestCopy.followerCount)", 0),
-            ("Following", "\(nookDigestCopy.followingCount)", 1)
+            (DMTStringCellar.shared.serve("copy.followers"), "\(nookDigestCopy.followerCount)", 0),
+            (DMTStringCellar.shared.serve("copy.following"), "\(nookDigestCopy.followingCount)", 1)
         ]
         for item in items {
             let shell = UIButton(type: .system)
@@ -301,8 +300,8 @@ final class DMTTasteNookViewController: UIViewController {
             statsRail.addArrangedSubview(shell)
         }
 
-        let dynamicTitle = nookDigestCopy.segmentTitles.first ?? "Dynamic"
-        let videoTitle = nookDigestCopy.segmentTitles.dropFirst().first ?? "Short Video"
+        let dynamicTitle = nookDigestCopy.segmentTitles.first ?? DMTStringCellar.shared.serve("copy.dynamic")
+        let videoTitle = nookDigestCopy.segmentTitles.dropFirst().first ?? DMTStringCellar.shared.serve("copy.shortVideo")
         dynamicTasteButton.setTitle(dynamicTitle, for: .normal)
         shortTasteButton.setTitle(videoTitle, for: .normal)
         styleProfileShelves(showDynamic: true)

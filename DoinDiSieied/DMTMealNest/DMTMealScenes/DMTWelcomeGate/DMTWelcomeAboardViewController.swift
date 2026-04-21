@@ -14,14 +14,14 @@ final class DMTWelcomeAboardViewController: UIViewController {
     private let reminderStack = UIStackView()
     private let enterButton = DMTGlowButton()
     private let simmerSpinner = UIActivityIndicatorView(style: .medium)
-    private var ctaCopy = "Enter"
+    private var ctaCopy = DMTStringCellar.shared.serve("copy.enter")
 
     init(hearthService: DMTFeastService, draft: DMTSignUpDraft, tasteLedger: DMTTasteProfileStore) {
         self.hearthService = hearthService
         self.draft = draft
         self.tasteLedger = tasteLedger
         super.init(nibName: nil, bundle: nil)
-        title = "Welcome Aboard"
+        title = DMTStringCellar.shared.serve("copy.welcomeAboard")
     }
 
     required init?(coder: NSCoder) {
@@ -118,7 +118,7 @@ final class DMTWelcomeAboardViewController: UIViewController {
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.signalLostTitle"), message: error.localizedDescription)
                 }
             }
         }
@@ -174,7 +174,7 @@ final class DMTWelcomeAboardViewController: UIViewController {
             } catch {
                 await MainActor.run {
                     self.setLoading(false)
-                    self.dmtServeNotice(title: "Taste Pass Failed", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.tastePassFailedTitle"), message: error.localizedDescription)
                 }
             }
         }

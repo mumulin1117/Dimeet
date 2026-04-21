@@ -36,7 +36,7 @@ final class DMTMealMateViewController: UIViewController {
     }
 
     private lazy var backdropCanvas: UIImageView = {
-         let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
+         let statement = UIImageView.init(image: UIImage.dmtMealAsset(named: DMTPlateStamp.hearthBackdrop))
          statement.contentMode = .scaleToFill
         statement.frame = UIScreen.main.bounds
          return statement
@@ -60,7 +60,7 @@ final class DMTMealMateViewController: UIViewController {
         discoverTitleLabel.textAlignment = .center
 
         composerOrbButton.translatesAutoresizingMaskIntoConstraints = false
-        composerOrbButton.setBackgroundImage(UIImage(named: "menuPageLayout"), for: .normal)
+        composerOrbButton.setBackgroundImage(UIImage.dmtMealAsset(named: DMTPlateStamp.discoverComposer), for: .normal)
         composerOrbButton.addTarget(self, action: #selector(handleComposerOrbTap), for: .touchUpInside)
 
         filterRail.translatesAutoresizingMaskIntoConstraints = false
@@ -180,7 +180,7 @@ final class DMTMealMateViewController: UIViewController {
             } catch {
                 await MainActor.run {
                     self.simmerSpinner.stopAnimating()
-                    self.dmtServeNotice(title: "Discover Unavailable", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.discoverUnavailableTitle"), message: error.localizedDescription)
                 }
             }
         }
@@ -191,7 +191,7 @@ final class DMTMealMateViewController: UIViewController {
         freshFilterButton.setTitle(deck.primaryTitle, for: .normal)
         followFilterButton.setTitle(deck.secondaryTitle, for: .normal)
 
-        promoBackdropView.image = UIImage(named: deck.promo.artKey) ?? DMTMainArtworkFactory.sceneImage(for: deck.promo.artKey, size: CGSize(width: 700, height: 220))
+        promoBackdropView.image = UIImage.dmtMealAsset(named: deck.promo.artKey) ?? DMTMainArtworkFactory.sceneImage(for: deck.promo.artKey, size: CGSize(width: 700, height: 220))
         promoHeadlineLabel.text = deck.promo.title
         promoHeadlineLabel.isHidden = true
     }
@@ -199,13 +199,13 @@ final class DMTMealMateViewController: UIViewController {
     @objc
     private func handleComposerOrbTap() {
         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Issue Dynamic", style: .default) { [weak self] _ in
+        sheet.addAction(UIAlertAction(title: DMTStringCellar.shared.serve("copy.issueDynamic"), style: .default) { [weak self] _ in
             self?.dmtOpenHearth(.publishDynamic)
         })
-        sheet.addAction(UIAlertAction(title: "Post Video", style: .default) { [weak self] _ in
+        sheet.addAction(UIAlertAction(title: DMTStringCellar.shared.serve("copy.postVideo"), style: .default) { [weak self] _ in
             self?.dmtOpenHearth(.publishVideo)
         })
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        sheet.addAction(UIAlertAction(title: DMTStringCellar.shared.serve("copy.cancel"), style: .cancel))
         if let popover = sheet.popoverPresentationController {
             popover.sourceView = composerOrbButton
             popover.sourceRect = composerOrbButton.bounds

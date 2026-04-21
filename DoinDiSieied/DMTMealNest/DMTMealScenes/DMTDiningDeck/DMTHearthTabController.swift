@@ -9,10 +9,10 @@ final class DMTHearthTabController: UITabBarController {
         let mateController = UINavigationController(rootViewController: DMTMealMateViewController(hearthService: hearthService))
         let nookController = UINavigationController(rootViewController: DMTTasteNookViewController(hearthService: hearthService, seatSession: seatSession, tasteLedger: tasteLedger))
 
-        roomsController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "errorRef0")?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage(named: "errorRef0IOP")?.withRenderingMode(.alwaysOriginal))
-        buzzController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "errorRef1")?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage(named: "errorRef1IOP")?.withRenderingMode(.alwaysOriginal))
-        mateController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "errorRef2")?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage(named: "errorRef2IOP")?.withRenderingMode(.alwaysOriginal))
-        nookController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "errorRef3")?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage(named: "errorRef3IOP")?.withRenderingMode(.alwaysOriginal))
+        roomsController.tabBarItem = UITabBarItem(title: "", image: UIImage.dmtMealAsset(named: DMTPlateStamp.tabRooms)?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage.dmtMealAsset(named: DMTPlateStamp.tabRoomsSelected)?.withRenderingMode(.alwaysOriginal))
+        buzzController.tabBarItem = UITabBarItem(title: "", image: UIImage.dmtMealAsset(named: DMTPlateStamp.tabBuzz)?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage.dmtMealAsset(named: DMTPlateStamp.tabBuzzSelected)?.withRenderingMode(.alwaysOriginal))
+        mateController.tabBarItem = UITabBarItem(title: "", image: UIImage.dmtMealAsset(named: DMTPlateStamp.tabMate)?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage.dmtMealAsset(named: DMTPlateStamp.tabMateSelected)?.withRenderingMode(.alwaysOriginal))
+        nookController.tabBarItem = UITabBarItem(title: "", image: UIImage.dmtMealAsset(named: DMTPlateStamp.tabNook)?.withRenderingMode(.alwaysOriginal), selectedImage: UIImage.dmtMealAsset(named: DMTPlateStamp.tabNookSelected)?.withRenderingMode(.alwaysOriginal))
 
         viewControllers = [roomsController, buzzController, mateController, nookController]
         configureTabBar()

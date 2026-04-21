@@ -4,7 +4,7 @@ final class DMTMockServerURLProtocol: URLProtocol {
     private var brewTask: Task<Void, Never>?
 
     override class func canInit(with request: URLRequest) -> Bool {
-        request.url?.host == "api.dmtplate.local"
+        request.url?.host == DMTStringCellar.shared.serve("mock.host")
     }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {
@@ -19,10 +19,10 @@ final class DMTMockServerURLProtocol: URLProtocol {
                 guard !Task.isCancelled else { return }
 
                 let response = HTTPURLResponse(
-                    url: request.url ?? URL(string: "https://api.dmtplate.local")!,
+                    url: request.url ?? URL(string: DMTStringCellar.shared.serve("mock.rootURL"))!,
                     statusCode: 200,
                     httpVersion: nil,
-                    headerFields: ["Content-Type": "application/json"]
+                    headerFields: ["Content-Type": DMTStringCellar.shared.serve("network.contentType")]
                 )!
 
                 client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
@@ -32,10 +32,10 @@ final class DMTMockServerURLProtocol: URLProtocol {
                 guard !Task.isCancelled else { return }
 
                 let response = HTTPURLResponse(
-                    url: request.url ?? URL(string: "https://api.dmtplate.local")!,
+                    url: request.url ?? URL(string: DMTStringCellar.shared.serve("mock.rootURL"))!,
                     statusCode: serverError.code,
                     httpVersion: nil,
-                    headerFields: ["Content-Type": "application/json"]
+                    headerFields: ["Content-Type": DMTStringCellar.shared.serve("network.contentType")]
                 )!
 
                 client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
@@ -77,10 +77,10 @@ private enum DMTMockKitchen {
 //            return try encode(discoverDeck)
         case ("POST", "/auth/login"):
             let body = try decode(DMTLoginBody.self, from: request.httpBody)
-            return try encode(sessionPayload(email: body.email, name: body.email.split(separator: "@").first.map(String.init) ?? "guest"))
+            return try encode(sessionPayload(email: body.email, name: body.email.split(separator: "@").first.map(String.init) ?? DMTStringCellar.shared.serve("copy.defaultGuest")))
         case ("POST", "/auth/signup"):
             let body = try decode(DMTSignUpBody.self, from: request.httpBody)
-            return try encode(sessionPayload(email: body.email, name: body.nickname.isEmpty ? "tastefriend" : body.nickname))
+            return try encode(sessionPayload(email: body.email, name: body.nickname.isEmpty ? DMTStringCellar.shared.serve("copy.defaultTastefriend") : body.nickname))
 //        case ("GET", "/meal-rooms"):
 //            return try encode(roomCards)
 //        case ("GET", "/plate-buzz"):
@@ -114,7 +114,7 @@ private enum DMTMockKitchen {
 //                return try encode(reply)
 //            }
 
-            throw ErrorSignal(code: 404, message: "Plate missing")
+            throw ErrorSignal(code: 404, message: DMTStringCellar.shared.serve("mock.plateMissing"))
         }
     }
 
@@ -124,7 +124,7 @@ private enum DMTMockKitchen {
 
     private static func decode<Value: Decodable>(_ type: Value.Type, from data: Data?) throws -> Value {
         guard let data else {
-            throw ErrorSignal(code: 400, message: "Missing body")
+            throw ErrorSignal(code: 400, message: DMTStringCellar.shared.serve("mock.missingBody"))
         }
         return try decoder.decode(type, from: data)
     }
@@ -136,60 +136,60 @@ private enum DMTMockKitchen {
 
     private static let authBundle = DMTAuthBundle(
         welcome: DMTWelcomeDeck(
-            primaryTitle: "I'm new",
-            secondaryTitle: "Sign in",
-            agreementHint: "Agree to House Notes and Privacy Notes before entering the table.",
-            eulaTitle: "House Notes"
+            primaryTitle: DMTStringCellar.shared.serve("auth.welcome.primaryTitle"),
+            secondaryTitle: DMTStringCellar.shared.serve("auth.welcome.secondaryTitle"),
+            agreementHint: DMTStringCellar.shared.serve("auth.welcome.agreementHint"),
+            eulaTitle: DMTStringCellar.shared.serve("auth.welcome.eulaTitle")
         ),
         agreement: DMTEulaDeck(
-            title: "House Notes",
-            intro: "Dimeet works best when every table stays warm, curious, and respectful.",
+            title: DMTStringCellar.shared.serve("auth.agreement.title"),
+            intro: DMTStringCellar.shared.serve("auth.agreement.intro"),
             bullets: [
-                "Keep profiles and dish updates real.",
-                "Protect younger users by avoiding unsafe or explicit topics.",
-                "Do not post shocking harm, abuse, or exploitative material.",
-                "Respect private details shared around the table."
+                DMTStringCellar.shared.serve("auth.agreement.bullet1"),
+                DMTStringCellar.shared.serve("auth.agreement.bullet2"),
+                DMTStringCellar.shared.serve("auth.agreement.bullet3"),
+                DMTStringCellar.shared.serve("auth.agreement.bullet4")
             ],
-            closing: "Breaking the house notes may lead to content removal or account limits.",
-            cancelTitle: "Cancel",
-            agreeTitle: "Agree"
+            closing: DMTStringCellar.shared.serve("auth.agreement.closing"),
+            cancelTitle: DMTStringCellar.shared.serve("auth.agreement.cancelTitle"),
+            agreeTitle: DMTStringCellar.shared.serve("auth.agreement.agreeTitle")
         ),
         login: DMTLoginDeck(
-            title: "Sign in",
-            emailTitle: "Email",
-            emailPlaceholder: "Enter your email",
-            passwordTitle: "Password",
-            passwordPlaceholder: "Enter password",
-            ctaCopy: "Confirm",
-            hintLine: "Known taste pass: test@gmail.com / 123456"
+            title: DMTStringCellar.shared.serve("auth.login.title"),
+            emailTitle: DMTStringCellar.shared.serve("auth.login.emailTitle"),
+            emailPlaceholder: DMTStringCellar.shared.serve("auth.login.emailPlaceholder"),
+            passwordTitle: DMTStringCellar.shared.serve("auth.login.passwordTitle"),
+            passwordPlaceholder: DMTStringCellar.shared.serve("auth.login.passwordPlaceholder"),
+            ctaCopy: DMTStringCellar.shared.serve("auth.login.cta"),
+            hintLine: DMTStringCellar.shared.serve("auth.login.hintLine")
         ),
         signUp: DMTSignUpDeck(
-            title: "Sign up",
-            nicknameTitle: "Nickname",
-            nicknamePlaceholder: "Choose a table name",
-            bioTitle: "Character Bio",
-            bioPlaceholder: "Say something tasty",
-            ageTitle: "How old are you?",
-            agePlaceholder: "Birth month and year",
-            ctaCopy: "Next"
+            title: DMTStringCellar.shared.serve("auth.signUp.title"),
+            nicknameTitle: DMTStringCellar.shared.serve("auth.signUp.nicknameTitle"),
+            nicknamePlaceholder: DMTStringCellar.shared.serve("auth.signUp.nicknamePlaceholder"),
+            bioTitle: DMTStringCellar.shared.serve("auth.signUp.bioTitle"),
+            bioPlaceholder: DMTStringCellar.shared.serve("auth.signUp.bioPlaceholder"),
+            ageTitle: DMTStringCellar.shared.serve("auth.signUp.ageTitle"),
+            agePlaceholder: DMTStringCellar.shared.serve("auth.signUp.agePlaceholder"),
+            ctaCopy: DMTStringCellar.shared.serve("auth.signUp.cta")
         ),
         verify: DMTVerifyDeck(
-            title: "Verify Your Identity",
-            intro: "Take a clear self photo so we can verify your age and help keep the community safe.",
-            caption: "By proceeding, you consent to the use of your self photo for verification purposes. Your photo will not be shared with third parties.",
-            ctaCopy: "Take a Selfie"
+            title: DMTStringCellar.shared.serve("auth.verify.title"),
+            intro: DMTStringCellar.shared.serve("auth.verify.intro"),
+            caption: DMTStringCellar.shared.serve("auth.verify.caption"),
+            ctaCopy: DMTStringCellar.shared.serve("auth.verify.cta")
         ),
         entry: DMTEntryDeck(
-            title: "Welcome Aboard",
-            subtitle: "A few things to remember...",
+            title: DMTStringCellar.shared.serve("auth.entry.title"),
+            subtitle: DMTStringCellar.shared.serve("auth.entry.subtitle"),
             reminders: [
-                DMTEntryReminder(title: "Be Yourself", subtitle: "Authenticity is the key to real connection"),
-                DMTEntryReminder(title: "Be Kind", subtitle: "Help us create a safe and respectful space"),
-                DMTEntryReminder(title: "Respect Diversity", subtitle: "Treat every user with dignity"),
-                DMTEntryReminder(title: "18+ Only", subtitle: "Strictly for adults. No minors allowed"),
-                DMTEntryReminder(title: "Stay Informed", subtitle: "Review our Privacy Agreement before starting")
+                DMTEntryReminder(title: DMTStringCellar.shared.serve("auth.entry.reminder1.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder1.subtitle")),
+                DMTEntryReminder(title: DMTStringCellar.shared.serve("auth.entry.reminder2.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder2.subtitle")),
+                DMTEntryReminder(title: DMTStringCellar.shared.serve("auth.entry.reminder3.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder3.subtitle")),
+                DMTEntryReminder(title: DMTStringCellar.shared.serve("auth.entry.reminder4.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder4.subtitle")),
+                DMTEntryReminder(title: DMTStringCellar.shared.serve("auth.entry.reminder5.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder5.subtitle"))
             ],
-            ctaCopy: "Enter"
+            ctaCopy: DMTStringCellar.shared.serve("auth.entry.cta")
         )
     )
 
@@ -201,7 +201,7 @@ private enum DMTMockKitchen {
             DMTStoryChip(id: "story-matheus", name: "Matheus", artKey: "story-matheus", isActive: false),
             DMTStoryChip(id: "story-bernard", name: "Bernard", artKey: "story-bernard", isActive: false)
         ],
-        sectionTitle: "Chat Room",
+        sectionTitle: DMTStringCellar.shared.serve("copy.chatRoom"),
         rooms: [
             DMTRoomCard(
                 id: "sunrise-broth",
@@ -415,11 +415,11 @@ private enum DMTMockKitchen {
         userID: "taste-scout-id",
         displayName: "Taste Scout",
         avatarKey: "story-vasquez",
-        walletTitle: "Wallet",
+        walletTitle: DMTStringCellar.shared.serve("copy.wallet"),
         walletBalance: 1340,
         followerCount: 120,
         followingCount: 33,
-        segmentTitles: ["Dynamic", "Short Video"],
+        segmentTitles: [DMTStringCellar.shared.serve("copy.dynamic"), DMTStringCellar.shared.serve("copy.shortVideo")],
         emptyArtKey: "sliderThumbPosNOdata"
     )
 }

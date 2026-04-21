@@ -121,7 +121,7 @@ final class DMTEulaViewController: UIViewController {
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.signalLostTitle"), message: error.localizedDescription)
                 }
             }
         }

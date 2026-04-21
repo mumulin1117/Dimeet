@@ -2,7 +2,7 @@ import UIKit
 
 enum DMTMainArtworkFactory {
     static func avatarImage(for key: String, size: CGSize = CGSize(width: 96, height: 96)) -> UIImage {
-        if let image = UIImage(named: key) {
+        if let image = UIImage.dmtMealAsset(named: key) {
             return image
         }
         let palette = paletteForKey(key)
@@ -37,7 +37,7 @@ enum DMTMainArtworkFactory {
     }
 
     static func sceneImage(for key: String, size: CGSize) -> UIImage {
-        if let image = UIImage(named: key) {
+        if let image = UIImage.dmtMealAsset(named: key) {
             return image
         }
         let palette = paletteForKey(key)

@@ -30,7 +30,7 @@ final class DMTBiteFeedViewController: UIViewController {
     }
 
     private lazy var backdropCanvas: UIImageView = {
-         let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
+         let statement = UIImageView.init(image: UIImage.dmtMealAsset(named: DMTPlateStamp.hearthBackdrop))
          statement.contentMode = .scaleToFill
         statement.frame = UIScreen.main.bounds
          return statement
@@ -68,7 +68,7 @@ final class DMTBiteFeedViewController: UIViewController {
         clipFollowButton.addTarget(self, action: #selector(handleFollowClipTap), for: .touchUpInside)
 
         noticeBubbleButton.translatesAutoresizingMaskIntoConstraints = false
-        noticeBubbleButton.setBackgroundImage(UIImage(named: "noiseCancelFilter"), for: .normal)
+        noticeBubbleButton.setBackgroundImage(UIImage.dmtMealAsset(named: DMTPlateStamp.clipNoticeBubble), for: .normal)
         noticeBubbleButton.addTarget(self, action: #selector(handleNoticeBubbleTap), for: .touchUpInside)
 
         clipStageStack.translatesAutoresizingMaskIntoConstraints = false
@@ -137,7 +137,7 @@ final class DMTBiteFeedViewController: UIViewController {
             } catch {
                 await MainActor.run {
                     self.simmerSpinner.stopAnimating()
-                    self.dmtServeNotice(title: "Clip Unavailable", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.clipUnavailableTitle"), message: error.localizedDescription)
                 }
             }
         }
@@ -146,7 +146,7 @@ final class DMTBiteFeedViewController: UIViewController {
     
    private lazy var publishOrbButton: UIButton = {
         let add = UIButton.init()
-        add.setImage(UIImage.init(named: "publishOrbButton"), for: .normal)
+        add.setImage(UIImage.dmtMealAsset(named: DMTPlateStamp.clipPublishOrb), for: .normal)
         return add
     }()
     private func styleClipHeader(deck: DMTClipDeck) {

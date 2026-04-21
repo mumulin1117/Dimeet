@@ -64,7 +64,7 @@ extension UIImageView {
     func dmtSetMealImage(source: String, placeholder: UIImage?) {
         image = placeholder
 
-        if let localImage = UIImage(named: source) {
+        if let localImage = UIImage.dmtMealAsset(named: source) {
             image = localImage
             return
         }

@@ -6,7 +6,7 @@ final class DMTWelcomeViewController: UIViewController {
     var onShowAgreement: (() -> Void)?
 
     private let hearthService: DMTFeastService
-    private let welcomeSplashView = UIImageView.init(image: UIImage.init(named: "aromaSenseScope"))
+    private let welcomeSplashView = UIImageView.init(image: UIImage.dmtMealAsset(named: DMTPlateStamp.welcomeSplash))
     private let houseNoteButton = UIButton()
     private let welcomeActionPlate = UIView()
     private let freshSeatButton = DMTGlowButton()
@@ -17,8 +17,8 @@ final class DMTWelcomeViewController: UIViewController {
     private var welcomeCourse: DMTWelcomeDeck?
     private var hasConsentStamp = false {
         didSet {
-            let imageName = hasConsentStamp ? "bitterCoreModulesel" : "bitterCoreModule"
-            consentMarkButton.setImage(UIImage(named: imageName), for: .normal)
+            let imageName = hasConsentStamp ? DMTPlateStamp.consentOn : DMTPlateStamp.consentOff
+            consentMarkButton.setImage(UIImage.dmtMealAsset(named: imageName), for: .normal)
             freshSeatButton.isEnabled = hasConsentStamp
             returnSeatButton.isEnabled = hasConsentStamp
             returnSeatButton.alpha = hasConsentStamp ? 1 : 0.5
@@ -60,7 +60,7 @@ final class DMTWelcomeViewController: UIViewController {
         welcomeSplashView.translatesAutoresizingMaskIntoConstraints = false
         welcomeSplashView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         welcomeSplashView.layer.cornerRadius = DMTScale.r(36)
-        houseNoteButton.setImage(UIImage.init(named: "allooELUA"), for: .normal)
+        houseNoteButton.setImage(UIImage.dmtMealAsset(named: DMTPlateStamp.houseNoteSeal), for: .normal)
         houseNoteButton.translatesAutoresizingMaskIntoConstraints = false
      
         houseNoteButton.addTarget(self, action: #selector(handleHouseNoteTap), for: .touchUpInside)
@@ -150,7 +150,7 @@ final class DMTWelcomeViewController: UIViewController {
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.signalLostTitle"), message: error.localizedDescription)
                 }
             }
         }

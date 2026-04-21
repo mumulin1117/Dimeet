@@ -9,8 +9,8 @@ final class DMTLoginViewController: UIViewController {
     private let navCourseTitle: String
     private let courseScrollView = UIScrollView()
     private let platingCanvas = UIView()
-    private let bannerTasteView = UIImageView.init(image: UIImage.init(named: "cravingsLogicAction"))
-    private let mascotPulseView = UIImageView.init(image: UIImage.init(named: "voiceEchoInstance"))
+    private let bannerTasteView = UIImageView.init(image: UIImage.dmtMealAsset(named: DMTPlateStamp.loginBanner))
+    private let mascotPulseView = UIImageView.init(image: UIImage.dmtMealAsset(named: DMTPlateStamp.loginMascot))
     
     private let servingCard = UIView()
     private let emailPassField = DMTInputField()
@@ -18,7 +18,7 @@ final class DMTLoginViewController: UIViewController {
     private let pantryHintLabel = UILabel()
     private let servePassButton = DMTGlowButton()
     private let simmerSpinner = UIActivityIndicatorView(style: .medium)
-    private var ctaCopy = "Confirm"
+    private var ctaCopy = DMTStringCellar.shared.serve("copy.confirm")
 
     init(hearthService: DMTFeastService, tasteLedger: DMTTasteProfileStore, navCourseTitle: String) {
         self.hearthService = hearthService
@@ -139,7 +139,7 @@ final class DMTLoginViewController: UIViewController {
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.signalLostTitle"), message: error.localizedDescription)
                 }
             }
         }
@@ -163,7 +163,7 @@ final class DMTLoginViewController: UIViewController {
         let password = secretPassField.text.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard !email.isEmpty, !password.isEmpty else {
-            dmtServeNotice(title: "Missing Taste Pass", message: "Fill in both email and password.")
+            dmtServeNotice(title: DMTStringCellar.shared.serve("copy.missingTastePassTitle"), message: DMTStringCellar.shared.serve("copy.missingTastePassMessage"))
             return
         }
 
@@ -184,7 +184,7 @@ final class DMTLoginViewController: UIViewController {
 
         if tasteLedger.hasPasswordMismatch(email: email, password: password) {
             setPassLoadingState(false)
-            dmtServeNotice(title: "Taste Pass Failed", message: "This account was saved locally with a different password.")
+            dmtServeNotice(title: DMTStringCellar.shared.serve("copy.tastePassFailedTitle"), message: DMTStringCellar.shared.serve("copy.passwordMismatchMessage"))
             return
         }
 
@@ -204,7 +204,7 @@ final class DMTLoginViewController: UIViewController {
             } catch {
                 await MainActor.run {
                     self.setPassLoadingState(false)
-                    self.dmtServeNotice(title: "Taste Pass Failed", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.tastePassFailedTitle"), message: error.localizedDescription)
                 }
             }
         }

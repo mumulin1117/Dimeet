@@ -26,7 +26,7 @@ final class DMTMealRoomsViewController: UIViewController {
     }
 
    private lazy var backdropCanvas: UIImageView = {
-        let statement = UIImageView.init(image: UIImage(named: "elsesbackg"))
+        let statement = UIImageView.init(image: UIImage.dmtMealAsset(named: DMTPlateStamp.hearthBackdrop))
         statement.contentMode = .scaleToFill
        statement.frame = UIScreen.main.bounds
         return statement
@@ -45,11 +45,11 @@ final class DMTMealRoomsViewController: UIViewController {
         platingCanvas.translatesAutoresizingMaskIntoConstraints = false
 
         brandMarkView.translatesAutoresizingMaskIntoConstraints = false
-        brandMarkView.image = UIImage(named: "Dimmenter")
+        brandMarkView.image = UIImage.dmtMealAsset(named: DMTPlateStamp.brandMark)
 
         noticeOrbButton.translatesAutoresizingMaskIntoConstraints = false
      
-        noticeOrbButton.setImage(UIImage(named: "nitoaniIconb"), for: .normal)
+        noticeOrbButton.setImage(UIImage.dmtMealAsset(named: DMTPlateStamp.noticeOrb), for: .normal)
         noticeOrbButton.addTarget(self, action: #selector(handleNoticeOrbTap), for: .touchUpInside)
 
         storyRailView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +60,7 @@ final class DMTMealRoomsViewController: UIViewController {
         storyRailStack.spacing = DMTScale.w(14)
 
         mealRobotBanner.translatesAutoresizingMaskIntoConstraints = false
-        mealRobotBanner.setBackgroundImage(UIImage.init(named: "RobotRoomds"), for: .normal)
+        mealRobotBanner.setBackgroundImage(UIImage.dmtMealAsset(named: DMTPlateStamp.mealRobotBanner), for: .normal)
         mealRobotBanner.addTarget(self, action: #selector(handleMealRobotTap), for: .touchUpInside)
 
         roomSectionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -75,7 +75,7 @@ final class DMTMealRoomsViewController: UIViewController {
         simmerSpinner.startAnimating()
 
         forgeRoomButton.translatesAutoresizingMaskIntoConstraints = false
-        forgeRoomButton.setBackgroundImage(UIImage(named: "createrRoom"), for: .normal)
+        forgeRoomButton.setBackgroundImage(UIImage.dmtMealAsset(named: DMTPlateStamp.createRoomButton), for: .normal)
         forgeRoomButton.addTarget(self, action: #selector(handleForgeRoomTap), for: .touchUpInside)
 
         view.addSubview(courseScrollView)
@@ -160,7 +160,7 @@ final class DMTMealRoomsViewController: UIViewController {
             } catch {
                 await MainActor.run {
                     self.simmerSpinner.stopAnimating()
-                    self.dmtServeNotice(title: "Home Unavailable", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.homeUnavailableTitle"), message: error.localizedDescription)
                 }
             }
         }

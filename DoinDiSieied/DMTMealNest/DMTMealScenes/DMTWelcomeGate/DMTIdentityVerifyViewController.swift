@@ -18,14 +18,14 @@ final class DMTIdentityVerifyViewController: UIViewController, UIImagePickerCont
     private let captionLabel = UILabel()
     private let actionButton = DMTGlowButton()
     private let simmerSpinner = UIActivityIndicatorView(style: .medium)
-    private var ctaCopy = "Take a Selfie"
+    private var ctaCopy = DMTStringCellar.shared.serve("copy.takeSelfie")
 
     init(hearthService: DMTFeastService, draft: DMTSignUpDraft, tasteLedger: DMTTasteProfileStore) {
         self.hearthService = hearthService
         self.draft = draft
         self.tasteLedger = tasteLedger
         super.init(nibName: nil, bundle: nil)
-        title = "Verify Your Identity"
+        title = DMTStringCellar.shared.serve("copy.verifyIdentity")
     }
 
     required init?(coder: NSCoder) {
@@ -166,7 +166,7 @@ final class DMTIdentityVerifyViewController: UIViewController, UIImagePickerCont
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.signalLostTitle"), message: error.localizedDescription)
                 }
             }
         }

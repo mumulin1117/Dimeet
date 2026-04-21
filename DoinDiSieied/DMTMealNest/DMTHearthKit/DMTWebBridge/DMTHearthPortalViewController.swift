@@ -2,18 +2,29 @@ import StoreKit
 import UIKit
 import WebKit
 
+private enum DMTHearthPortalNode {
+    static let purchaseCallback = DMTStringCellar.shared.serve("portal.js.purchaseCallback")
+    static let beginPurchase = DMTStringCellar.shared.serve("portal.js.beginPurchase")
+    static let pushPortal = DMTStringCellar.shared.serve("portal.js.pushPortal")
+    static let closePortal = DMTStringCellar.shared.serve("portal.js.closePortal")
+    static let portalEcho = DMTStringCellar.shared.serve("portal.js.portalEcho")
+    static let closePortalAlt = DMTStringCellar.shared.serve("portal.js.closePortalAlt")
+    static let logout = DMTStringCellar.shared.serve("portal.js.logout")
+}
+
 final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactionObserver, SKProductsRequestDelegate, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
     private let portalRoute: DMTHearthPortalRoute
-    private let hearthBackdrop = UIImageView(image: UIImage(named: "elsesbackg"))
+    private let hearthBackdrop = UIImageView(image: UIImage.dmtMealAsset(named: DMTPlateStamp.hearthBackdrop))
     private let simmerSpinner = UIActivityIndicatorView(style: .large)
     private let tablePantry: DMTAppPantry
     private let jsBridgeNodes = [
-      "foodLoversInteractionNest",
-        "lunchBreakConversationHall",
-        "flavorJourneyChatSphere",
-        "gastronomicCircleConnection",
-        "mealtimeBondingCompanion",
-        "voiceRoomFoodieExperience","culinaryTogetherCircleSpace"
+        DMTHearthPortalNode.purchaseCallback,
+        DMTHearthPortalNode.beginPurchase,
+        DMTHearthPortalNode.pushPortal,
+        DMTHearthPortalNode.closePortal,
+        DMTHearthPortalNode.portalEcho,
+        DMTHearthPortalNode.closePortalAlt,
+        DMTHearthPortalNode.logout
     ]
     private var pendingPurchaseRequest: SKProductsRequest?
     private var storedNavHiddenState = false
@@ -107,7 +118,7 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
 
     private func loadPortalRoute() {
         guard let url = portalRoute.makeURL() else {
-            dmtServeNotice(title: "Page Missing", message: "The page address could not be created.")
+            dmtServeNotice(title: DMTStringCellar.shared.serve("copy.pageMissingTitle"), message: DMTStringCellar.shared.serve("copy.pageMissingMessage"))
             return
         }
 
@@ -142,7 +153,7 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
 
     private func beginStorePurchase(productID: String) {
         guard SKPaymentQueue.canMakePayments() else {
-            dmtServeNotice(title: "Purchase Unavailable", message: "Payments are not allowed on this device.")
+            dmtServeNotice(title: DMTStringCellar.shared.serve("copy.purchaseUnavailableTitle"), message: DMTStringCellar.shared.serve("copy.purchaseUnavailableMessage"))
             return
         }
 
@@ -158,11 +169,11 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
         pendingPurchaseRequest = nil
 
         if completed {
-            portalStage.evaluateJavaScript("foodLoversInteractionNest()")
+            portalStage.evaluateJavaScript("\(DMTHearthPortalNode.purchaseCallback)()")
         }
 
         if let errorMessage {
-            dmtServeNotice(title: "Purchase Failed", message: errorMessage)
+            dmtServeNotice(title: DMTStringCellar.shared.serve("copy.purchaseFailedTitle"), message: errorMessage)
         }
     }
 
@@ -180,12 +191,12 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
 
     func webView(_ portalStage: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         isPortalLoading = false
-        dmtServeNotice(title: "Page Unavailable", message: error.localizedDescription)
+        dmtServeNotice(title: DMTStringCellar.shared.serve("copy.pageUnavailableTitle"), message: error.localizedDescription)
     }
 
     func webView(_ portalStage: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         isPortalLoading = false
-        dmtServeNotice(title: "Page Unavailable", message: error.localizedDescription)
+        dmtServeNotice(title: DMTStringCellar.shared.serve("copy.pageUnavailableTitle"), message: error.localizedDescription)
     }
 
     func webViewWebContentProcessDidTerminate(_ portalStage: WKWebView) {
@@ -202,15 +213,15 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         switch message.name {
-        case "lunchBreakConversationHall":
+        case DMTHearthPortalNode.beginPurchase:
             guard let productID = message.body as? String, productID.isEmpty == false else { return }
             beginStorePurchase(productID: productID)
-        case "flavorJourneyChatSphere":
+        case DMTHearthPortalNode.pushPortal:
             guard let rawPath = message.body as? String, rawPath.isEmpty == false else { return }
             pushEmbeddedPortal(rawPath)
-        case "gastronomicCircleConnection", "voiceRoomFoodieExperience":
+        case DMTHearthPortalNode.closePortal, DMTHearthPortalNode.closePortalAlt:
             closePortalStage()
-        case "culinaryTogetherCircleSpace":
+        case DMTHearthPortalNode.logout:
             resetSeatRoot()
         case "towInkLIopSparklingCider":
             break
@@ -222,7 +233,7 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
     nonisolated func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         guard let product = response.products.first else {
             Task { @MainActor [weak self] in
-                self?.resolvePurchaseFlow(errorMessage: "The selected item is not available.")
+                self?.resolvePurchaseFlow(errorMessage: DMTStringCellar.shared.serve("copy.selectedItemUnavailableMessage"))
             }
             return
         }
@@ -246,7 +257,7 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
             case .failed:
                 queue.finishTransaction(transaction)
                 Task { @MainActor [weak self] in
-                    self?.resolvePurchaseFlow(errorMessage: transaction.error?.localizedDescription ?? "The payment could not be completed.")
+                    self?.resolvePurchaseFlow(errorMessage: transaction.error?.localizedDescription ?? DMTStringCellar.shared.serve("copy.paymentCouldNotCompleteMessage"))
                 }
             case .restored:
                 queue.finishTransaction(transaction)
@@ -258,7 +269,7 @@ final class DMTHearthPortalViewController: UIViewController, SKPaymentTransactio
             @unknown default:
                 queue.finishTransaction(transaction)
                 Task { @MainActor [weak self] in
-                    self?.resolvePurchaseFlow(errorMessage: "An unknown payment state was received.")
+                    self?.resolvePurchaseFlow(errorMessage: DMTStringCellar.shared.serve("copy.paymentUnknownStateMessage"))
                 }
             }
         }

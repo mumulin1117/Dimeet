@@ -1,5 +1,20 @@
 import Foundation
 
+private enum DMTHearthPortalSeal {
+    static let rootAddress = DMTStringCellar.shared.serve("portal.rootAddress")
+    static let bundleMark = DMTStringCellar.shared.serve("portal.bundleMark")
+    static let token = DMTStringCellar.shared.serve("portal.query.token")
+    static let appID = DMTStringCellar.shared.serve("portal.query.appID")
+    static let channel = DMTStringCellar.shared.serve("portal.query.channel")
+    static let userID = DMTStringCellar.shared.serve("portal.query.userId")
+    static let liveID = DMTStringCellar.shared.serve("portal.query.liveId")
+    static let dynamicID = DMTStringCellar.shared.serve("portal.query.dynamicId")
+    static let type = DMTStringCellar.shared.serve("portal.query.type")
+    static let callVideo = DMTStringCellar.shared.serve("portal.query.callVideo")
+    static let one = DMTStringCellar.shared.serve("portal.query.one")
+    static let two = DMTStringCellar.shared.serve("portal.query.two")
+}
+
 enum DMTHearthPortalRoute {
     case editProfile
     case createRoom
@@ -23,31 +38,31 @@ enum DMTHearthPortalRoute {
     case receivedGift(userID: String)
     case webEntry(path: String)
 
-    private static let rootAddress = "https://pqr2kjh8dm.shop/"
-    private static let bundleMark = "79709626"
+    private static let rootAddress = DMTHearthPortalSeal.rootAddress
+    private static let bundleMark = DMTHearthPortalSeal.bundleMark
 
     var navigationTitle: String {
         switch self {
-        case .editProfile: return "Edit Profile"
-        case .createRoom: return "Create Room"
-        case .joinRoom: return "Join Room"
-        case .tableLounge: return "Voice Lounge"
-        case .mealRobot: return "Meal Robot"
-        case .directMessage(_, let videoCall): return videoCall ? "Video Chat" : "Messages"
-        case .noticeCenter: return "Notice"
-        case .userHomepage: return "Homepage"
-        case .dynamicDetail: return "Dynamic"
-        case .publishDynamic: return "Issue"
-        case .publishVideo: return "Post Video"
-        case .videoDetail: return "Video"
-        case .settingCenter: return "Setting"
-        case .followingList: return "Following"
-        case .fansList: return "Fans"
-        case .reportCenter: return "Report"
-        case .walletCenter: return "Wallet"
-        case .userAgreement: return "Agreement"
-        case .privacyPolicy: return "Privacy"
-        case .receivedGift: return "Received Gift"
+        case .editProfile: return DMTStringCellar.shared.serve("portal.title.editProfile")
+        case .createRoom: return DMTStringCellar.shared.serve("portal.title.createRoom")
+        case .joinRoom: return DMTStringCellar.shared.serve("portal.title.joinRoom")
+        case .tableLounge: return DMTStringCellar.shared.serve("portal.title.tableLounge")
+        case .mealRobot: return DMTStringCellar.shared.serve("portal.title.mealRobot")
+        case .directMessage(_, let videoCall): return videoCall ? DMTStringCellar.shared.serve("portal.title.videoChat") : DMTStringCellar.shared.serve("portal.title.messages")
+        case .noticeCenter: return DMTStringCellar.shared.serve("portal.title.noticeCenter")
+        case .userHomepage: return DMTStringCellar.shared.serve("portal.title.userHomepage")
+        case .dynamicDetail: return DMTStringCellar.shared.serve("portal.title.dynamicDetail")
+        case .publishDynamic: return DMTStringCellar.shared.serve("portal.title.publishDynamic")
+        case .publishVideo: return DMTStringCellar.shared.serve("portal.title.publishVideo")
+        case .videoDetail: return DMTStringCellar.shared.serve("portal.title.videoDetail")
+        case .settingCenter: return DMTStringCellar.shared.serve("portal.title.settingCenter")
+        case .followingList: return DMTStringCellar.shared.serve("portal.title.followingList")
+        case .fansList: return DMTStringCellar.shared.serve("portal.title.fansList")
+        case .reportCenter: return DMTStringCellar.shared.serve("portal.title.reportCenter")
+        case .walletCenter: return DMTStringCellar.shared.serve("portal.title.walletCenter")
+        case .userAgreement: return DMTStringCellar.shared.serve("portal.title.userAgreement")
+        case .privacyPolicy: return DMTStringCellar.shared.serve("portal.title.privacyPolicy")
+        case .receivedGift: return DMTStringCellar.shared.serve("portal.title.receivedGift")
         case .webEntry: return ""
         }
     }
@@ -58,8 +73,8 @@ enum DMTHearthPortalRoute {
         }
         let token = TOWINKLIopVibeRoute.TOWINKLIopSessionToken ?? ""
         var queryPairs = portalPairs
-        queryPairs.append(("token", token))
-        queryPairs.append(("appID", Self.bundleMark))
+        queryPairs.append((DMTHearthPortalSeal.token, token))
+        queryPairs.append((DMTHearthPortalSeal.appID, Self.bundleMark))
 
         let fragmentQuery = queryPairs
             .map { "\($0.0)=\(Self.encoded($0.1))" }
@@ -71,43 +86,43 @@ enum DMTHearthPortalRoute {
     private var portalPath: String {
         switch self {
         case .editProfile:
-            return "pages/EditProfile/index"
+            return DMTStringCellar.shared.serve("portal.path.editProfile")
         case .createRoom:
-            return "pages/CreateRoom/index"
+            return DMTStringCellar.shared.serve("portal.path.createRoom")
         case .joinRoom:
-            return "pages/JoinLiveRoom/index"
+            return DMTStringCellar.shared.serve("portal.path.joinRoom")
         case .tableLounge:
-            return "pages/virtualChatRoom/index"
+            return DMTStringCellar.shared.serve("portal.path.tableLounge")
         case .mealRobot:
-            return "pages/AIRobot/index"
+            return DMTStringCellar.shared.serve("portal.path.mealRobot")
         case .directMessage:
-            return "pages/DetailsMesses/index"
+            return DMTStringCellar.shared.serve("portal.path.directMessage")
         case .noticeCenter:
-            return "pages/Notice/index"
+            return DMTStringCellar.shared.serve("portal.path.noticeCenter")
         case .userHomepage:
-            return "pages/homepage/index"
+            return DMTStringCellar.shared.serve("portal.path.userHomepage")
         case .dynamicDetail:
-            return "pages/DynamicDetails/index"
+            return DMTStringCellar.shared.serve("portal.path.dynamicDetail")
         case .publishDynamic:
-            return "pages/issue/index"
+            return DMTStringCellar.shared.serve("portal.path.publishDynamic")
         case .publishVideo:
-            return "pages/postVideos/index"
+            return DMTStringCellar.shared.serve("portal.path.publishVideo")
         case .videoDetail:
-            return "pages/VideoDetails/index"
+            return DMTStringCellar.shared.serve("portal.path.videoDetail")
         case .settingCenter:
-            return "pages/Setting/index"
+            return DMTStringCellar.shared.serve("portal.path.settingCenter")
         case .followingList:
-            return "pages/Following/index"
+            return DMTStringCellar.shared.serve("portal.path.followingList")
         case .fansList:
-            return "pages/fansList/index"
+            return DMTStringCellar.shared.serve("portal.path.fansList")
         case .reportCenter:
-            return "pages/report/index"
+            return DMTStringCellar.shared.serve("portal.path.reportCenter")
         case .walletCenter:
-            return "pages/MyWallet/index"
+            return DMTStringCellar.shared.serve("portal.path.walletCenter")
         case .userAgreement, .privacyPolicy:
-            return "pages/agreement/index"
+            return DMTStringCellar.shared.serve("portal.path.agreement")
         case .receivedGift:
-            return "pages/receivedGift/index"
+            return DMTStringCellar.shared.serve("portal.path.receivedGift")
         case .webEntry(let path):
             return path
         }
@@ -118,25 +133,25 @@ enum DMTHearthPortalRoute {
         case .editProfile, .createRoom, .mealRobot, .noticeCenter, .publishDynamic, .publishVideo, .settingCenter, .followingList, .fansList, .reportCenter, .walletCenter:
             return []
         case .joinRoom(let channel, let hostUserID):
-            return [("channel", channel), ("userId", hostUserID)]
+            return [(DMTHearthPortalSeal.channel, channel), (DMTHearthPortalSeal.userID, hostUserID)]
         case .tableLounge(let liveID):
-            return [("liveId", liveID)]
+            return [(DMTHearthPortalSeal.liveID, liveID)]
         case .directMessage(let userID, let videoCall):
-            var items = [("userId", userID)]
+            var items = [(DMTHearthPortalSeal.userID, userID)]
             if videoCall {
-                items.append(("CallVideo", "1"))
+                items.append((DMTHearthPortalSeal.callVideo, DMTHearthPortalSeal.one))
             }
             return items
         case .userHomepage(let userID):
-            return [("userId", userID)]
+            return [(DMTHearthPortalSeal.userID, userID)]
         case .dynamicDetail(let dynamicID), .videoDetail(let dynamicID):
-            return [("dynamicId", dynamicID)]
+            return [(DMTHearthPortalSeal.dynamicID, dynamicID)]
         case .userAgreement:
-            return [("type", "1")]
+            return [(DMTHearthPortalSeal.type, DMTHearthPortalSeal.one)]
         case .privacyPolicy:
-            return [("type", "2")]
+            return [(DMTHearthPortalSeal.type, DMTHearthPortalSeal.two)]
         case .receivedGift(let userID):
-            return [("userId", userID)]
+            return [(DMTHearthPortalSeal.userID, userID)]
         case .webEntry:
             return []
         }
@@ -163,8 +178,8 @@ enum DMTHearthPortalRoute {
         let pairParts = cleanPath.split(separator: "?", maxSplits: 1, omittingEmptySubsequences: false)
         let pagePath = pairParts.map(String.init).first ?? cleanPath
         var queryPairs = parseQuery(pairParts.count > 1 ? String(pairParts[1]) : "")
-        mergeValue(TOWINKLIopVibeRoute.TOWINKLIopSessionToken ?? "", for: "token", into: &queryPairs)
-        mergeValue(bundleMark, for: "appID", into: &queryPairs)
+        mergeValue(TOWINKLIopVibeRoute.TOWINKLIopSessionToken ?? "", for: DMTHearthPortalSeal.token, into: &queryPairs)
+        mergeValue(bundleMark, for: DMTHearthPortalSeal.appID, into: &queryPairs)
         let query = queryPairs.map { "\($0.0)=\(encoded($0.1))" }.joined(separator: "&")
         let fragment = query.isEmpty ? pagePath : "\(pagePath)?\(query)"
         return URL(string: "\(rootAddress)#\(fragment)")

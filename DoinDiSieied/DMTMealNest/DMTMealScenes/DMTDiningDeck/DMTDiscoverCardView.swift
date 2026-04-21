@@ -32,7 +32,7 @@ final class DMTDiscoverCardView: UIControl {
             source: moment.avatarKey,
             placeholder: DMTMainArtworkFactory.avatarImage(for: moment.author, size: CGSize(width: 64, height: 64))
         )
-        leftBadgeView.image = UIImage(named: moment.modeTag == "Audio" ? "insetLeftVal" : "mouthShapeForm")
+        leftBadgeView.image = UIImage.dmtMealAsset(named: moment.modeTag == DMTStringCellar.shared.serve("copy.modeAudio") ? DMTPlateStamp.audioModeBadge : DMTPlateStamp.pictureModeBadge)
         leftBadge.text = moment.modeTag
         rightBadge.text = moment.sideTag
         titleLabel.text = moment.dish

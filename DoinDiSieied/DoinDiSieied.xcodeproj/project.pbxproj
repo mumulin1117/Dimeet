@@ -21,7 +21,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		047E372B2F8E47E400391973 /* DoinDiSieied */ = {
+		047E372B2F8E47E400391973 /* DMTMealNest */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				047E373B2F8E47E700391973 /* Exceptions for "DMTMealNest" folder in "DoinDiSieied" target */,
@@ -45,7 +45,7 @@
 		047E37202F8E47E400391973 = {
 			isa = PBXGroup;
 			children = (
-				047E372B2F8E47E400391973 /* DoinDiSieied */,
+				047E372B2F8E47E400391973 /* DMTMealNest */,
 				047E372A2F8E47E400391973 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,7 +74,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				047E372B2F8E47E400391973 /* DoinDiSieied */,
+				047E372B2F8E47E400391973 /* DMTMealNest */,
 			);
 			name = DoinDiSieied;
 			packageProductDependencies = (

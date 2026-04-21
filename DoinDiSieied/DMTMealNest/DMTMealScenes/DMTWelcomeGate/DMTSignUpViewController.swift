@@ -9,7 +9,7 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
     private let navCourseTitle: String
     private let courseScrollView = UIScrollView()
     private let platingCanvas = UIView()
-    private let profileCoverView = UIImageView.init(image: UIImage.init(named: "mealVibeContext"))
+    private let profileCoverView = UIImageView.init(image: UIImage.dmtMealAsset(named: DMTPlateStamp.signUpCover))
     private let facePlateButton = UIButton(type: .custom)
     private let avatarPlusBadge = UIImageView(image: UIImage(systemName: "plus"))
     private let servingCard = UIView()
@@ -22,7 +22,7 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
     private var pickedBirthMonth = 0
     private var pickedBirthYear = 0
     private var pickedAvatarPhoto: UIImage?
-    private var ctaCopy = "Next"
+    private var ctaCopy = DMTStringCellar.shared.serve("copy.next")
 
     init(hearthService: DMTFeastService, passTicket: DMTLoginTicket, tasteLedger: DMTTasteProfileStore, navCourseTitle: String) {
         self.hearthService = hearthService
@@ -155,7 +155,7 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
         toolbar.sizeToFit()
         toolbar.items = [
             UIBarButtonItem(systemItem: .flexibleSpace),
-            UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(commitBirthWheel))
+            UIBarButtonItem(title: DMTStringCellar.shared.serve("copy.done"), style: .done, target: self, action: #selector(commitBirthWheel))
         ]
 
         agePlateField.entryField.inputView = birthdayWheel
@@ -173,7 +173,7 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
                 }
             } catch {
                 await MainActor.run {
-                    self.dmtServeNotice(title: "Signal Lost", message: error.localizedDescription)
+                    self.dmtServeNotice(title: DMTStringCellar.shared.serve("copy.signalLostTitle"), message: error.localizedDescription)
                 }
             }
         }
@@ -220,7 +220,7 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
         let birthLine = agePlateField.text.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard !nickname.isEmpty, !bio.isEmpty, !birthLine.isEmpty else {
-            dmtServeNotice(title: "Incomplete Table Card", message: "Fill in nickname, bio, and your birth month before continuing.")
+            dmtServeNotice(title: DMTStringCellar.shared.serve("copy.incompleteTableCardTitle"), message: DMTStringCellar.shared.serve("copy.incompleteTableCardMessage"))
             return
         }
 

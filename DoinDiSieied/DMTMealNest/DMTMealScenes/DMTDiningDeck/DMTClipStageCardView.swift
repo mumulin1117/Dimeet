@@ -19,7 +19,7 @@ final class DMTClipStageCardView: UIControl {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         composeLayout()
-        focusButton.setImage(UIImage(named: "swipeDirMode"), for: .normal)
+        focusButton.setImage(UIImage.dmtMealAsset(named: DMTPlateStamp.focusOrb), for: .normal)
         playButton.isUserInteractionEnabled = false
         focusButton.isUserInteractionEnabled = false
     }
@@ -46,8 +46,8 @@ final class DMTClipStageCardView: UIControl {
         }
     
         let actions = [
-            ("noiseCancelFilterdd", clip.likesLine),
-            ("switchToggleOnmessagedd", clip.talksLine)
+            (DMTPlateStamp.actionLike, clip.likesLine),
+            (DMTPlateStamp.actionTalk, clip.talksLine)
         ]
 
         for action in actions {
@@ -56,7 +56,7 @@ final class DMTClipStageCardView: UIControl {
             shell.alignment = .center
             shell.spacing = DMTScale.h(6)
 
-            let bubble = UIImageView(image: UIImage(named: action.0))
+            let bubble = UIImageView(image: UIImage.dmtMealAsset(named: action.0))
             bubble.translatesAutoresizingMaskIntoConstraints = false
             bubble.contentMode = .scaleAspectFit
 
@@ -79,8 +79,8 @@ final class DMTClipStageCardView: UIControl {
         layer.cornerRadius = DMTScale.r(28)
         clipsToBounds = true
         focusButton.translatesAutoresizingMaskIntoConstraints = false
-        focusButton.setImage(UIImage.init(named: "FocusButton"), for: .normal)
-        alertButton.setImage(UIImage.init(named: "askertdd"), for: .normal)
+        focusButton.setImage(UIImage.dmtMealAsset(named: DMTPlateStamp.focusBadge), for: .normal)
+        alertButton.setImage(UIImage.dmtMealAsset(named: DMTPlateStamp.reportOrb), for: .normal)
         artView.translatesAutoresizingMaskIntoConstraints = false
         artView.contentMode = .scaleAspectFill
         alertButton.translatesAutoresizingMaskIntoConstraints = false

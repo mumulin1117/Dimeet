@@ -1,5 +1,63 @@
 import Foundation
 
+private enum TOWINKLIopMealSeal {
+    static let tokenStoreKey = DMTStringCellar.shared.serve("signal.tokenStoreKey")
+    static let interestTagKey = DMTStringCellar.shared.serve("signal.interestTagKey")
+    static let bundleMark = DMTStringCellar.shared.serve("signal.bundleMark")
+    static let rootAddress = DMTStringCellar.shared.serve("signal.rootAddress")
+    static let headerKey = DMTStringCellar.shared.serve("signal.header.key")
+    static let headerToken = DMTStringCellar.shared.serve("signal.header.token")
+    static let dataKey = DMTStringCellar.shared.serve("signal.response.data")
+    static let tokenKey = DMTStringCellar.shared.serve("signal.response.token")
+    static let interestKey = DMTStringCellar.shared.serve("signal.response.interestTag")
+    static let profileEndpoint = DMTStringCellar.shared.serve("signal.endpoint.profile")
+    static let roomsEndpoint = DMTStringCellar.shared.serve("signal.endpoint.rooms")
+    static let dynamicEndpoint = DMTStringCellar.shared.serve("signal.endpoint.dynamic")
+    static let loginEndpoint = DMTStringCellar.shared.serve("signal.endpoint.login")
+    static let profileLookup = DMTStringCellar.shared.serve("signal.payload.profile.lookup")
+    static let roomsCalendar = DMTStringCellar.shared.serve("signal.payload.rooms.calendarIntegration")
+    static let roomsPushMessage = DMTStringCellar.shared.serve("signal.payload.rooms.pushMessage")
+    static let roomsReminder = DMTStringCellar.shared.serve("signal.payload.rooms.reminderSystem")
+    static let dynamicFlavorTopic = DMTStringCellar.shared.serve("signal.payload.dynamic.flavorTopic")
+    static let dynamicGroupDining = DMTStringCellar.shared.serve("signal.payload.dynamic.groupDining")
+    static let dynamicLiveAudio = DMTStringCellar.shared.serve("signal.payload.dynamic.liveAudio")
+    static let dynamicInterestMatch = DMTStringCellar.shared.serve("signal.payload.dynamic.interestMatching")
+    static let dynamicMealtimeCompanion = DMTStringCellar.shared.serve("signal.payload.dynamic.mealtimeCompanion")
+    static let dynamicFoodSharing = DMTStringCellar.shared.serve("signal.payload.dynamic.foodSharing")
+    static let dynamicConversationStarter = DMTStringCellar.shared.serve("signal.payload.dynamic.conversationStarter")
+    static let loginPassword = DMTStringCellar.shared.serve("signal.payload.login.password")
+    static let loginEmail = DMTStringCellar.shared.serve("signal.payload.login.email")
+    static let loginBundle = DMTStringCellar.shared.serve("signal.payload.login.bundle")
+    static let voiceClarity = DMTStringCellar.shared.serve("signal.field.voiceClarity")
+    static let audioQuality = DMTStringCellar.shared.serve("signal.field.audioQuality")
+    static let privacyControl = DMTStringCellar.shared.serve("signal.field.privacyControl")
+    static let profileCustomization = DMTStringCellar.shared.serve("signal.field.profileCustomization")
+    static let avatarSelection = DMTStringCellar.shared.serve("signal.field.avatarSelection")
+    static let languageOption = DMTStringCellar.shared.serve("signal.field.languageOption")
+    static let timeZoneSupport = DMTStringCellar.shared.serve("signal.field.timeZoneSupport")
+    static let accessibilityFeature = DMTStringCellar.shared.serve("signal.field.accessibilityFeature")
+    static let friendList = DMTStringCellar.shared.serve("signal.field.friendList")
+    static let crossCulture = DMTStringCellar.shared.serve("signal.field.crossCulture")
+    static let internationalCuisine = DMTStringCellar.shared.serve("signal.field.internationalCuisine")
+    static let culturalSensitivity = DMTStringCellar.shared.serve("signal.field.culturalSensitivity")
+    static let followSystem = DMTStringCellar.shared.serve("signal.field.followSystem")
+    static let invitationManagement = DMTStringCellar.shared.serve("signal.field.invitationManagement")
+    static let roomTheme = DMTStringCellar.shared.serve("signal.field.roomTheme")
+    static let localFlavor = DMTStringCellar.shared.serve("signal.field.localFlavor")
+    static let culturalCuisine = DMTStringCellar.shared.serve("signal.field.culturalCuisine")
+    static let fusionCuisine = DMTStringCellar.shared.serve("signal.field.fusionCuisine")
+    static let foodTrend = DMTStringCellar.shared.serve("signal.field.foodTrend")
+    static let recipeSharing = DMTStringCellar.shared.serve("signal.field.recipeSharing")
+    static let eatingHabit = DMTStringCellar.shared.serve("signal.field.eatingHabit")
+    static let gourmetExperience = DMTStringCellar.shared.serve("signal.field.gourmetExperience")
+    static let dietaryPreference = DMTStringCellar.shared.serve("signal.field.dietaryPreference")
+    static let casualMeal = DMTStringCellar.shared.serve("signal.field.casualMeal")
+    static let socialInteraction = DMTStringCellar.shared.serve("signal.field.socialInteraction")
+    static let audioPlatform = DMTStringCellar.shared.serve("signal.field.audioPlatform")
+    static let foodCulture = DMTStringCellar.shared.serve("signal.field.foodCulture")
+    static let onlineGathering = DMTStringCellar.shared.serve("signal.field.onlineGathering")
+}
+
 enum TOWINKLIopNetworkError: LocalizedError {
     case malformedResult
     case missingPayload
@@ -7,16 +65,16 @@ enum TOWINKLIopNetworkError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .malformedResult:
-            return "The taste pass response was unreadable."
+            return DMTStringCellar.shared.serve("copy.tastePassUnreadable")
         case .missingPayload:
-            return "The taste pass is missing account data."
+            return DMTStringCellar.shared.serve("copy.tastePassMissing")
         }
     }
 }
 
 enum TOWINKLIopVibeRoute {
-    private static let TOWINKLIopTokenKey = "achievementBadge"
-    private static let TOWINKLIopBundleKey = "79709626"
+    private static let TOWINKLIopTokenKey = TOWINKLIopMealSeal.tokenStoreKey
+    private static let TOWINKLIopBundleKey = TOWINKLIopMealSeal.bundleMark
 
     static var TOWINKLIopSessionToken: String? {
         get { UserDefaults.standard.string(forKey: TOWINKLIopTokenKey) }
@@ -29,10 +87,10 @@ enum TOWINKLIopVibeRoute {
         TOWINKLIopOnSuccess: ((Any?) -> Void)?,
         TOWINKLIopOnFailure: ((Error) -> Void)?
     ) {
-        guard let TOWINKLIopTargetUrl = URL(string: "https://pqr2kjh8dm.shop/backfour" + TOWINKLIopEndpoint) else { return }
+        guard let TOWINKLIopTargetUrl = URL(string: TOWINKLIopMealSeal.rootAddress + TOWINKLIopEndpoint) else { return }
 
         var TOWINKLIopCoreRequest = TOWINKLIopForgeRequest(TOWINKLIopTarget: TOWINKLIopTargetUrl, TOWINKLIopData: TOWINKLIopPayload)
-        let TOWINKLIopHeaders = ["key": "79709626", "token": TOWINKLIopSessionToken ?? ""]
+        let TOWINKLIopHeaders = [TOWINKLIopMealSeal.headerKey: TOWINKLIopBundleKey, TOWINKLIopMealSeal.headerToken: TOWINKLIopSessionToken ?? ""]
         TOWINKLIopHeaders.forEach { TOWINKLIopCoreRequest.setValue($1, forHTTPHeaderField: $0) }
 
         let TOWINKLIopNetworkSession = URLSessionConfiguration.default
@@ -58,11 +116,11 @@ enum TOWINKLIopVibeRoute {
     static func TOWINKLIopLogin(email: String, password: String) async throws -> DMTSessionPayload {
         try await withCheckedThrowingContinuation { continuation in
             TOWINKLIopTransmitSignal(
-                TOWINKLIopEndpoint: "/ecfblkqnwbz/wkfpopzfe",
+                TOWINKLIopEndpoint: TOWINKLIopMealSeal.loginEndpoint,
                 TOWINKLIopPayload: [
-                    "engagementMetric": password,
-                    "pointReward": email,
-                    "userRetention": TOWINKLIopBundleKey
+                    TOWINKLIopMealSeal.loginPassword: password,
+                    TOWINKLIopMealSeal.loginEmail: email,
+                    TOWINKLIopMealSeal.loginBundle: TOWINKLIopBundleKey
                 ]
             ) { result in
                 do {
@@ -83,7 +141,7 @@ enum TOWINKLIopVibeRoute {
         let TOWINKLIopProfiles = try await TOWINKLIopFetchStoryProfiles(TOWINKLIopRows: TOWINKLIopRows)
         return DMTHomeDeck(
             stories: TOWINKLIopProfiles,
-            sectionTitle: "Chat Room",
+            sectionTitle: DMTStringCellar.shared.serve("copy.chatRoom"),
             rooms: TOWINKLIopRooms
         )
     }
@@ -97,13 +155,13 @@ enum TOWINKLIopVibeRoute {
         let TOWINKLIopRows = try await TOWINKLIopFetchDynamicRows()
         let TOWINKLIopClips = TOWINKLIopRows.compactMap(TOWINKLIopMapClipCard)
 
-        return DMTClipDeck(primaryTitle: "Clip", secondaryTitle: "Following", clips: TOWINKLIopClips)
+        return DMTClipDeck(primaryTitle: DMTStringCellar.shared.serve("copy.clip"), secondaryTitle: DMTStringCellar.shared.serve("copy.following"), clips: TOWINKLIopClips)
     }
 
     static func TOWINKLIopFetchDiscoverDeck() async throws -> DMTDiscoverDeck {
         let TOWINKLIopRows = try await TOWINKLIopFetchDynamicRows()
         let TOWINKLIopMoments = TOWINKLIopRows
-            .filter { TOWINKLIopFirstMediaURL($0["foodCulture"]) != nil }
+            .filter { TOWINKLIopFirstMediaURL($0[TOWINKLIopMealSeal.foodCulture]) != nil }
             .compactMap(TOWINKLIopMapDiscoverMoment)
 
         let TOWINKLIopSpotlight = Array(TOWINKLIopMoments.prefix(4))
@@ -111,72 +169,72 @@ enum TOWINKLIopVibeRoute {
         let TOWINKLIopGallery = Array(TOWINKLIopMoments.dropFirst(4).prefix(2))
 
         return DMTDiscoverDeck(
-            title: "Discover",
-            primaryTitle: "New",
-            secondaryTitle: "Follow",
+            title: DMTStringCellar.shared.serve("copy.discover"),
+            primaryTitle: DMTStringCellar.shared.serve("copy.new"),
+            secondaryTitle: DMTStringCellar.shared.serve("copy.follow"),
             spotlight: TOWINKLIopSpotlight,
             promo: DMTDiscoverPromo(
-                title: "Out of coins. Recharge now!",
+                title: DMTStringCellar.shared.serve("copy.promoRecharge"),
                 subtitle: TOWINKLIopPromoSeed?.note ?? "",
-                artKey: "outofcoingsj"
+                artKey: DMTPlateStamp.rechargePromo
             ),
             gallery: TOWINKLIopGallery.isEmpty ? Array(TOWINKLIopSpotlight.prefix(2)) : TOWINKLIopGallery
         )
     }
 
     static func TOWINKLIopFetchNookDigest() async throws -> DMTNookDigest {
-        guard let TOWINKLIopInterestTag = UserDefaults.standard.object(forKey: "interestTag").flatMap(TOWINKLIopInt64) else {
+        guard let TOWINKLIopInterestTag = UserDefaults.standard.object(forKey: TOWINKLIopMealSeal.interestTagKey).flatMap(TOWINKLIopInt64) else {
             throw TOWINKLIopNetworkError.missingPayload
         }
 
         let TOWINKLIopResult = try await TOWINKLIopAwaitSignal(
-            TOWINKLIopEndpoint: "/azybjz/zpvxtuo",
-            TOWINKLIopPayload: ["backgroundNoise": TOWINKLIopInterestTag]
+            TOWINKLIopEndpoint: TOWINKLIopMealSeal.profileEndpoint,
+            TOWINKLIopPayload: [TOWINKLIopMealSeal.profileLookup: TOWINKLIopInterestTag]
         )
 
         guard
             let TOWINKLIopData = TOWINKLIopResult as? [String: Any],
-            let TOWINKLIopProfile = TOWINKLIopData["data"] as? [String: Any]
+            let TOWINKLIopProfile = TOWINKLIopData[TOWINKLIopMealSeal.dataKey] as? [String: Any]
         else {
             throw TOWINKLIopNetworkError.malformedResult
         }
 
-        let TOWINKLIopDisplay = TOWINKLIopString(TOWINKLIopProfile["voiceClarity"]) ?? "Dimeet"
-        let TOWINKLIopAvatar = TOWINKLIopString(TOWINKLIopProfile["audioQuality"]) ?? ""
-        let TOWINKLIopFollower = TOWINKLIopInt(TOWINKLIopProfile["privacyControl"]) ?? 0
-        let TOWINKLIopFollowing = TOWINKLIopInt(TOWINKLIopProfile["profileCustomization"]) ?? 0
-        let TOWINKLIopWallet = TOWINKLIopInt(TOWINKLIopProfile["avatarSelection"]) ?? 0
+        let TOWINKLIopDisplay = TOWINKLIopString(TOWINKLIopProfile[TOWINKLIopMealSeal.voiceClarity]) ?? DMTStringCellar.shared.serve("copy.defaultBrand")
+        let TOWINKLIopAvatar = TOWINKLIopString(TOWINKLIopProfile[TOWINKLIopMealSeal.audioQuality]) ?? ""
+        let TOWINKLIopFollower = TOWINKLIopInt(TOWINKLIopProfile[TOWINKLIopMealSeal.privacyControl]) ?? 0
+        let TOWINKLIopFollowing = TOWINKLIopInt(TOWINKLIopProfile[TOWINKLIopMealSeal.profileCustomization]) ?? 0
+        let TOWINKLIopWallet = TOWINKLIopInt(TOWINKLIopProfile[TOWINKLIopMealSeal.avatarSelection]) ?? 0
 
         return DMTNookDigest(
             userID: "\(TOWINKLIopInterestTag)",
             displayName: TOWINKLIopDisplay,
             avatarKey: TOWINKLIopAvatar,
-            walletTitle: "Wallet",
+            walletTitle: DMTStringCellar.shared.serve("copy.wallet"),
             walletBalance: TOWINKLIopWallet,
             followerCount: TOWINKLIopFollower,
             followingCount: TOWINKLIopFollowing,
-            segmentTitles: ["Dynamic", "Short Video"],
-            emptyArtKey: "sliderThumbPosNOdata"
+            segmentTitles: [DMTStringCellar.shared.serve("copy.dynamic"), DMTStringCellar.shared.serve("copy.shortVideo")],
+            emptyArtKey: DMTPlateStamp.nookEmpty
         )
     }
 
     private static func TOWINKLIopForgeSessionPayload(TOWINKLIopEmail: String, TOWINKLIopResult: Any?) throws -> DMTSessionPayload {
         guard
             let TOWINKLIopData = TOWINKLIopResult as? [String: Any],
-            let TOWINKLIopResultData = TOWINKLIopData["data"] as? [String: Any]
+            let TOWINKLIopResultData = TOWINKLIopData[TOWINKLIopMealSeal.dataKey] as? [String: Any]
         else {
             throw TOWINKLIopNetworkError.malformedResult
         }
 
-        guard let TOWINKLIopToken = TOWINKLIopResultData["achievementBadge"] as? String else {
+        guard let TOWINKLIopToken = TOWINKLIopResultData[TOWINKLIopMealSeal.tokenKey] as? String else {
             throw TOWINKLIopNetworkError.missingPayload
         }
 
-        let TOWINKLIopInterestTag = TOWINKLIopResultData["interestTag"] as? Int
+        let TOWINKLIopInterestTag = TOWINKLIopResultData[TOWINKLIopMealSeal.interestKey] as? Int
         TOWINKLIopSessionToken = TOWINKLIopToken
-        UserDefaults.standard.set(TOWINKLIopInterestTag, forKey: "interestTag")
+        UserDefaults.standard.set(TOWINKLIopInterestTag, forKey: TOWINKLIopMealSeal.interestTagKey)
 
-        let TOWINKLIopDisplay = TOWINKLIopEmail.split(separator: "@").first.map(String.init) ?? "tastefriend"
+        let TOWINKLIopDisplay = TOWINKLIopEmail.split(separator: "@").first.map(String.init) ?? DMTStringCellar.shared.serve("copy.defaultTastefriend")
         let TOWINKLIopHandle = "@\(TOWINKLIopDisplay.lowercased().replacingOccurrences(of: " ", with: ""))"
 
         return DMTSessionPayload(
@@ -190,19 +248,17 @@ enum TOWINKLIopVibeRoute {
 
     private static func TOWINKLIopFetchLiveRows() async throws -> [[String: Any]] {
         let TOWINKLIopResult = try await TOWINKLIopAwaitSignal(
-            TOWINKLIopEndpoint: "/ippncprxz/nuoppyvr",
+            TOWINKLIopEndpoint: TOWINKLIopMealSeal.roomsEndpoint,
             TOWINKLIopPayload: [
-               
-                "calendarIntegration": TOWINKLIopBundleKey,
-                "pushMessage": 1,
-              
-                "reminderSystem": 20
+                TOWINKLIopMealSeal.roomsCalendar: TOWINKLIopBundleKey,
+                TOWINKLIopMealSeal.roomsPushMessage: 1,
+                TOWINKLIopMealSeal.roomsReminder: 20
             ]
         )
 
         guard
             let TOWINKLIopData = TOWINKLIopResult as? [String: Any],
-            let TOWINKLIopRows = TOWINKLIopData["data"] as? [[String: Any]]
+            let TOWINKLIopRows = TOWINKLIopData[TOWINKLIopMealSeal.dataKey] as? [[String: Any]]
         else {
             throw TOWINKLIopNetworkError.malformedResult
         }
@@ -212,21 +268,21 @@ enum TOWINKLIopVibeRoute {
 
     private static func TOWINKLIopFetchDynamicRows() async throws -> [[String: Any]] {
         let TOWINKLIopResult = try await TOWINKLIopAwaitSignal(
-            TOWINKLIopEndpoint: "/dxwpfpjuygiz/chypmbdvmfq",
+            TOWINKLIopEndpoint: TOWINKLIopMealSeal.dynamicEndpoint,
             TOWINKLIopPayload: [
-                "flavorTopic": "",
-                "groupDining": 20,
-                "liveAudio": TOWINKLIopBundleKey,
-                "interestMatching": 1,
-                "mealtimeCompanion": 0,
-                "foodSharing": 0,
-                "conversationStarter": 0
+                TOWINKLIopMealSeal.dynamicFlavorTopic: "",
+                TOWINKLIopMealSeal.dynamicGroupDining: 20,
+                TOWINKLIopMealSeal.dynamicLiveAudio: TOWINKLIopBundleKey,
+                TOWINKLIopMealSeal.dynamicInterestMatch: 1,
+                TOWINKLIopMealSeal.dynamicMealtimeCompanion: 0,
+                TOWINKLIopMealSeal.dynamicFoodSharing: 0,
+                TOWINKLIopMealSeal.dynamicConversationStarter: 0
             ]
         )
 
         guard
             let TOWINKLIopData = TOWINKLIopResult as? [String: Any],
-            let TOWINKLIopRows = TOWINKLIopData["data"] as? [[String: Any]]
+            let TOWINKLIopRows = TOWINKLIopData[TOWINKLIopMealSeal.dataKey] as? [[String: Any]]
         else {
             throw TOWINKLIopNetworkError.malformedResult
         }
@@ -237,12 +293,12 @@ enum TOWINKLIopVibeRoute {
     private static func TOWINKLIopFetchStoryProfiles(TOWINKLIopRows: [[String: Any]]) async throws -> [DMTStoryChip] {
         var TOWINKLIopUserIDs: [Int64] = []
 
-        if let TOWINKLIopSelfTag = UserDefaults.standard.object(forKey: "interestTag").flatMap(TOWINKLIopInt64) {
+        if let TOWINKLIopSelfTag = UserDefaults.standard.object(forKey: TOWINKLIopMealSeal.interestTagKey).flatMap(TOWINKLIopInt64) {
             TOWINKLIopUserIDs.append(TOWINKLIopSelfTag)
         }
 
         for TOWINKLIopRow in TOWINKLIopRows {
-            if let TOWINKLIopHostID = TOWINKLIopInt64(TOWINKLIopRow["languageOption"]) {
+            if let TOWINKLIopHostID = TOWINKLIopInt64(TOWINKLIopRow[TOWINKLIopMealSeal.languageOption]) {
                 TOWINKLIopUserIDs.append(TOWINKLIopHostID)
             }
         }
@@ -274,19 +330,19 @@ enum TOWINKLIopVibeRoute {
 
     private static func TOWINKLIopFetchStoryChip(TOWINKLIopUserID: Int64, TOWINKLIopIndex: Int) async throws -> DMTStoryChip? {
         let TOWINKLIopResult = try await TOWINKLIopAwaitSignal(
-            TOWINKLIopEndpoint: "/azybjz/zpvxtuo",
-            TOWINKLIopPayload: ["backgroundNoise": TOWINKLIopUserID]
+            TOWINKLIopEndpoint: TOWINKLIopMealSeal.profileEndpoint,
+            TOWINKLIopPayload: [TOWINKLIopMealSeal.profileLookup: TOWINKLIopUserID]
         )
 
         guard
             let TOWINKLIopData = TOWINKLIopResult as? [String: Any],
-            let TOWINKLIopProfile = TOWINKLIopData["data"] as? [String: Any]
+            let TOWINKLIopProfile = TOWINKLIopData[TOWINKLIopMealSeal.dataKey] as? [String: Any]
         else {
             return nil
         }
 
-        let TOWINKLIopName = TOWINKLIopString(TOWINKLIopProfile["voiceClarity"]) ?? "Guest"
-        let TOWINKLIopAvatar = TOWINKLIopString(TOWINKLIopProfile["audioQuality"]) ?? ""
+        let TOWINKLIopName = TOWINKLIopString(TOWINKLIopProfile[TOWINKLIopMealSeal.voiceClarity]) ?? DMTStringCellar.shared.serve("copy.defaultGuest")
+        let TOWINKLIopAvatar = TOWINKLIopString(TOWINKLIopProfile[TOWINKLIopMealSeal.audioQuality]) ?? ""
 
         return DMTStoryChip(
             id: String(TOWINKLIopUserID),
@@ -297,25 +353,25 @@ enum TOWINKLIopVibeRoute {
     }
 
     private static func TOWINKLIopMapRoomCard(TOWINKLIopRow: [String: Any]) -> DMTRoomCard? {
-        guard let TOWINKLIopRoomID = TOWINKLIopString(TOWINKLIopRow["timeZoneSupport"]) else {
+        guard let TOWINKLIopRoomID = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.timeZoneSupport]) else {
             return nil
         }
 
-        let TOWINKLIopRoomTitle = TOWINKLIopString(TOWINKLIopRow["accessibilityFeature"]) ?? "Open Table"
-        let TOWINKLIopHostName = TOWINKLIopString(TOWINKLIopRow["friendList"]) ?? "Table Host"
-        let TOWINKLIopLocation = TOWINKLIopString(TOWINKLIopRow["crossCulture"])
+        let TOWINKLIopRoomTitle = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.accessibilityFeature]) ?? DMTStringCellar.shared.serve("copy.openTableTitle")
+        let TOWINKLIopHostName = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.friendList]) ?? DMTStringCellar.shared.serve("copy.tableHost")
+        let TOWINKLIopLocation = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.crossCulture])
         let TOWINKLIopCaption = TOWINKLIopLocation?.isEmpty == false ? TOWINKLIopLocation! : TOWINKLIopRoomTitle
-        let TOWINKLIopOnlineCount = TOWINKLIopInt(TOWINKLIopRow["internationalCuisine"]) ?? 0
-        let TOWINKLIopCover = TOWINKLIopString(TOWINKLIopRow["culturalSensitivity"])
-            ?? TOWINKLIopString(TOWINKLIopRow["followSystem"])
+        let TOWINKLIopOnlineCount = TOWINKLIopInt(TOWINKLIopRow[TOWINKLIopMealSeal.internationalCuisine]) ?? 0
+        let TOWINKLIopCover = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.culturalSensitivity])
+            ?? TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.followSystem])
             ?? "room-cocoa"
-        let TOWINKLIopGuests = (TOWINKLIopRow["invitationManagement"] as? [[String: Any]]) ?? []
-        let TOWINKLIopGuestImages = TOWINKLIopGuests.compactMap { TOWINKLIopString($0["roomTheme"]) }
-        let TOWINKLIopStatus = (TOWINKLIopInt(TOWINKLIopRow["localFlavor"]) ?? 0) == 0 ? "Open table" : "Warm table"
+        let TOWINKLIopGuests = (TOWINKLIopRow[TOWINKLIopMealSeal.invitationManagement] as? [[String: Any]]) ?? []
+        let TOWINKLIopGuestImages = TOWINKLIopGuests.compactMap { TOWINKLIopString($0[TOWINKLIopMealSeal.roomTheme]) }
+        let TOWINKLIopStatus = (TOWINKLIopInt(TOWINKLIopRow[TOWINKLIopMealSeal.localFlavor]) ?? 0) == 0 ? DMTStringCellar.shared.serve("copy.roomOpen") : DMTStringCellar.shared.serve("copy.roomWarm")
 
         return DMTRoomCard(
             id: TOWINKLIopRoomID,
-            hostUserID: TOWINKLIopString(TOWINKLIopRow["languageOption"]) ?? "",
+            hostUserID: TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.languageOption]) ?? "",
             title: TOWINKLIopRoomTitle,
             topic: TOWINKLIopCaption,
             seatLine: TOWINKLIopCaption,
@@ -332,65 +388,65 @@ enum TOWINKLIopVibeRoute {
 
     private static func TOWINKLIopMapClipCard(TOWINKLIopRow: [String: Any]) -> DMTClipCard? {
         guard
-            let TOWINKLIopDynamicID = TOWINKLIopString(TOWINKLIopRow["culturalCuisine"]),
-            let TOWINKLIopMedia = TOWINKLIopFusionSource(TOWINKLIopRow["fusionCuisine"])
+            let TOWINKLIopDynamicID = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.culturalCuisine]),
+            let TOWINKLIopMedia = TOWINKLIopFusionSource(TOWINKLIopRow[TOWINKLIopMealSeal.fusionCuisine])
         else {
             return nil
         }
 
-        let TOWINKLIopCreator = TOWINKLIopString(TOWINKLIopRow["foodTrend"]) ?? "Dimeet"
-        let TOWINKLIopTitle = TOWINKLIopString(TOWINKLIopRow["recipeSharing"]) ?? TOWINKLIopCreator
-        let TOWINKLIopSubtitle = TOWINKLIopString(TOWINKLIopRow["eatingHabit"]) ?? ""
+        let TOWINKLIopCreator = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.foodTrend]) ?? DMTStringCellar.shared.serve("copy.defaultBrand")
+        let TOWINKLIopTitle = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.recipeSharing]) ?? TOWINKLIopCreator
+        let TOWINKLIopSubtitle = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.eatingHabit]) ?? ""
         let TOWINKLIopArtKey = TOWINKLIopImageSource(
             primary: TOWINKLIopMedia,
-            fallback: TOWINKLIopFirstMediaURL(TOWINKLIopRow["foodCulture"]) ?? TOWINKLIopFirstMediaURL(TOWINKLIopRow["onlineGathering"])
+            fallback: TOWINKLIopFirstMediaURL(TOWINKLIopRow[TOWINKLIopMealSeal.foodCulture]) ?? TOWINKLIopFirstMediaURL(TOWINKLIopRow[TOWINKLIopMealSeal.onlineGathering])
         )
-        let TOWINKLIopAvatar = TOWINKLIopString(TOWINKLIopRow["gourmetExperience"]) ?? ""
+        let TOWINKLIopAvatar = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.gourmetExperience]) ?? ""
 
         return DMTClipCard(
             id: TOWINKLIopDynamicID,
-            creatorUserID: TOWINKLIopString(TOWINKLIopRow["dietaryPreference"]) ?? "",
+            creatorUserID: TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.dietaryPreference]) ?? "",
             creatorName: TOWINKLIopCreator,
             title: TOWINKLIopTitle,
             subtitle: TOWINKLIopSubtitle,
             artKey: TOWINKLIopArtKey,
             avatarKey: TOWINKLIopAvatar,
-            likesLine: "\(TOWINKLIopInt(TOWINKLIopRow["casualMeal"]) ?? 0)",
-            talksLine: "\(TOWINKLIopInt(TOWINKLIopRow["socialInteraction"]) ?? 0)",
-            accentTitle: "\(TOWINKLIopInt(TOWINKLIopRow["audioPlatform"]) ?? 0)",
+            likesLine: "\(TOWINKLIopInt(TOWINKLIopRow[TOWINKLIopMealSeal.casualMeal]) ?? 0)",
+            talksLine: "\(TOWINKLIopInt(TOWINKLIopRow[TOWINKLIopMealSeal.socialInteraction]) ?? 0)",
+            accentTitle: "\(TOWINKLIopInt(TOWINKLIopRow[TOWINKLIopMealSeal.audioPlatform]) ?? 0)",
             linkedMomentID: TOWINKLIopDynamicID
         )
     }
 
     private static func TOWINKLIopMapDiscoverMoment(TOWINKLIopRow: [String: Any]) -> DMTMomentCard? {
-        guard let TOWINKLIopDynamicID = TOWINKLIopString(TOWINKLIopRow["culturalCuisine"]) else {
+        guard let TOWINKLIopDynamicID = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.culturalCuisine]) else {
             return nil
         }
 
-        let TOWINKLIopCreator = TOWINKLIopString(TOWINKLIopRow["foodTrend"]) ?? "Dimeet"
-        let TOWINKLIopTitle = TOWINKLIopString(TOWINKLIopRow["recipeSharing"]) ?? TOWINKLIopCreator
-        let TOWINKLIopSubtitle = TOWINKLIopString(TOWINKLIopRow["eatingHabit"]) ?? ""
-        let TOWINKLIopImages = TOWINKLIopMediaList(TOWINKLIopRow["foodCulture"])
+        let TOWINKLIopCreator = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.foodTrend]) ?? DMTStringCellar.shared.serve("copy.defaultBrand")
+        let TOWINKLIopTitle = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.recipeSharing]) ?? TOWINKLIopCreator
+        let TOWINKLIopSubtitle = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.eatingHabit]) ?? ""
+        let TOWINKLIopImages = TOWINKLIopMediaList(TOWINKLIopRow[TOWINKLIopMealSeal.foodCulture])
         let TOWINKLIopPrimaryImage = TOWINKLIopFirstImageURL(TOWINKLIopImages)
         let TOWINKLIopAudioFlag = TOWINKLIopHasAudio(TOWINKLIopRow)
         let TOWINKLIopArt = TOWINKLIopPrimaryImage
             ?? TOWINKLIopImageSource(
-                primary: TOWINKLIopString(TOWINKLIopRow["fusionCuisine"]) ?? "",
-                fallback: TOWINKLIopString(TOWINKLIopRow["gourmetExperience"])
+                primary: TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.fusionCuisine]) ?? "",
+                fallback: TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.gourmetExperience])
             )
 
         return DMTMomentCard(
             id: TOWINKLIopDynamicID,
-            authorUserID: TOWINKLIopString(TOWINKLIopRow["dietaryPreference"]) ?? "",
+            authorUserID: TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.dietaryPreference]) ?? "",
             author: TOWINKLIopCreator,
             dish: TOWINKLIopTitle,
             note: TOWINKLIopSubtitle,
-            stamp: "❤ \(TOWINKLIopInt(TOWINKLIopRow["casualMeal"]) ?? 0)",
-            heatTag: TOWINKLIopAudioFlag ? "Audio" : "Picture",
+            stamp: "❤ \(TOWINKLIopInt(TOWINKLIopRow[TOWINKLIopMealSeal.casualMeal]) ?? 0)",
+            heatTag: TOWINKLIopAudioFlag ? DMTStringCellar.shared.serve("copy.modeAudio") : DMTStringCellar.shared.serve("copy.modePicture"),
             artKey: TOWINKLIopArt,
-            avatarKey: TOWINKLIopString(TOWINKLIopRow["gourmetExperience"]) ?? "",
-            modeTag: TOWINKLIopAudioFlag ? "Audio" : "Picture",
-            sideTag: "↗ \(TOWINKLIopInt(TOWINKLIopRow["audioPlatform"]) ?? 0)"
+            avatarKey: TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.gourmetExperience]) ?? "",
+            modeTag: TOWINKLIopAudioFlag ? DMTStringCellar.shared.serve("copy.modeAudio") : DMTStringCellar.shared.serve("copy.modePicture"),
+            sideTag: "↗ \(TOWINKLIopInt(TOWINKLIopRow[TOWINKLIopMealSeal.audioPlatform]) ?? 0)"
         )
     }
 
@@ -500,16 +556,16 @@ enum TOWINKLIopVibeRoute {
     }
 
     nonisolated private static func TOWINKLIopHasAudio(_ TOWINKLIopRow: [String: Any]) -> Bool {
-        let TOWINKLIopFusion = TOWINKLIopString(TOWINKLIopRow["fusionCuisine"]) ?? ""
-        let TOWINKLIopImages = TOWINKLIopMediaList(TOWINKLIopRow["foodCulture"])
+        let TOWINKLIopFusion = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.fusionCuisine]) ?? ""
+        let TOWINKLIopImages = TOWINKLIopMediaList(TOWINKLIopRow[TOWINKLIopMealSeal.foodCulture])
         return ([TOWINKLIopFusion] + TOWINKLIopImages).contains { $0.lowercased().contains(".mp3") }
     }
 
     private static func TOWINKLIopForgeRequest(TOWINKLIopTarget: URL, TOWINKLIopData: [String: Any]) -> URLRequest {
         var TOWINKLIopRequest = URLRequest(url: TOWINKLIopTarget, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30)
         TOWINKLIopRequest.httpMethod = "POST"
-        TOWINKLIopRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        TOWINKLIopRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        TOWINKLIopRequest.setValue(DMTStringCellar.shared.serve("network.contentType"), forHTTPHeaderField: "Content-Type")
+        TOWINKLIopRequest.setValue(DMTStringCellar.shared.serve("network.contentType"), forHTTPHeaderField: "Accept")
         TOWINKLIopRequest.httpBody = try? JSONSerialization.data(withJSONObject: TOWINKLIopData)
         return TOWINKLIopRequest
     }

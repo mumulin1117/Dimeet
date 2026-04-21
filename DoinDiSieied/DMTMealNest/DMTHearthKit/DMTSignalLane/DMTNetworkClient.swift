@@ -7,9 +7,9 @@ enum DMTNetworkFault: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidResponse:
-            return "The meal signal was interrupted."
+            return DMTStringCellar.shared.serve("copy.mealSignalInterrupted")
         case .status(let code):
-            return "The kitchen returned \(code)."
+            return "\(DMTStringCellar.shared.serve("copy.kitchenReturnedPrefix")) \(code)."
         }
     }
 }
@@ -18,7 +18,7 @@ final class DMTNetworkClient {
     private let session: URLSession
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
-    private let baseURL = URL(string: "https://api.dmtplate.local/")!
+    private let baseURL = URL(string: DMTStringCellar.shared.serve("network.baseURL"))!
 
     init() {
         let configuration = URLSessionConfiguration.ephemeral
@@ -31,7 +31,7 @@ final class DMTNetworkClient {
     func load<Response: Decodable>(_ path: String, method: String = "GET", body: Encodable? = nil) async throws -> Response {
         var request = URLRequest(url: baseURL.appendingPathComponent(path))
         request.httpMethod = method
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(DMTStringCellar.shared.serve("network.contentType"), forHTTPHeaderField: "Content-Type")
 
         if let body {
             request.httpBody = try encoder.encode(DMTAnyEncodable(body))

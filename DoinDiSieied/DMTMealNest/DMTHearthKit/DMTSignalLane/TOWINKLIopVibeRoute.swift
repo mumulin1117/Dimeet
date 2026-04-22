@@ -153,7 +153,9 @@ enum TOWINKLIopVibeRoute {
 
     static func TOWINKLIopFetchClipDeck() async throws -> DMTClipDeck {
         let TOWINKLIopRows = try await TOWINKLIopFetchDynamicRows()
-        let TOWINKLIopClips = TOWINKLIopRows.compactMap(TOWINKLIopMapClipCard)
+        let TOWINKLIopClips = TOWINKLIopRows
+            .filter { TOWINKLIopContainsFusionMedia($0[TOWINKLIopMealSeal.fusionCuisine], matching: [".mp4"]) }
+            .compactMap(TOWINKLIopMapClipCard)
 
         return DMTClipDeck(primaryTitle: DMTStringCellar.shared.serve("copy.clip"), secondaryTitle: DMTStringCellar.shared.serve("copy.following"), clips: TOWINKLIopClips)
     }
@@ -161,7 +163,13 @@ enum TOWINKLIopVibeRoute {
     static func TOWINKLIopFetchDiscoverDeck() async throws -> DMTDiscoverDeck {
         let TOWINKLIopRows = try await TOWINKLIopFetchDynamicRows()
         let TOWINKLIopMoments = TOWINKLIopRows
-            .filter { TOWINKLIopFirstMediaURL($0[TOWINKLIopMealSeal.foodCulture]) != nil }
+            .filter {
+                TOWINKLIopFirstMediaURL($0[TOWINKLIopMealSeal.foodCulture]) != nil &&
+                (
+                    TOWINKLIopContainsFusionMedia($0[TOWINKLIopMealSeal.fusionCuisine], matching: [".mp3"]) ||
+                    TOWINKLIopFusionCourseIsBlank($0[TOWINKLIopMealSeal.fusionCuisine])
+                )
+            }
             .compactMap(TOWINKLIopMapDiscoverMoment)
 
         let TOWINKLIopSpotlight = Array(TOWINKLIopMoments.prefix(4))
@@ -389,7 +397,7 @@ enum TOWINKLIopVibeRoute {
     private static func TOWINKLIopMapClipCard(TOWINKLIopRow: [String: Any]) -> DMTClipCard? {
         guard
             let TOWINKLIopDynamicID = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.culturalCuisine]),
-            let TOWINKLIopMedia = TOWINKLIopFusionSource(TOWINKLIopRow[TOWINKLIopMealSeal.fusionCuisine])
+            let TOWINKLIopMedia = TOWINKLIopFirstFusionMedia(TOWINKLIopRow[TOWINKLIopMealSeal.fusionCuisine], matching: [".mp4"])
         else {
             return nil
         }
@@ -428,7 +436,16 @@ enum TOWINKLIopVibeRoute {
         let TOWINKLIopSubtitle = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.eatingHabit]) ?? ""
         let TOWINKLIopImages = TOWINKLIopMediaList(TOWINKLIopRow[TOWINKLIopMealSeal.foodCulture])
         let TOWINKLIopPrimaryImage = TOWINKLIopFirstImageURL(TOWINKLIopImages)
-        let TOWINKLIopAudioFlag = TOWINKLIopHasAudio(TOWINKLIopRow)
+        let TOWINKLIopFusionBlank = TOWINKLIopFusionCourseIsBlank(TOWINKLIopRow[TOWINKLIopMealSeal.fusionCuisine])
+        let TOWINKLIopFusionMp3 = TOWINKLIopContainsFusionMedia(TOWINKLIopRow[TOWINKLIopMealSeal.fusionCuisine], matching: [".mp3"])
+        let TOWINKLIopModeSeal: String
+        if TOWINKLIopFusionMp3 {
+            TOWINKLIopModeSeal = DMTStringCellar.shared.serve("copy.modeAudio")
+        } else if TOWINKLIopFusionBlank {
+            TOWINKLIopModeSeal = DMTStringCellar.shared.serve("copy.modePicture")
+        } else {
+            TOWINKLIopModeSeal = DMTStringCellar.shared.serve("copy.modePicture")
+        }
         let TOWINKLIopArt = TOWINKLIopPrimaryImage
             ?? TOWINKLIopImageSource(
                 primary: TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.fusionCuisine]) ?? "",
@@ -442,10 +459,10 @@ enum TOWINKLIopVibeRoute {
             dish: TOWINKLIopTitle,
             note: TOWINKLIopSubtitle,
             stamp: "❤ \(TOWINKLIopInt(TOWINKLIopRow[TOWINKLIopMealSeal.casualMeal]) ?? 0)",
-            heatTag: TOWINKLIopAudioFlag ? DMTStringCellar.shared.serve("copy.modeAudio") : DMTStringCellar.shared.serve("copy.modePicture"),
+            heatTag: TOWINKLIopModeSeal,
             artKey: TOWINKLIopArt,
             avatarKey: TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.gourmetExperience]) ?? "",
-            modeTag: TOWINKLIopAudioFlag ? DMTStringCellar.shared.serve("copy.modeAudio") : DMTStringCellar.shared.serve("copy.modePicture"),
+            modeTag: TOWINKLIopModeSeal,
             sideTag: "↗ \(TOWINKLIopInt(TOWINKLIopRow[TOWINKLIopMealSeal.audioPlatform]) ?? 0)"
         )
     }
@@ -506,22 +523,6 @@ enum TOWINKLIopVibeRoute {
         TOWINKLIopMediaList(TOWINKLIopValue).first
     }
 
-    nonisolated private static func TOWINKLIopFusionSource(_ TOWINKLIopValue: Any?) -> String? {
-        if let TOWINKLIopMedia = TOWINKLIopMediaList(TOWINKLIopValue)
-            .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
-            .first(where: { $0.isEmpty == false  }) {
-            return TOWINKLIopMedia
-        }
-
-        if let TOWINKLIopText = TOWINKLIopString(TOWINKLIopValue)?
-            .trimmingCharacters(in: .whitespacesAndNewlines),
-           TOWINKLIopText.isEmpty == false  && TOWINKLIopText.contains("mp3") == false {
-            return TOWINKLIopText
-        }
-
-        return nil
-    }
-
     nonisolated private static func TOWINKLIopImageSource(primary: String, fallback: String?) -> String {
         if TOWINKLIopLooksLikeImageURL(primary) {
             return primary
@@ -555,10 +556,38 @@ enum TOWINKLIopVibeRoute {
         TOWINKLIopValues.first(where: TOWINKLIopLooksLikeImageURL)
     }
 
-    nonisolated private static func TOWINKLIopHasAudio(_ TOWINKLIopRow: [String: Any]) -> Bool {
-        let TOWINKLIopFusion = TOWINKLIopString(TOWINKLIopRow[TOWINKLIopMealSeal.fusionCuisine]) ?? ""
-        let TOWINKLIopImages = TOWINKLIopMediaList(TOWINKLIopRow[TOWINKLIopMealSeal.foodCulture])
-        return ([TOWINKLIopFusion] + TOWINKLIopImages).contains { $0.lowercased().contains(".mp3") }
+    nonisolated private static func TOWINKLIopFusionEntries(_ TOWINKLIopValue: Any?) -> [String] {
+        let TOWINKLIopMedia = TOWINKLIopMediaList(TOWINKLIopValue)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { $0.isEmpty == false }
+
+        if TOWINKLIopMedia.isEmpty == false {
+            return TOWINKLIopMedia
+        }
+
+        if let TOWINKLIopText = TOWINKLIopString(TOWINKLIopValue)?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+           TOWINKLIopText.isEmpty == false {
+            return [TOWINKLIopText]
+        }
+
+        return []
+    }
+
+    nonisolated private static func TOWINKLIopFirstFusionMedia(_ TOWINKLIopValue: Any?, matching TOWINKLIopMarks: [String]) -> String? {
+        let TOWINKLIopNormalizedMarks = TOWINKLIopMarks.map { $0.lowercased() }
+        return TOWINKLIopFusionEntries(TOWINKLIopValue).first { TOWINKLIopEntry in
+            let TOWINKLIopLowerEntry = TOWINKLIopEntry.lowercased()
+            return TOWINKLIopNormalizedMarks.contains { TOWINKLIopLowerEntry.contains($0) }
+        }
+    }
+
+    nonisolated private static func TOWINKLIopContainsFusionMedia(_ TOWINKLIopValue: Any?, matching TOWINKLIopMarks: [String]) -> Bool {
+        TOWINKLIopFirstFusionMedia(TOWINKLIopValue, matching: TOWINKLIopMarks) != nil
+    }
+
+    nonisolated private static func TOWINKLIopFusionCourseIsBlank(_ TOWINKLIopValue: Any?) -> Bool {
+        TOWINKLIopFusionEntries(TOWINKLIopValue).isEmpty
     }
 
     private static func TOWINKLIopForgeRequest(TOWINKLIopTarget: URL, TOWINKLIopData: [String: Any]) -> URLRequest {

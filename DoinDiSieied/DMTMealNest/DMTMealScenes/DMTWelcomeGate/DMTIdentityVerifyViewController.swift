@@ -158,11 +158,11 @@ final class DMTIdentityVerifyViewController: UIViewController, UIImagePickerCont
             do {
                 let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
-                    self.title = bundle.verify.title
-                    self.ctaCopy = bundle.verify.ctaCopy
-                    self.introLabel.text = bundle.verify.intro
-                    self.captionLabel.text = bundle.verify.caption
-                    self.actionButton.setTitle(bundle.verify.ctaCopy, for: .normal)
+                    self.title = bundle.DMTshiverify.DMTshititle
+                    self.ctaCopy = bundle.DMTshiverify.ctaCopy
+                    self.introLabel.text = bundle.DMTshiverify.intro
+                    self.captionLabel.text = bundle.DMTshiverify.caption
+                    self.actionButton.setTitle(bundle.DMTshiverify.ctaCopy, for: .normal)
                 }
             } catch {
                 await MainActor.run {

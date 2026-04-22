@@ -1,12 +1,12 @@
 import Foundation
 
 struct DMTAuthBundle: Codable {
-    let welcome: DMTWelcomeDeck
-    let agreement: DMTEulaDeck
-    let login: DMTLoginDeck
-    let signUp: DMTSignUpDeck
-    let verify: DMTVerifyDeck
-    let entry: DMTEntryDeck
+    let DMTshiwelcome: DMTWelcomeDeck
+    let DMTshiagreement: DMTEulaDeck
+    let DMTshilogin: DMTLoginDeck
+    let DMTshisignUp: DMTSignUpDeck
+    let DMTshiverify: DMTVerifyDeck
+    let DMTshientry: DMTEntryDeck
 }
 
 struct DMTWelcomeDeck: Codable {
@@ -17,17 +17,17 @@ struct DMTWelcomeDeck: Codable {
 }
 
 struct DMTEulaDeck: Codable {
-    let title: String
+    let DMTshititle: String
     let intro: String
     let bullets: [String]
     let closing: String
     let cancelTitle: String
-    let agreeTitle: String
+    let DMTshiagreeTitle: String
 }
 
 struct DMTLoginDeck: Codable {
-    let title: String
-    let emailTitle: String
+    let DMTshititle: String
+    let DMTshiemailTitle: String
     let emailPlaceholder: String
     let passwordTitle: String
     let passwordPlaceholder: String
@@ -36,7 +36,7 @@ struct DMTLoginDeck: Codable {
 }
 
 struct DMTSignUpDeck: Codable {
-    let title: String
+    let DMTshititle: String
     let nicknameTitle: String
     let nicknamePlaceholder: String
     let bioTitle: String
@@ -47,26 +47,26 @@ struct DMTSignUpDeck: Codable {
 }
 
 struct DMTVerifyDeck: Codable {
-    let title: String
+    let DMTshititle: String
     let intro: String
     let caption: String
     let ctaCopy: String
 }
 
 struct DMTEntryDeck: Codable {
-    let title: String
+    let DMTshititle: String
     let subtitle: String
     let reminders: [DMTEntryReminder]
     let ctaCopy: String
 }
 
 struct DMTEntryReminder: Codable {
-    let title: String
+    let DMTshititle: String
     let subtitle: String
 }
 
 struct DMTLoginBody: Codable {
-    let email: String
+    let DMTshiemail: String
     let password: String
 }
 
@@ -86,7 +86,7 @@ struct DMTSessionPayload: Codable {
 }
 
 struct DMTLocalTasteProfile: Codable {
-    let email: String
+    let DMTshiemail: String
     let password: String
     let nickname: String
     let bio: String

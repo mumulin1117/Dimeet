@@ -117,7 +117,7 @@ final class DMTEulaViewController: UIViewController {
             do {
                 let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
-                    self.presentDeckCopy(bundle.agreement)
+                    self.presentDeckCopy(bundle.DMTshiagreement)
                 }
             } catch {
                 await MainActor.run {
@@ -128,11 +128,11 @@ final class DMTEulaViewController: UIViewController {
     }
 
     private func presentDeckCopy(_ deck: DMTEulaDeck) {
-        titleLabel.text = deck.title
+        titleLabel.text = deck.DMTshititle
         introLabel.text = deck.intro
         closingLabel.text = deck.closing
         cancelButton.setTitle(deck.cancelTitle, for: .normal)
-        agreeButton.setTitle(deck.agreeTitle, for: .normal)
+        agreeButton.setTitle(deck.DMTshiagreeTitle, for: .normal)
 
         stackView.arrangedSubviews.forEach {
             stackView.removeArrangedSubview($0)

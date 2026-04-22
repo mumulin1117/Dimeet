@@ -1,6 +1,6 @@
 import UIKit
 
-final class DMTLoginViewController: UIViewController {
+final class DMTLoginViewController: UIViewController, UITextFieldDelegate {
     var onFinish: ((DMTSessionPayload) -> Void)?
     var onNeedSignUp: ((DMTLoginTicket) -> Void)?
 
@@ -38,6 +38,7 @@ final class DMTLoginViewController: UIViewController {
         view.backgroundColor = DMTPalette.cream
         navigationItem.largeTitleDisplayMode = .never
         composeLayout()
+        configureKeyboardFlow()
         fetchLoginCopy()
     }
 
@@ -82,9 +83,13 @@ final class DMTLoginViewController: UIViewController {
         servingCard.addSubview(servePassButton)
         servePassButton.addSubview(simmerSpinner)
 
-        courseScrollView.dmtPinCourseEdges(to: view)
         courseScrollView.contentInsetAdjustmentBehavior = .never
         NSLayoutConstraint.activate([
+            courseScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            courseScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            courseScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            courseScrollView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
+
             platingCanvas.topAnchor.constraint(equalTo: courseScrollView.topAnchor),
             platingCanvas.leadingAnchor.constraint(equalTo: courseScrollView.leadingAnchor),
             platingCanvas.trailingAnchor.constraint(equalTo: courseScrollView.trailingAnchor),
@@ -129,13 +134,23 @@ final class DMTLoginViewController: UIViewController {
         ])
     }
 
+    private func configureKeyboardFlow() {
+        dmtSeasonKeyboardFlow(in: courseScrollView)
+        emailPassField.entryField.delegate = self
+        emailPassField.entryField.returnKeyType = .next
+        emailPassField.entryField.enablesReturnKeyAutomatically = true
+        secretPassField.entryField.delegate = self
+        secretPassField.entryField.returnKeyType = .done
+        secretPassField.entryField.enablesReturnKeyAutomatically = true
+    }
+
     private func fetchLoginCopy() {
         Task { [weak self] in
             guard let self else { return }
             do {
                 let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
-                    self.renderLoginCopy(bundle.login)
+                    self.renderLoginCopy(bundle.DMTshilogin)
                 }
             } catch {
                 await MainActor.run {
@@ -148,7 +163,7 @@ final class DMTLoginViewController: UIViewController {
     private func renderLoginCopy(_ deck: DMTLoginDeck) {
         title = navCourseTitle
         ctaCopy = deck.ctaCopy
-        emailPassField.renderFieldCopy(title: deck.emailTitle, placeholder: deck.emailPlaceholder)
+        emailPassField.renderFieldCopy(title: deck.DMTshiemailTitle, placeholder: deck.emailPlaceholder)
         emailPassField.entryField.keyboardType = .emailAddress
         emailPassField.entryField.textContentType = .username
         secretPassField.renderFieldCopy(title: deck.passwordTitle, placeholder: deck.passwordPlaceholder, isSecure: true)
@@ -159,6 +174,7 @@ final class DMTLoginViewController: UIViewController {
 
     @objc
     private func handlePassServeTap() {
+        view.endEditing(true)
         let email = tasteLedger.normalizedEmail(emailPassField.text)
         let password = secretPassField.text.trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -219,5 +235,29 @@ final class DMTLoginViewController: UIViewController {
             simmerSpinner.stopAnimating()
             servePassButton.setTitle(ctaCopy, for: .normal)
         }
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let hostedField: UIView
+        if textField === emailPassField.entryField {
+            hostedField = emailPassField
+        } else {
+            hostedField = secretPassField
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.dmtRevealKeyboardCourse(hostedField, in: self.courseScrollView)
+        }
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField === emailPassField.entryField {
+            secretPassField.entryField.becomeFirstResponder()
+            return false
+        }
+
+        handlePassServeTap()
+        return false
     }
 }

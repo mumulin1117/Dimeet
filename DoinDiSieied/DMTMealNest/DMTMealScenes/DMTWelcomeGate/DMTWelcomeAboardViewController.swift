@@ -114,7 +114,7 @@ final class DMTWelcomeAboardViewController: UIViewController {
             do {
                 let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
-                    self.presentDeckCopy(bundle.entry)
+                    self.presentDeckCopy(bundle.DMTshientry)
                 }
             } catch {
                 await MainActor.run {
@@ -125,9 +125,9 @@ final class DMTWelcomeAboardViewController: UIViewController {
     }
 
     private func presentDeckCopy(_ deck: DMTEntryDeck) {
-        title = deck.title
+        title = deck.DMTshititle
         ctaCopy = deck.ctaCopy
-        titleLabel.text = deck.title
+        titleLabel.text = deck.DMTshititle
         subtitleLabel.text = deck.subtitle
         enterButton.setTitle(deck.ctaCopy, for: .normal)
 
@@ -144,7 +144,7 @@ final class DMTWelcomeAboardViewController: UIViewController {
             let titleLabel = UILabel()
             titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
             titleLabel.textColor = DMTPalette.ink
-            titleLabel.text = "• \(reminder.title)"
+            titleLabel.text = "• \(reminder.DMTshititle)"
 
             let subtitleLabel = UILabel()
             subtitleLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)

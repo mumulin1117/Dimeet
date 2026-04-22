@@ -1,18 +1,17 @@
 import UIKit
 
-final class DMTWelcomeViewController: UIViewController {
+final class DMTWelcomeViewController: UIViewController, UITextViewDelegate {
     var onShowSignIn: (() -> Void)?
     var onShowSignUp: (() -> Void)?
-    var onShowAgreement: (() -> Void)?
 
     private let hearthService: DMTFeastService
     private let welcomeSplashView = UIImageView.init(image: UIImage.dmtMealAsset(named: DMTPlateStamp.welcomeSplash))
-    private let houseNoteButton = UIButton()
+//    private let houseNoteButton = UIButton()
     private let welcomeActionPlate = UIView()
     private let freshSeatButton = DMTGlowButton()
     private let returnSeatButton = UIButton()
     private let consentMarkButton = UIButton()
-    private let consentCopyLabel = UILabel()
+    private let consentCopyView = UITextView()
 
     private var welcomeCourse: DMTWelcomeDeck?
     private var hasConsentStamp = false {
@@ -60,10 +59,10 @@ final class DMTWelcomeViewController: UIViewController {
         welcomeSplashView.translatesAutoresizingMaskIntoConstraints = false
         welcomeSplashView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         welcomeSplashView.layer.cornerRadius = DMTScale.r(36)
-        houseNoteButton.setImage(UIImage.dmtMealAsset(named: DMTPlateStamp.houseNoteSeal), for: .normal)
-        houseNoteButton.translatesAutoresizingMaskIntoConstraints = false
-     
-        houseNoteButton.addTarget(self, action: #selector(handleHouseNoteTap), for: .touchUpInside)
+//        houseNoteButton.setImage(UIImage.dmtMealAsset(named: DMTPlateStamp.houseNoteSeal), for: .normal)
+//        houseNoteButton.translatesAutoresizingMaskIntoConstraints = false
+//     
+//        houseNoteButton.addTarget(self, action: #selector(handleHouseNoteTap), for: .touchUpInside)
 
         welcomeActionPlate.translatesAutoresizingMaskIntoConstraints = false
         welcomeActionPlate.backgroundColor = .clear
@@ -83,18 +82,27 @@ final class DMTWelcomeViewController: UIViewController {
         consentMarkButton.tintColor = DMTPalette.sunrise
         consentMarkButton.addTarget(self, action: #selector(handleConsentToggle), for: .touchUpInside)
         
-        consentCopyLabel.translatesAutoresizingMaskIntoConstraints = false
-        consentCopyLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
-        consentCopyLabel.textColor = DMTPalette.cloudInk
-        consentCopyLabel.numberOfLines = 0
+        consentCopyView.translatesAutoresizingMaskIntoConstraints = false
+        consentCopyView.backgroundColor = .clear
+        consentCopyView.delegate = self
+        consentCopyView.isEditable = false
+        consentCopyView.isScrollEnabled = false
+        consentCopyView.isSelectable = true
+        consentCopyView.textContainerInset = .zero
+        consentCopyView.textContainer.lineFragmentPadding = 0
+        consentCopyView.linkTextAttributes = [
+            .foregroundColor: DMTPalette.sunrise,
+            .underlineStyle: NSUnderlineStyle.single.rawValue
+        ]
+        consentCopyView.tintColor = DMTPalette.sunrise
 
         view.addSubview(welcomeSplashView)
-        welcomeSplashView.addSubview(houseNoteButton)
+//        welcomeSplashView.addSubview(houseNoteButton)
         view.addSubview(welcomeActionPlate)
         welcomeActionPlate.addSubview(freshSeatButton)
         welcomeActionPlate.addSubview(returnSeatButton)
         welcomeActionPlate.addSubview(consentMarkButton)
-        welcomeActionPlate.addSubview(consentCopyLabel)
+        welcomeActionPlate.addSubview(consentCopyView)
 
         NSLayoutConstraint.activate([
             welcomeSplashView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -102,10 +110,10 @@ final class DMTWelcomeViewController: UIViewController {
             welcomeSplashView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             welcomeSplashView.heightAnchor.constraint(equalToConstant: DMTScale.h(379)),
 
-            houseNoteButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(14)),
-            houseNoteButton.trailingAnchor.constraint(equalTo: welcomeSplashView.trailingAnchor, constant: -DMTScale.w(18)),
-            houseNoteButton.widthAnchor.constraint(equalToConstant: 80),
-            houseNoteButton.heightAnchor.constraint(equalToConstant: 36),
+//            houseNoteButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: DMTScale.h(14)),
+//            houseNoteButton.trailingAnchor.constraint(equalTo: welcomeSplashView.trailingAnchor, constant: -DMTScale.w(18)),
+//            houseNoteButton.widthAnchor.constraint(equalToConstant: 80),
+//            houseNoteButton.heightAnchor.constraint(equalToConstant: 36),
 
             welcomeActionPlate.topAnchor.constraint(equalTo: welcomeSplashView.bottomAnchor, constant: -DMTScale.h(64)),
             welcomeActionPlate.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: DMTScale.w(20)),
@@ -118,9 +126,10 @@ final class DMTWelcomeViewController: UIViewController {
             consentMarkButton.widthAnchor.constraint(equalToConstant: DMTScale.w(24)),
             consentMarkButton.heightAnchor.constraint(equalToConstant: DMTScale.w(24)),
 
-            consentCopyLabel.centerYAnchor.constraint(equalTo: consentMarkButton.centerYAnchor),
-            consentCopyLabel.leadingAnchor.constraint(equalTo: consentMarkButton.trailingAnchor, constant: DMTScale.w(10)),
-            consentCopyLabel.trailingAnchor.constraint(equalTo: welcomeActionPlate.trailingAnchor, constant: -DMTScale.w(18)),
+            consentCopyView.centerYAnchor.constraint(equalTo: consentMarkButton.centerYAnchor),
+            consentCopyView.leadingAnchor.constraint(equalTo: consentMarkButton.trailingAnchor, constant: DMTScale.w(10)),
+            consentCopyView.trailingAnchor.constraint(equalTo: welcomeActionPlate.trailingAnchor, constant: -DMTScale.w(18)),
+            consentCopyView.heightAnchor.constraint(equalToConstant: DMTScale.h(52)),
             
             returnSeatButton.bottomAnchor.constraint(equalTo: consentMarkButton.topAnchor, constant: DMTScale.h(-72)),
             returnSeatButton.leadingAnchor.constraint(equalTo: welcomeActionPlate.leadingAnchor, constant: DMTScale.w(18)),
@@ -145,8 +154,8 @@ final class DMTWelcomeViewController: UIViewController {
             do {
                 let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
-                    self.welcomeCourse = bundle.welcome
-                    self.renderWelcomeCopy(bundle.welcome)
+                    self.welcomeCourse = bundle.DMTshiwelcome
+                    self.renderWelcomeCopy(bundle.DMTshiwelcome)
                 }
             } catch {
                 await MainActor.run {
@@ -157,15 +166,72 @@ final class DMTWelcomeViewController: UIViewController {
     }
 
     private func renderWelcomeCopy(_ deck: DMTWelcomeDeck) {
-        houseNoteButton.setTitle(deck.eulaTitle, for: .normal)
+//        houseNoteButton.setTitle(DMTStringCellar.shared.serve("copy.eula"), for: .normal)
         freshSeatButton.setTitle(deck.primaryTitle, for: .normal)
         returnSeatButton.setTitle(deck.secondaryTitle, for: .normal)
-        consentCopyLabel.text = deck.agreementHint
+        renderConsentCopy()
+    }
+
+    private func renderConsentCopy() {
+        let leadCopy = DMTStringCellar.shared.serve("copy.welcomeConsentLead")
+        let termsCopy = DMTStringCellar.shared.serve("copy.welcomeConsentTerms")
+        let middleCopy = DMTStringCellar.shared.serve("copy.welcomeConsentMiddle")
+        let privacyCopy = DMTStringCellar.shared.serve("copy.welcomeConsentPrivacy")
+        let tailCopy = DMTStringCellar.shared.serve("copy.welcomeConsentTail")
+
+        let platedCopy = NSMutableAttributedString(
+            string: leadCopy,
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 13, weight: .medium),
+                .foregroundColor: DMTPalette.cloudInk
+            ]
+        )
+
+        platedCopy.append(
+            NSAttributedString(
+                string: termsCopy,
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 13, weight: .semibold),
+                    .foregroundColor: DMTPalette.sunrise,
+                    .link: URL(string: "dmtwelcome://terms")!
+                ]
+            )
+        )
+        platedCopy.append(
+            NSAttributedString(
+                string: middleCopy,
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 13, weight: .medium),
+                    .foregroundColor: DMTPalette.cloudInk
+                ]
+            )
+        )
+        platedCopy.append(
+            NSAttributedString(
+                string: privacyCopy,
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 13, weight: .semibold),
+                    .foregroundColor: DMTPalette.sunrise,
+                    .link: URL(string: "dmtwelcome://privacy")!
+                ]
+            )
+        )
+        platedCopy.append(
+            NSAttributedString(
+                string: tailCopy,
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 13, weight: .medium),
+                    .foregroundColor: DMTPalette.cloudInk
+                ]
+            )
+        )
+
+        consentCopyView.attributedText = platedCopy
     }
 
     @objc
     private func handleHouseNoteTap() {
-        onShowAgreement?()
+        dmtOpenHearth(.userAgreement, title: nil, hidesTabBar: true)
     }
 
     @objc
@@ -183,5 +249,22 @@ final class DMTWelcomeViewController: UIViewController {
     @objc
     private func handleConsentToggle() {
         hasConsentStamp.toggle()
+    }
+
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith url: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
+        switch url.host {
+        case "terms":
+            dmtOpenHearth(.userAgreement, title: nil, hidesTabBar: true)
+        case "privacy":
+            dmtOpenHearth(.privacyPolicy, title: nil, hidesTabBar: true)
+        default:
+            break
+        }
+        return false
     }
 }

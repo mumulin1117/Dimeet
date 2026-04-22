@@ -49,6 +49,11 @@ final class DMTTasteNookViewController: UIViewController {
         fetchDigest()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
     private func composeLayout() {
         courseScrollView.contentInsetAdjustmentBehavior = .never
         courseScrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -80,8 +85,7 @@ final class DMTTasteNookViewController: UIViewController {
         profileNameLabel.textColor = DMTPalette.ink
 
         walletTasteCard.translatesAutoresizingMaskIntoConstraints = false
-        walletTasteCard.layer.cornerRadius = DMTScale.r(24)
-        walletTasteCard.clipsToBounds = true
+        walletTasteCard.contentMode = .scaleToFill
         walletTasteCard.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleWalletTasteTap)))
         walletTasteCard.isUserInteractionEnabled = true
 
@@ -94,7 +98,7 @@ final class DMTTasteNookViewController: UIViewController {
         walletCaptionLabel.textColor = DMTPalette.ink
 
         walletAmountLabel.translatesAutoresizingMaskIntoConstraints = false
-        walletAmountLabel.font = UIFont.systemFont(ofSize: 28, weight: .black)
+        walletAmountLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
         walletAmountLabel.textColor = DMTPalette.ink
 
         statsRail.translatesAutoresizingMaskIntoConstraints = false
@@ -122,7 +126,8 @@ final class DMTTasteNookViewController: UIViewController {
 
         emptyTasteView.translatesAutoresizingMaskIntoConstraints = false
         emptyTasteView.contentMode = .scaleAspectFit
-
+        let balfo = UIImageView(image: UIImage.init(named: "baoshiddfv"))
+        balfo.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(courseScrollView)
         courseScrollView.addSubview(platingCanvas)
         platingCanvas.addSubview(nookTitleLabel)
@@ -137,7 +142,8 @@ final class DMTTasteNookViewController: UIViewController {
         platingCanvas.addSubview(emptyTasteView)
        
         walletTasteCard.addSubview(walletBackdropView)
-        walletTasteCard.addSubview(walletCaptionLabel)
+//        walletTasteCard.addSubview(walletCaptionLabel)
+        walletTasteCard.addSubview(balfo)
         walletTasteCard.addSubview(walletAmountLabel)
         segmentPlate.addSubview(dynamicTasteButton)
         segmentPlate.addSubview(shortTasteButton)
@@ -178,7 +184,7 @@ final class DMTTasteNookViewController: UIViewController {
             profileNameLabel.widthAnchor.constraint(equalToConstant: DMTScale.w(170)),
 
             walletTasteCard.topAnchor.constraint(equalTo: nookTitleLabel.bottomAnchor, constant: DMTScale.h(14)),
-            walletTasteCard.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(16)),
+            walletTasteCard.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant:0),
             walletTasteCard.widthAnchor.constraint(equalToConstant: DMTScale.w(168)),
             walletTasteCard.heightAnchor.constraint(equalToConstant: DMTScale.h(92)),
 
@@ -187,12 +193,15 @@ final class DMTTasteNookViewController: UIViewController {
             walletBackdropView.trailingAnchor.constraint(equalTo: walletTasteCard.trailingAnchor),
             walletBackdropView.bottomAnchor.constraint(equalTo: walletTasteCard.bottomAnchor),
 
-            walletCaptionLabel.topAnchor.constraint(equalTo: walletTasteCard.topAnchor, constant: DMTScale.h(16)),
-            walletCaptionLabel.leadingAnchor.constraint(equalTo: walletTasteCard.leadingAnchor, constant: DMTScale.w(18)),
-            walletCaptionLabel.trailingAnchor.constraint(equalTo: walletTasteCard.trailingAnchor, constant: -DMTScale.w(18)),
-
-            walletAmountLabel.leadingAnchor.constraint(equalTo: walletTasteCard.leadingAnchor, constant: DMTScale.w(18)),
-            walletAmountLabel.bottomAnchor.constraint(equalTo: walletTasteCard.bottomAnchor, constant: -DMTScale.h(14)),
+//            walletCaptionLabel.topAnchor.constraint(equalTo: walletTasteCard.topAnchor, constant: DMTScale.h(16)),
+//            walletCaptionLabel.leadingAnchor.constraint(equalTo: walletTasteCard.leadingAnchor, constant: DMTScale.w(18)),
+//            walletCaptionLabel.trailingAnchor.constraint(equalTo: walletTasteCard.trailingAnchor, constant: -DMTScale.w(18)),
+            balfo.leadingAnchor.constraint(equalTo: walletTasteCard.leadingAnchor, constant: DMTScale.w(18)),
+            balfo.widthAnchor.constraint(equalToConstant: 29),
+            balfo.heightAnchor.constraint(equalToConstant: 21),
+            balfo.centerYAnchor.constraint(equalTo: walletTasteCard.centerYAnchor, constant: 0),
+            walletAmountLabel.leadingAnchor.constraint(equalTo: balfo.trailingAnchor, constant: DMTScale.w(8)),
+            walletAmountLabel.centerYAnchor.constraint(equalTo: balfo.centerYAnchor, constant: 0),
 
             statsRail.topAnchor.constraint(equalTo: walletTasteCard.bottomAnchor, constant: DMTScale.h(12)),
             statsRail.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(16)),
@@ -201,7 +210,7 @@ final class DMTTasteNookViewController: UIViewController {
             giftTasteCard.topAnchor.constraint(equalTo: profileNameLabel.bottomAnchor, constant: DMTScale.h(20)),
             giftTasteCard.leadingAnchor.constraint(equalTo: platingCanvas.leadingAnchor, constant: DMTScale.w(16)),
             giftTasteCard.trailingAnchor.constraint(equalTo: platingCanvas.trailingAnchor, constant: -DMTScale.w(16)),
-            giftTasteCard.heightAnchor.constraint(equalToConstant: DMTScale.h(48)),
+            giftTasteCard.heightAnchor.constraint(equalToConstant: DMTScale.h(58)),
 
          
 
@@ -256,7 +265,7 @@ final class DMTTasteNookViewController: UIViewController {
         }
         profileNameLabel.text = nookDigestCopy.displayName.isEmpty ? (localProfile?.nickname ?? "") : nookDigestCopy.displayName
         walletCaptionLabel.text = nookDigestCopy.walletTitle
-        walletAmountLabel.text = "\(nookDigestCopy.walletBalance)"
+        walletAmountLabel.text = " My Wallet    >"
         emptyTasteView.image = UIImage.dmtMealAsset(named: nookDigestCopy.emptyArtKey) ?? DMTMainArtworkFactory.sceneImage(for: nookDigestCopy.emptyArtKey, size: CGSize(width: 240, height: 240))
 
         statsRail.arrangedSubviews.forEach {

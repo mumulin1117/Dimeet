@@ -40,6 +40,11 @@ final class DMTMealRoomsViewController: UIViewController {
         fetchHearthDeck()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
     private func composeLayout() {
         courseScrollView.translatesAutoresizingMaskIntoConstraints = false
         platingCanvas.translatesAutoresizingMaskIntoConstraints = false

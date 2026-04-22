@@ -50,6 +50,11 @@ final class DMTMealMateViewController: UIViewController {
         fetchDiscoverCourse()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
     private func composeLayout() {
         courseScrollView.translatesAutoresizingMaskIntoConstraints = false
         platingCanvas.translatesAutoresizingMaskIntoConstraints = false
@@ -228,20 +233,23 @@ final class DMTMealMateViewController: UIViewController {
     @objc
     private func handleSpotlightTap(_ sender: UIControl) {
         guard spotlightMoments.indices.contains(sender.tag) else { return }
-        let momentID = spotlightMoments[sender.tag].id
-        dmtOpenHearth(.dynamicDetail(dynamicID: momentID))
+        openMomentPortal(for: spotlightMoments[sender.tag], seatMark: "spotlight")
     }
 
     @objc
     private func handleGalleryCardTap(_ sender: UIControl) {
         guard galleryMoments.indices.contains(sender.tag) else { return }
-        let momentID = galleryMoments[sender.tag].id
-        dmtOpenHearth(.dynamicDetail(dynamicID: momentID))
+        openMomentPortal(for: galleryMoments[sender.tag], seatMark: "gallery")
     }
 
     @objc
     private func handleRechargePromoTap() {
-        dmtOpenHearth(.walletCenter)
+        let portalRoute: DMTHearthPortalRoute = .walletCenter
+        print("[DMTMealMate] tap=promo page=\(portalRoute.portalTraceLine)")
+        if let portalURL = portalRoute.portalTraceURL {
+            print("[DMTMealMate] url=\(portalURL)")
+        }
+        dmtOpenHearth(portalRoute)
     }
 
     private func styleDiscoverRail(selectedPrimary: Bool) {
@@ -333,5 +341,34 @@ final class DMTMealMateViewController: UIViewController {
         }
 
         return filtered.isEmpty ? combined : filtered
+    }
+
+    private func openMomentPortal(for moment: DMTMomentCard, seatMark: String) {
+        let cleanedDynamicID = moment.id.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard cleanedDynamicID.isEmpty == false else {
+            print("[DMTMealMate] tap=\(seatMark) skipped-empty-dynamicId mode=\(moment.modeTag) title=\(moment.dish)")
+            return
+        }
+
+        let portalRoute = routeForMoment(moment, dynamicID: cleanedDynamicID)
+        print("[DMTMealMate] tap=\(seatMark) mode=\(moment.modeTag) dynamicId=\(cleanedDynamicID) title=\(moment.dish) page=\(portalRoute.portalTraceLine)")
+        if let portalURL = portalRoute.portalTraceURL {
+            print("[DMTMealMate] url=\(portalURL)")
+        }
+        dmtOpenHearth(portalRoute)
+    }
+
+    private func routeForMoment(_ moment: DMTMomentCard, dynamicID: String) -> DMTHearthPortalRoute {
+        let pictureSeal = DMTStringCellar.shared.serve("copy.modePicture")
+        let audioSeal = DMTStringCellar.shared.serve("copy.modeAudio")
+
+        switch moment.modeTag {
+        case pictureSeal:
+            return .dynamicDetail(dynamicID: dynamicID)
+        case audioSeal:
+            return .dynamicDetail(dynamicID: dynamicID)
+        default:
+            return .dynamicDetail(dynamicID: dynamicID)
+        }
     }
 }

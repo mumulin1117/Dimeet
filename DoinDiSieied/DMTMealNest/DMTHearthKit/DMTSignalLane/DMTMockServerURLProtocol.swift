@@ -77,7 +77,7 @@ private enum DMTMockKitchen {
 //            return try encode(discoverDeck)
         case ("POST", "/auth/login"):
             let body = try decode(DMTLoginBody.self, from: request.httpBody)
-            return try encode(sessionPayload(email: body.email, name: body.email.split(separator: "@").first.map(String.init) ?? DMTStringCellar.shared.serve("copy.defaultGuest")))
+            return try encode(sessionPayload(email: body.DMTshiemail, name: body.DMTshiemail.split(separator: "@").first.map(String.init) ?? DMTStringCellar.shared.serve("copy.defaultGuest")))
         case ("POST", "/auth/signup"):
             let body = try decode(DMTSignUpBody.self, from: request.httpBody)
             return try encode(sessionPayload(email: body.email, name: body.nickname.isEmpty ? DMTStringCellar.shared.serve("copy.defaultTastefriend") : body.nickname))
@@ -135,14 +135,14 @@ private enum DMTMockKitchen {
     }
 
     private static let authBundle = DMTAuthBundle(
-        welcome: DMTWelcomeDeck(
+        DMTshiwelcome: DMTWelcomeDeck(
             primaryTitle: DMTStringCellar.shared.serve("auth.welcome.primaryTitle"),
             secondaryTitle: DMTStringCellar.shared.serve("auth.welcome.secondaryTitle"),
             agreementHint: DMTStringCellar.shared.serve("auth.welcome.agreementHint"),
             eulaTitle: DMTStringCellar.shared.serve("auth.welcome.eulaTitle")
         ),
-        agreement: DMTEulaDeck(
-            title: DMTStringCellar.shared.serve("auth.agreement.title"),
+        DMTshiagreement: DMTEulaDeck(
+            DMTshititle: DMTStringCellar.shared.serve("auth.agreement.title"),
             intro: DMTStringCellar.shared.serve("auth.agreement.intro"),
             bullets: [
                 DMTStringCellar.shared.serve("auth.agreement.bullet1"),
@@ -152,19 +152,19 @@ private enum DMTMockKitchen {
             ],
             closing: DMTStringCellar.shared.serve("auth.agreement.closing"),
             cancelTitle: DMTStringCellar.shared.serve("auth.agreement.cancelTitle"),
-            agreeTitle: DMTStringCellar.shared.serve("auth.agreement.agreeTitle")
+            DMTshiagreeTitle: DMTStringCellar.shared.serve("auth.agreement.agreeTitle")
         ),
-        login: DMTLoginDeck(
-            title: DMTStringCellar.shared.serve("auth.login.title"),
-            emailTitle: DMTStringCellar.shared.serve("auth.login.emailTitle"),
+        DMTshilogin: DMTLoginDeck(
+            DMTshititle: DMTStringCellar.shared.serve("auth.login.title"),
+            DMTshiemailTitle: DMTStringCellar.shared.serve("auth.login.emailTitle"),
             emailPlaceholder: DMTStringCellar.shared.serve("auth.login.emailPlaceholder"),
             passwordTitle: DMTStringCellar.shared.serve("auth.login.passwordTitle"),
             passwordPlaceholder: DMTStringCellar.shared.serve("auth.login.passwordPlaceholder"),
             ctaCopy: DMTStringCellar.shared.serve("auth.login.cta"),
             hintLine: DMTStringCellar.shared.serve("auth.login.hintLine")
         ),
-        signUp: DMTSignUpDeck(
-            title: DMTStringCellar.shared.serve("auth.signUp.title"),
+        DMTshisignUp: DMTSignUpDeck(
+            DMTshititle: DMTStringCellar.shared.serve("auth.signUp.title"),
             nicknameTitle: DMTStringCellar.shared.serve("auth.signUp.nicknameTitle"),
             nicknamePlaceholder: DMTStringCellar.shared.serve("auth.signUp.nicknamePlaceholder"),
             bioTitle: DMTStringCellar.shared.serve("auth.signUp.bioTitle"),
@@ -173,21 +173,21 @@ private enum DMTMockKitchen {
             agePlaceholder: DMTStringCellar.shared.serve("auth.signUp.agePlaceholder"),
             ctaCopy: DMTStringCellar.shared.serve("auth.signUp.cta")
         ),
-        verify: DMTVerifyDeck(
-            title: DMTStringCellar.shared.serve("auth.verify.title"),
+        DMTshiverify: DMTVerifyDeck(
+            DMTshititle: DMTStringCellar.shared.serve("auth.verify.title"),
             intro: DMTStringCellar.shared.serve("auth.verify.intro"),
             caption: DMTStringCellar.shared.serve("auth.verify.caption"),
             ctaCopy: DMTStringCellar.shared.serve("auth.verify.cta")
         ),
-        entry: DMTEntryDeck(
-            title: DMTStringCellar.shared.serve("auth.entry.title"),
+        DMTshientry: DMTEntryDeck(
+            DMTshititle: DMTStringCellar.shared.serve("auth.entry.title"),
             subtitle: DMTStringCellar.shared.serve("auth.entry.subtitle"),
             reminders: [
-                DMTEntryReminder(title: DMTStringCellar.shared.serve("auth.entry.reminder1.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder1.subtitle")),
-                DMTEntryReminder(title: DMTStringCellar.shared.serve("auth.entry.reminder2.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder2.subtitle")),
-                DMTEntryReminder(title: DMTStringCellar.shared.serve("auth.entry.reminder3.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder3.subtitle")),
-                DMTEntryReminder(title: DMTStringCellar.shared.serve("auth.entry.reminder4.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder4.subtitle")),
-                DMTEntryReminder(title: DMTStringCellar.shared.serve("auth.entry.reminder5.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder5.subtitle"))
+                DMTEntryReminder(DMTshititle: DMTStringCellar.shared.serve("auth.entry.reminder1.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder1.subtitle")),
+                DMTEntryReminder(DMTshititle: DMTStringCellar.shared.serve("auth.entry.reminder2.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder2.subtitle")),
+                DMTEntryReminder(DMTshititle: DMTStringCellar.shared.serve("auth.entry.reminder3.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder3.subtitle")),
+                DMTEntryReminder(DMTshititle: DMTStringCellar.shared.serve("auth.entry.reminder4.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder4.subtitle")),
+                DMTEntryReminder(DMTshititle: DMTStringCellar.shared.serve("auth.entry.reminder5.title"), subtitle: DMTStringCellar.shared.serve("auth.entry.reminder5.subtitle"))
             ],
             ctaCopy: DMTStringCellar.shared.serve("auth.entry.cta")
         )

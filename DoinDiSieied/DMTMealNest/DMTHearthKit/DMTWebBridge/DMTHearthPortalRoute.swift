@@ -67,6 +67,17 @@ enum DMTHearthPortalRoute {
         }
     }
 
+    var portalTraceLine: String {
+        let query = portalPairs
+            .map { "\($0.0)=\(Self.encoded($0.1))" }
+            .joined(separator: "&")
+        return query.isEmpty ? portalPath : "\(portalPath)?\(query)"
+    }
+
+    var portalTraceURL: String? {
+        makeURL()?.absoluteString
+    }
+
     func makeURL() -> URL? {
         if case .webEntry(let path) = self {
             return Self.makeWebEntryURL(path)

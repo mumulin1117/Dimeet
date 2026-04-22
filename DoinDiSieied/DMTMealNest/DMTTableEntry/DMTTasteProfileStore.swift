@@ -72,7 +72,7 @@ final class DMTTasteProfileStore {
         }
 
         let profile = DMTLocalTasteProfile(
-            email: email,
+            DMTshiemail: email,
             password: "123456",
             nickname: "Taste Scout",
             bio: "Always ready for one more bite and one more story.",
@@ -95,7 +95,7 @@ final class DMTTasteProfileStore {
         let verifyStamp = persistImage(draft.verifyImage ?? makePortraitPlaceholder(symbolName: "checkmark.shield.fill"), named: "verify-\(email)")
 
         let profile = DMTLocalTasteProfile(
-            email: email,
+            DMTshiemail: email,
             password: draft.ticket.password,
             nickname: draft.nickname,
             bio: draft.bio,

@@ -45,6 +45,11 @@ final class DMTBiteFeedViewController: UIViewController {
          
          publishOrbButton.addTarget(self, action: #selector(handlePublishOrbTap), for: .touchUpInside)
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
     
     @objc func handlePublishOrbTap()  {
         dmtOpenHearth(.publishVideo)

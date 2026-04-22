@@ -44,19 +44,7 @@ final class DMTAppCoordinator {
             navigationController?.pushViewController(self.craftPassageController("Sign up"), animated: true)
         }
 
-        welcomeController.onShowAgreement = { [weak self, weak navigationController] in
-            guard let self else { return }
-            let agreementController = self.craftNotesController()
-            navigationController?.present(agreementController, animated: true)
-        }
-
         return navigationController
-    }
-
-    private func craftNotesController() -> UIViewController {
-        let agreementController = DMTEulaViewController(hearthService: tablePantry.hearthService)
-        agreementController.modalPresentationStyle = .overFullScreen
-        return agreementController
     }
 
     private func craftPassageController(_ preferredTitle: String) -> UIViewController {

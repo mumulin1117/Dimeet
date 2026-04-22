@@ -1,6 +1,6 @@
 import UIKit
 
-final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     var onFinish: ((DMTSessionPayload) -> Void)?
 
     private let hearthService: DMTFeastService
@@ -42,6 +42,7 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
         view.backgroundColor = DMTPalette.paper
         navigationItem.largeTitleDisplayMode = .never
         composeLayout()
+        configureKeyboardFlow()
         configureBirthPicker()
         primePlaceholderAvatar()
         fetchSignUpCopy()
@@ -92,9 +93,12 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
         servingCard.addSubview(nextCourseButton)
         nextCourseButton.addSubview(simmerSpinner)
 
-        courseScrollView.dmtPinCourseEdges(to: view)
-
         NSLayoutConstraint.activate([
+            courseScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            courseScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            courseScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            courseScrollView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
+
             platingCanvas.topAnchor.constraint(equalTo: courseScrollView.topAnchor),
             platingCanvas.leadingAnchor.constraint(equalTo: courseScrollView.leadingAnchor),
             platingCanvas.trailingAnchor.constraint(equalTo: courseScrollView.trailingAnchor),
@@ -144,6 +148,18 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
         ])
     }
 
+    private func configureKeyboardFlow() {
+        dmtSeasonKeyboardFlow(in: courseScrollView)
+        nicknamePlateField.entryField.delegate = self
+        nicknamePlateField.entryField.returnKeyType = .next
+        nicknamePlateField.entryField.enablesReturnKeyAutomatically = true
+        bioPlateField.entryField.delegate = self
+        bioPlateField.entryField.returnKeyType = .next
+        bioPlateField.entryField.enablesReturnKeyAutomatically = true
+        agePlateField.entryField.delegate = self
+        agePlateField.entryField.returnKeyType = .done
+    }
+
     private func configureBirthPicker() {
         birthdayWheel.datePickerMode = .date
         birthdayWheel.preferredDatePickerStyle = .wheels
@@ -169,7 +185,7 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
             do {
                 let bundle = try await hearthService.fetchWelcomeBundle()
                 await MainActor.run {
-                    self.renderSignUpCopy(bundle.signUp)
+                    self.renderSignUpCopy(bundle.DMTshisignUp)
                 }
             } catch {
                 await MainActor.run {
@@ -195,6 +211,7 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
 
     @objc
     private func handleAvatarPick() {
+        view.endEditing(true)
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.sourceType = .photoLibrary
@@ -215,6 +232,7 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
 
     @objc
     private func handleNextCourseTap() {
+        view.endEditing(true)
         let nickname = nicknamePlateField.text.trimmingCharacters(in: .whitespacesAndNewlines)
         let bio = bioPlateField.text.trimmingCharacters(in: .whitespacesAndNewlines)
         let birthLine = agePlateField.text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -269,6 +287,37 @@ final class DMTSignUpViewController: UIViewController, UIImagePickerControllerDe
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let hostedField: UIView
+        if textField === nicknamePlateField.entryField {
+            hostedField = nicknamePlateField
+        } else if textField === bioPlateField.entryField {
+            hostedField = bioPlateField
+        } else {
+            hostedField = agePlateField
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.dmtRevealKeyboardCourse(hostedField, in: self.courseScrollView)
+        }
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField === nicknamePlateField.entryField {
+            bioPlateField.entryField.becomeFirstResponder()
+            return false
+        }
+
+        if textField === bioPlateField.entryField {
+            agePlateField.entryField.becomeFirstResponder()
+            return false
+        }
+
+        view.endEditing(true)
+        return false
     }
 
     private func makeHeroPlaceholder() -> UIImage {

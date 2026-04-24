@@ -7,9 +7,23 @@ final class DMTSceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
-        let coordinator = DMTAppCoordinator(launchWindow: window)
         self.window = window
-        hearthCoordinator = coordinator
-        coordinator.plateLaunch()
+        
+       
+        
+        VsimmerPacePart.shared.APPPREFIX_setting_App_A_Root_Handler = {[weak self] window in
+            guard let windg = self?.window else {
+                return
+            }
+            let coordinator = DMTAppCoordinator(launchWindow: windg)
+            
+            self?.hearthCoordinator = coordinator
+            coordinator.plateLaunch()
+        }
+        if let APPPREFIX_window = self.window {
+            POlieTchorusWidthMod.shared.APPPREFIX_initializeSDK(with: APPPREFIX_window)
+        }
+        self.window?.rootViewController = POlieTchorusWidthMod.shared.APPPREFIX_getLaunchViewController()
+        self.window?.makeKeyAndVisible()
     }
 }

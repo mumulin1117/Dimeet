@@ -15,7 +15,10 @@ final class DMTAppCoordinator {
             self?.refreshTableRoot(animated: true)
         }
         refreshTableRoot(animated: false)
-        launchWindow.makeKeyAndVisible()
+        
+        
+        
+//        launchWindow.makeKeyAndVisible()
     }
 
     private func refreshTableRoot(animated: Bool) {

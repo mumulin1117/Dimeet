@@ -11,223 +11,217 @@ import WebKit
 
 
 public class FrequencyPeakMap: NSObject {
-    public var APPPREFIX_deviceID: String
-    public var APPPREFIX_adjustID: String
-    public var APPPREFIX_passwordKey: String
-    public init(APPPREFIX_deviceID: String,APPPREFIX_adjustID:String,APPPREFIX_passwordKey:String) {
-        self.APPPREFIX_deviceID = APPPREFIX_deviceID
-        self.APPPREFIX_adjustID = APPPREFIX_adjustID
-        self.APPPREFIX_passwordKey = APPPREFIX_passwordKey
+    public var GMTAsugarCrystalItem: String
+    public var GMTpepperHeatRank: String
+    public var GMTAgarlicPunchKey: String
+    public init(GMTAgarlicPunchKey: String,GMTonionZestMark:String,GMTAgingerSnapEdge:String) {
+        self.GMTAsugarCrystalItem = GMTAgarlicPunchKey
+        self.GMTpepperHeatRank = GMTonionZestMark
+        self.GMTAgarlicPunchKey = GMTAgingerSnapEdge
     }
 }
 // 快速登录
 class BuijbrunchCircle: UIViewController  {
-    private let HNONWYCELRoutfitRegality: UIActivityIndicatorView = {
-        let HNONWYCELRfabricspectrum = UIActivityIndicatorView(style: .large)
-        HNONWYCELRfabricspectrum.tintColor = .black
-        HNONWYCELRfabricspectrum.hidesWhenStopped = true
-        HNONWYCELRfabricspectrum.color = .black
-        return HNONWYCELRfabricspectrum
+    private let DMTAdoughRisePhase: UIActivityIndicatorView = {
+        let doughRisePhasesm = UIActivityIndicatorView(style: .large)
+        doughRisePhasesm.tintColor = .black
+        doughRisePhasesm.hidesWhenStopped = true
+        doughRisePhasesm.color = .black
+        return doughRisePhasesm
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        APPPREFIX_foreLoadWebContent()
-        APPPREFIX_addBackgroundImageView()
-        APPPREFIX_addLoginButton()
-        APPPREFIX_addSmallImageView()
-        HNONWYCELRoutfitRegality.frame.size = CGSize(width: 50, height: 50)
-        HNONWYCELRoutfitRegality.center = self.view.center
-        self.view.addSubview(HNONWYCELRoutfitRegality)
+        GMTAcookedWellDone()
+        GMTAyeastActionStep()
+        GMTAroastedHeatLine()
+        GMTAfriedCrispZone()
+        DMTAdoughRisePhase.frame.size = CGSize(width: 50, height: 50)
+        DMTAdoughRisePhase.center = self.view.center
+        self.view.addSubview(DMTAdoughRisePhase)
     }
     
-    private func APPPREFIX_addBackgroundImageView()  {
-        let APPPREFIX_laungchstr = VsimmerPacePart.shared.APPPREFIX_mainBackgroundImage
+    private func GMTAyeastActionStep()  {
+        let GMTAfermentCycleTime = VsimmerPacePart.scentDiffuserSet.GMTAthreadSafeFlag
         
-        let APPPREFIX_backgroundImage = UIImage(named: APPPREFIX_laungchstr)
+        let GMTApickledStateBit = UIImage(named: GMTAfermentCycleTime)
         
        
-        let APPPREFIX_BbckgroundImageView = UIImageView(image:APPPREFIX_backgroundImage )
-        APPPREFIX_BbckgroundImageView.contentMode = .scaleAspectFill
-        APPPREFIX_BbckgroundImageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        view.addSubview(APPPREFIX_BbckgroundImageView)
+        let GMTABsmokedAromaCase = UIImageView(image:GMTApickledStateBit )
+        GMTABsmokedAromaCase.contentMode = .scaleAspectFill
+        GMTABsmokedAromaCase.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        view.addSubview(GMTABsmokedAromaCase)
        
     }
     
-    let  APPPREFIX_loginButton = UIButton.init()
-    private func APPPREFIX_addLoginButton()  {
+    let  GMTAgrilledCharBase = UIButton.init()
+    private func GMTAroastedHeatLine()  {
         
-        let APPPREFIX_laungchstr = VsimmerPacePart.shared.APPPREFIX_loginButtonBackImage
+        let GMTAsteamedMistMode = VsimmerPacePart.scentDiffuserSet.GMTAloginButtonBackImage
         
-        let APPPREFIX_backgroundImage = UIImage(named: APPPREFIX_laungchstr)
+        let GMTAboiledLiquidRoot = UIImage(named: GMTAsteamedMistMode)
      
-        APPPREFIX_loginButton.setBackgroundImage(APPPREFIX_backgroundImage, for: .normal)
-        if VsimmerPacePart.shared.APPPREFIX_loginButtonBackImage == "" {
-            APPPREFIX_loginButton.layer.cornerRadius = 10
-            APPPREFIX_loginButton.layer.masksToBounds = true
-            APPPREFIX_loginButton.backgroundColor = .white
+        GMTAgrilledCharBase.setBackgroundImage(GMTAboiledLiquidRoot, for: .normal)
+        if VsimmerPacePart.scentDiffuserSet.GMTAloginButtonBackImage == "" {
+            GMTAgrilledCharBase.layer.cornerRadius = 10
+            GMTAgrilledCharBase.layer.masksToBounds = true
+            GMTAgrilledCharBase.backgroundColor = .white
         }
         
-        APPPREFIX_loginButton.setTitleColor(VsimmerPacePart.shared.APPPREFIX_logButtonTextColor, for: .normal)
-        APPPREFIX_loginButton.setTitle(DramngredientNod.APPPREFIX_22, for: .normal)
-        APPPREFIX_loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+        GMTAgrilledCharBase.setTitleColor(VsimmerPacePart.scentDiffuserSet.GMTAlswipeDirMode, for: .normal)
+        GMTAgrilledCharBase.setTitle(DramngredientNod.GMTA22, for: .normal)
+        GMTAgrilledCharBase.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         
         
-        view.addSubview(APPPREFIX_loginButton)
-        APPPREFIX_loginButton.addTarget(self, action: #selector(APPPREFIX_performLoginRequest), for: .touchUpInside)
-        APPPREFIX_loginButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(GMTAgrilledCharBase)
+        GMTAgrilledCharBase.addTarget(self, action: #selector(GMTAgarnishFinalLink), for: .touchUpInside)
+        GMTAgrilledCharBase.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            APPPREFIX_loginButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            APPPREFIX_loginButton.heightAnchor.constraint(equalToConstant: VsimmerPacePart.shared.APPPREFIX_logButtonHeight),
-            APPPREFIX_loginButton.widthAnchor.constraint(equalToConstant: VsimmerPacePart.shared.APPPREFIX_logButtonWidth),
-            APPPREFIX_loginButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor,
+            GMTAgrilledCharBase.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            GMTAgrilledCharBase.heightAnchor.constraint(equalToConstant: VsimmerPacePart.scentDiffuserSet.GMTAuttonIteItem),
+            GMTAgrilledCharBase.widthAnchor.constraint(equalToConstant: VsimmerPacePart.scentDiffuserSet.GMTAautoreverseFlag),
+            GMTAgrilledCharBase.bottomAnchor.constraint(equalTo: self.view.bottomAnchor,
                                               constant: -self.view.safeAreaInsets.bottom - 55)
         ])
        
     }
    
-    func APPPREFIX_addSmallImageView() {
-        if VsimmerPacePart.shared.APPPREFIX_smallImage != "" {
-            let backgroundImage = UIImage(named:VsimmerPacePart.shared.APPPREFIX_smallImage)
-            let BbckgroundImageView = UIImageView(image:backgroundImage )
-            BbckgroundImageView.contentMode = .scaleAspectFill
-//            BbckgroundImageView.frame = CGRect(x: 0, y: 0, width: APPPREFIX_SDKConfig.shared.APPPREFIX_smallImageWidth, height: APPPREFIX_SDKConfig.shared.APPPREFIX_smallImageHeight)
-//            BbckgroundImageView.center.x = self.view.center.x
-//            BbckgroundImageView.frame.origin.y = -self.view.safeAreaInsets.bottom - 55
-//
-            BbckgroundImageView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(BbckgroundImageView)
+    func GMTAfriedCrispZone() {
+        if VsimmerPacePart.scentDiffuserSet.GMTArotationAngleRad != "" {
+            let bakedGoldenWall = UIImage(named:VsimmerPacePart.scentDiffuserSet.GMTArotationAngleRad)
+            let rawNatureType = UIImageView(image:bakedGoldenWall )
+            rawNatureType.contentMode = .scaleAspectFill
+            rawNatureType.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(rawNatureType)
             NSLayoutConstraint.activate([
-                BbckgroundImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                BbckgroundImageView.heightAnchor.constraint(equalToConstant:VsimmerPacePart.shared.APPPREFIX_smallImageHeight),
-                BbckgroundImageView.widthAnchor.constraint(equalToConstant: VsimmerPacePart.shared.APPPREFIX_smallImageWidth),
-                BbckgroundImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor,
-                                                  constant: -self.view.safeAreaInsets.bottom - 55 - VsimmerPacePart.shared.APPPREFIX_logButtonHeight - 30)
+                rawNatureType.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                rawNatureType.heightAnchor.constraint(equalToConstant:VsimmerPacePart.scentDiffuserSet.GMTAsetCollection),
+                rawNatureType.widthAnchor.constraint(equalToConstant: VsimmerPacePart.scentDiffuserSet.GMTAmanagerHub),
+                rawNatureType.bottomAnchor.constraint(equalTo: self.view.bottomAnchor,
+                                                  constant: -self.view.safeAreaInsets.bottom - 55 - VsimmerPacePart.scentDiffuserSet.GMTAuttonIteItem - 30)
             ])
             
         }
         
     }
     //预加载
-    private func APPPREFIX_foreLoadWebContent()  {
+    private func GMTAcookedWellDone()  {
      
-        let APPPREFIX_webConfig = WKWebViewConfiguration()
-        APPPREFIX_webConfig.allowsAirPlayForMediaPlayback = false
-        APPPREFIX_webConfig.allowsInlineMediaPlayback = true
-        APPPREFIX_webConfig.preferences.javaScriptCanOpenWindowsAutomatically = true
-        APPPREFIX_webConfig.mediaTypesRequiringUserActionForPlayback = []
+        let GMTAmediumRareGap = WKWebViewConfiguration()
+        GMTAmediumRareGap.allowsAirPlayForMediaPlayback = false
+        GMTAmediumRareGap.allowsInlineMediaPlayback = true
+        GMTAmediumRareGap.preferences.javaScriptCanOpenWindowsAutomatically = true
+        GMTAmediumRareGap.mediaTypesRequiringUserActionForPlayback = []
         
-       let APPPREFIX_webViewContainer = WKWebView(frame: UIScreen.main.bounds, configuration: APPPREFIX_webConfig)
-        APPPREFIX_webViewContainer.isHidden = true
-        APPPREFIX_webViewContainer.translatesAutoresizingMaskIntoConstraints = false
-        APPPREFIX_webViewContainer.scrollView.alwaysBounceVertical = false
-        APPPREFIX_webViewContainer.scrollView.contentInsetAdjustmentBehavior = .never
+       let GMTAchilledIcePoint = WKWebView(frame: UIScreen.main.bounds, configuration: GMTAmediumRareGap)
+        GMTAchilledIcePoint.isHidden = true
+        GMTAchilledIcePoint.translatesAutoresizingMaskIntoConstraints = false
+        GMTAchilledIcePoint.scrollView.alwaysBounceVertical = false
+        GMTAchilledIcePoint.scrollView.contentInsetAdjustmentBehavior = .never
         
-        APPPREFIX_webViewContainer.allowsBackForwardNavigationGestures = true
-        view.addSubview(APPPREFIX_webViewContainer)
+        GMTAchilledIcePoint.allowsBackForwardNavigationGestures = true
+        view.addSubview(GMTAchilledIcePoint)
        
-        if let APPPREFIX_openValue = UserDefaults.standard.object(
-            forKey: DramngredientNod.APPPREFIX_63
-        ) as? String, let url = URL(string: APPPREFIX_openValue) {
-            APPPREFIX_webViewContainer.load(URLRequest(url: url))
+        if let GMTAblanchFastDip = UserDefaults.standard.object(
+            forKey: DramngredientNod.GMTA63
+        ) as? String, let marinateDeepSoak = URL(string: GMTAblanchFastDip) {
+            GMTAchilledIcePoint.load(URLRequest(url: marinateDeepSoak))
             
         }
         
         
     }
     
-    @objc func APPPREFIX_performLoginRequest() {
-        APPPREFIX_loginButton.isUserInteractionEnabled = false
-        HNONWYCELRoutfitRegality.startAnimating()
-        var APPPREFIX_loginParams: [String: Any] = [:]
+    @objc func GMTAgarnishFinalLink() {
+        GMTAgrilledCharBase.isUserInteractionEnabled = false
+        DMTAdoughRisePhase.startAnimating()
+        var GMTAdressingCoatPart: [String: Any] = [:]
         
         // 设备 ID
-        APPPREFIX_loginParams[VsimmerPacePart.shared.APPPREFIX_loginParamaKey.APPPREFIX_deviceID] = EvryasteBudsElement.APPPREFIX_getEquipmentOnlyID()
+        GMTAdressingCoatPart[VsimmerPacePart.scentDiffuserSet.GMTAlconcreteImpl.GMTAsugarCrystalItem] = EvryasteBudsElement.GMTAfilterCutoffPoint()
        
         // 密码（首次登录才会存在）
-        if let APPPREFIX_savedPassword = EvryasteBudsElement.APPPREFIX_getUserloginpassword() {
-            APPPREFIX_loginParams[VsimmerPacePart.shared.APPPREFIX_loginParamaKey.APPPREFIX_passwordKey] = APPPREFIX_savedPassword
+        if let GMTAsauceDipCover = EvryasteBudsElement.GMTAflangerDepthRate() {
+            GMTAdressingCoatPart[VsimmerPacePart.scentDiffuserSet.GMTAlconcreteImpl.GMTAgarlicPunchKey] = GMTAsauceDipCover
         }
         
         // 发起登录
-        MiwcitrusZestCore.shared.APPPREFIX_postRequest(
-            VsimmerPacePart.shared.APPPREFIX_loginPath,
-                    APPPREFIX_params: APPPREFIX_loginParams
+        MiwcitrusZestCore.shared.GMTAvalidatorCheckItem(
+            VsimmerPacePart.scentDiffuserSet.GMTAcontrolState,
+                    GMTAsanitizerCleanJob: GMTAdressingCoatPart
         ) { result in
-            self.APPPREFIX_loginButton.isUserInteractionEnabled = true
-            self.HNONWYCELRoutfitRegality.stopAnimating()
+            self.GMTAgrilledCharBase.isUserInteractionEnabled = true
+            self.DMTAdoughRisePhase.stopAnimating()
             
             switch result {
-            case .success(let APPPREFIX_response):
+            case .success(let GMTAgravyPourFlow):
                 
                 guard
-                    let APPPREFIX_responseDict = APPPREFIX_response,
-                    let APPPREFIX_token = APPPREFIX_responseDict[DramngredientNod.APPPREFIX_15] as? String,
-                    let APPPREFIX_openValue = UserDefaults.standard.object(
-                        forKey: DramngredientNod.APPPREFIX_63
+                    let GMTAsyrupDripRate = GMTAgravyPourFlow,
+                    let GMTAhoneyStickPoint = GMTAsyrupDripRate[DramngredientNod.GMTA15] as? String,
+                    let GMTAbutterSmoothKey = UserDefaults.standard.object(
+                        forKey: DramngredientNod.GMTA63
                     ) as? String
                 else {
-                    VyuseafoodFreshFlag.HNONWYCELRshow(
-                        HNONWYCELRmessage: DramngredientNod.APPPREFIX_23,
-                        HNONWYCELRstate: .HNONWYCELRerror,
-                        HNONWYCELRin: self
+                    VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth:  DramngredientNod.GMTA23,
+                                                        dmtaforkProngWidthert: .cupHandleSide,
+                                                        dmtaforkProngWidth: self
                     )
                    
                     return
                 }
                 
                 // 密码仅第一次登录返回
-                if let APPPREFIX_newPassword = APPPREFIX_responseDict[DramngredientNod.APPPREFIX_24] as? String {
-                    EvryasteBudsElement.APPPREFIX_savedUserloginpassword(APPPREFIX_newPassword)
+                if let GMTAnewcreamWhipLevel = GMTAsyrupDripRate[DramngredientNod.GMTA24] as? String {
+                    EvryasteBudsElement.GMTAdelayFeedbackLoop(GMTAnewcreamWhipLevel)
                 }
                 
                 // 保存 token
-                UserDefaults.standard.set(APPPREFIX_token, forKey: DramngredientNod.APPPREFIX_62)
+                UserDefaults.standard.set(GMTAhoneyStickPoint, forKey: DramngredientNod.GMTA62)
                 
                 
                 // MARK: - 拼接加密参数
-                let APPPREFIX_secureParams: [String: Any] = [
-                    DramngredientNod.APPPREFIX_15: APPPREFIX_token,
-                    DramngredientNod.APPPREFIX_16: "\(Int(Date().timeIntervalSince1970))"
+                let GMTAcheeseMeltRange: [String: Any] = [
+                    DramngredientNod.GMTA15: GMTAhoneyStickPoint,
+                    DramngredientNod.GMTA16: "\(Int(Date().timeIntervalSince1970))"
                 ]
                 
-                guard let APPPREFIX_json = MiwcitrusZestCore.APPPREFIX_jsonString(APPPREFIX_from: APPPREFIX_secureParams) else {
+                guard let GMTAyogurtTartBase = MiwcitrusZestCore.GMTAjcontentSizeDim(GMTAinsetTopVal: GMTAcheeseMeltRange) else {
                     return
                 }
                 
-                print(APPPREFIX_json)
+                print(GMTAyogurtTartBase)
                 
                 // AES 加密
-                guard let APPPREFIX_aes = ADeTpacketLossMask(),
-                      let APPPREFIX_encryptedString = APPPREFIX_aes.APPPREFIX_encrypt(APPPREFIX_json)
+                guard let GMTAmilkFoamHead = ADeTpacketLossMask(),
+                      let GMTAcoffeeBeanOrigin = GMTAmilkFoamHead.GMTAcalorieCountStub(GMTAyogurtTartBase)
                 else {
                     return
                 }
                 
            
                 // MARK: - 拼接最终 URL
-                let APPPREFIX_finalURL =
-                    APPPREFIX_openValue +
-                    DramngredientNod.APPPREFIX_17 + APPPREFIX_encryptedString +
-                    DramngredientNod.APPPREFIX_18 + "\(VsimmerPacePart.shared.APPPREFIX_appId)"
+                let GMTAteaLeafGrade =
+                    GMTAbutterSmoothKey +
+                    DramngredientNod.GMTA17 + GMTAcoffeeBeanOrigin +
+                    DramngredientNod.GMTA18 + "\(VsimmerPacePart.scentDiffuserSet.GMTArecordSet)"
                 
-                print(APPPREFIX_finalURL)
+                print(GMTAteaLeafGrade)
                 
                 
                 // MARK: - 跳到 WebView
-                let APPPREFIX_webVC = DramtasteBudsElement(
-                    APPPREFIX_urlString: APPPREFIX_finalURL,
-                    APPPREFIX_quickLoginEnabled: true
+                let GMTAjuicePressForce = DramtasteBudsElement(
+                    GMTApitchShiftValue: GMTAteaLeafGrade,
+                    GMTAechoDelayBuffer: true
                 )
-                ADeTfilterCutoffPoint.APPPREFIX_mainWindow?.rootViewController = APPPREFIX_webVC
+                ADeTfilterCutoffPoint.GMTAsweetNoteAdapter?.rootViewController = GMTAjuicePressForce
                 
                 
-            case .failure(let APPPREFIX_error):
-                VyuseafoodFreshFlag.HNONWYCELRshow(
-                    HNONWYCELRmessage: APPPREFIX_error.localizedDescription,
-                    HNONWYCELRstate: .HNONWYCELRerror,
-                    HNONWYCELRin: self
+            case .failure(let GMTAsodaFizzBubble):
+                VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth: GMTAsodaFizzBubble.localizedDescription,
+                                                    dmtaforkProngWidthert: .cupHandleSide,
+                                                    dmtaforkProngWidth: self
                 )
                 
             }

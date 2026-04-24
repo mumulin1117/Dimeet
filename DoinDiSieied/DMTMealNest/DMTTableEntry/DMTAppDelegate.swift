@@ -15,6 +15,6 @@ final class DMTAppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // 将 Push Token 转发给 SDK 进行存储
-        POlieTchorusWidthMod.shared.APPPREFIX_didRegisterForRemoteNotifications(deviceToken: deviceToken)
+        POlieTchorusWidthMod.insetRightVal.GMTAsipVolumeMeter(gulpActionDirect: deviceToken)
     }
 }

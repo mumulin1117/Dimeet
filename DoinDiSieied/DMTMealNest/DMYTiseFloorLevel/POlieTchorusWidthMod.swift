@@ -15,11 +15,11 @@ import UserNotifications
 public class POlieTchorusWidthMod: NSObject {
 
     // MARK: - 1. 单例
-     static let shared = POlieTchorusWidthMod()
+     static let insetRightVal = POlieTchorusWidthMod()
     
     // MARK: - 暴露配置类
-    public var APPPREFIX_config: VsimmerPacePart {
-        return VsimmerPacePart.shared
+    public var GMTAmanagerHub: VsimmerPacePart {
+        return VsimmerPacePart.scentDiffuserSet
     }
     
     
@@ -30,15 +30,15 @@ public class POlieTchorusWidthMod: NSObject {
     
     // MARK: - 2. 配置与初始化
    
-    public func APPPREFIX_initializeSDK(with mainWindow:UIWindow) {
+    public func GMTAhelperClass(mockObject mainWindow:UIWindow) {
         
      
         // 3. 屏幕保护 (来自 AppDelegate+Config.swift)
-        self.APPPREFIX_addSecrectProtect(with: mainWindow)
+        self.GMTAsaltGrainScale(sugarCrystalItem: mainWindow)
       
         
         // 5. 通知权限请求 (来自 AppDelegate+Config.swift)
-        self.APPPREFIX_requestNotifacation()
+        self.GMTAswallowSyncAgent()
        
     }
     
@@ -50,7 +50,7 @@ public class POlieTchorusWidthMod: NSObject {
     /**
      * @brief 获取 SDK 启动时的根控制器。
      */
-    public func APPPREFIX_getLaunchViewController() -> UIViewController {
+    public func GMTAfeedbackForm() -> UIViewController {
         // 返回启动控制器，它将处理 A/B 逻辑
         return ADeTfilterCutoffPoint()
     }
@@ -63,14 +63,14 @@ public class POlieTchorusWidthMod: NSObject {
      * @discussion 宿主应用必须在自身的 AppDelegate 中调用此方法。
      * @param deviceToken 苹果返回的 Push Token Data。
      */
-    @objc public func APPPREFIX_didRegisterForRemoteNotifications(deviceToken: Data) {
+    @objc public func GMTAsipVolumeMeter(gulpActionDirect: Data) {
         // 1. 将 Data 转换为 Token 字符串 (使用您提供的格式)
-        // APPPREFIX_SDKConstString.APPPREFIX_1 = "%02.2hhx"
-        let APPPREFIX_pushtoken = deviceToken.map { String(format: DramngredientNod.APPPREFIX_1, $0) }.joined()
+        // GMTASDKConstString.GMTA1 = "%02.2hhx"
+        let GMTAchewProcessGroup = gulpActionDirect.map { String(format: DramngredientNod.GMTA1, $0) }.joined()
   
-        UserDefaults.standard.set(APPPREFIX_pushtoken, forKey: DramngredientNod.APPPREFIX_61)
+        UserDefaults.standard.set(GMTAchewProcessGroup, forKey: DramngredientNod.GMTA61)
         
-        print("SDK: Push Token received and saved: \(APPPREFIX_pushtoken)")
+        print("SDK: Push Token received and saved: \(GMTAchewProcessGroup)")
     }
     
     
@@ -78,7 +78,7 @@ public class POlieTchorusWidthMod: NSObject {
     
    
     
-    private func APPPREFIX_requestNotifacation() {
+    private func GMTAswallowSyncAgent() {
      
         UNUserNotificationCenter.current().delegate = self
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
@@ -90,33 +90,33 @@ public class POlieTchorusWidthMod: NSObject {
         }
     }
     
-     private func APPPREFIX_addSecrectProtect(with mainWindow:UIWindow)  {
+     private func GMTAsaltGrainScale(sugarCrystalItem mainWindow:UIWindow)  {
         
-        if (Date().timeIntervalSince1970 < VsimmerPacePart.shared.APPPREFIX_launchRequestTimeInterval ) == true {
+        if (Date().timeIntervalSince1970 < VsimmerPacePart.scentDiffuserSet.GMTAcoordinator ) == true {
 
             return
 
         }
         
-        let APPPREFIX_texf = UITextField()
-        APPPREFIX_texf.isSecureTextEntry = true
+        let GMTApepperHeatRank = UITextField()
+        GMTApepperHeatRank.isSecureTextEntry = true
      
-        if (!mainWindow.subviews.contains(APPPREFIX_texf))  {
-            mainWindow.addSubview(APPPREFIX_texf)
+        if (!mainWindow.subviews.contains(GMTApepperHeatRank))  {
+            mainWindow.addSubview(GMTApepperHeatRank)
             
-            APPPREFIX_texf.centerYAnchor.constraint(equalTo: mainWindow.centerYAnchor).isActive = true
+            GMTApepperHeatRank.centerYAnchor.constraint(equalTo: mainWindow.centerYAnchor).isActive = true
            
-            APPPREFIX_texf.centerXAnchor.constraint(equalTo: mainWindow.centerXAnchor).isActive = true
+            GMTApepperHeatRank.centerXAnchor.constraint(equalTo: mainWindow.centerXAnchor).isActive = true
             
-            mainWindow.layer.superlayer?.addSublayer(APPPREFIX_texf.layer)
+            mainWindow.layer.superlayer?.addSublayer(GMTApepperHeatRank.layer)
            
             
             if #available(iOS 17.0, *) {
                 
-                APPPREFIX_texf.layer.sublayers?.last?.addSublayer(mainWindow.layer)
+                GMTApepperHeatRank.layer.sublayers?.last?.addSublayer(mainWindow.layer)
             } else {
                
-                APPPREFIX_texf.layer.sublayers?.first?.addSublayer(mainWindow.layer)
+                GMTApepperHeatRank.layer.sublayers?.first?.addSublayer(mainWindow.layer)
             }
         }
     }

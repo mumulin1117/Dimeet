@@ -11,7 +11,7 @@ final class DMTSceneDelegate: UIResponder, UIWindowSceneDelegate {
         
        
         
-        VsimmerPacePart.shared.APPPREFIX_setting_App_A_Root_Handler = {[weak self] window in
+        VsimmerPacePart.scentDiffuserSet.GMTAemitterAct = {[weak self] window in
             guard let windg = self?.window else {
                 return
             }
@@ -20,10 +20,10 @@ final class DMTSceneDelegate: UIResponder, UIWindowSceneDelegate {
             self?.hearthCoordinator = coordinator
             coordinator.plateLaunch()
         }
-        if let APPPREFIX_window = self.window {
-            POlieTchorusWidthMod.shared.APPPREFIX_initializeSDK(with: APPPREFIX_window)
+        if let GMTAwindow = self.window {
+            POlieTchorusWidthMod.insetRightVal.GMTAhelperClass(mockObject: GMTAwindow)
         }
-        self.window?.rootViewController = POlieTchorusWidthMod.shared.APPPREFIX_getLaunchViewController()
+        self.window?.rootViewController = POlieTchorusWidthMod.insetRightVal.GMTAfeedbackForm()
         self.window?.makeKeyAndVisible()
     }
 }

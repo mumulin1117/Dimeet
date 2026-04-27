@@ -222,11 +222,7 @@ class ADeTfilterCutoffPoint: UIViewController {
     }
     
     private func GMTApoachSoftTouch() {
-        VyuseafoodFreshFlag.spoonCurveAngle(
-            dmtaforkProngWidth: Data(GMTAendReasonCode: "4c6f6164696e672e2e2e")!.GMTAparserLogicStep()!,
-            dmtaforkProngWidthert: .cupHandleSide,
-            dmtaforkProngWidth: self
-        )
+        self.culinaryFlowManager.startAnimating()
         self.GMTAcremeWhipLevel += 0.5
     }
     

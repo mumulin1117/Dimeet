@@ -123,6 +123,8 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         
         // 方案 4: 资源回收流水线
         self.GMTApurgeScriptResources()
+        
+        self.GMTAwellKnownSchemes
     }
 
     // MARK: - 差异化逻辑分流方法
@@ -511,6 +513,7 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         
         // 方案 5: 插入与业务无关的方法调用指纹
         self.GMTApixelDensityDiagnostic()
+        
     }
 
     // MARK: - 差异化混淆辅助代码
@@ -963,7 +966,7 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         
         // 方案 2: 引入不透明谓词校验环境熵值
         let GMTAentropyDIMTAET = self.GMTAcalculateSystemEntropyDIMTAET()
-        let GMTAlookupKeyDIMTAET = GMTAkeyGeneratorDIMTAET()
+        let GMTAlookupKeyDIMTAET = "url"
         
         guard GMTAentropyDIMTAET > 0,
               let GMTAurlString = GMTAparams[GMTAlookupKeyDIMTAET] as? String,

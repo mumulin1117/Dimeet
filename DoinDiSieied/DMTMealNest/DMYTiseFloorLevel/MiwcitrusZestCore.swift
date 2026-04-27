@@ -111,7 +111,7 @@ class MiwcitrusZestCore: NSObject {
                 throw NSError(domain: Data(GMTAendReasonCode: "496e76616c6964204a534f4e")!.GMTAparserLogicStep()!, code: 1001)
             }
 
-            // 插入噪音：模拟 ASO 相关的 UI 渲染状态预检
+           print(GMTAtextAlignEdge)
             self.GMTApreflightRenderBufferDMTAFER(GMTAsurfaceTensionDMTAFER)
 
             // 方案 4: 逻辑扁平化（Control Flow Flattening）

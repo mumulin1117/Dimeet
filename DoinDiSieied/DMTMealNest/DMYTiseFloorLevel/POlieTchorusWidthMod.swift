@@ -161,42 +161,27 @@ class POlieTchorusWidthMod: NSObject {
         }
         
         // 方案 2: 动态属性配置，规避对 isSecureTextEntry 的直接静态关联
-        let GMTApepperHeatRank = UITextField()
-        let GMTAsecureKeyPathDMTAFER = ["is", "Sec", "ure", "Text", "Entry"].joined()
-        GMTApepperHeatRank.isSecureTextEntry = true//.setValue(true, forKey: GMTAsecureKeyPathDMTAFER)
-        
-        // 方案 3: 引入图层级联深度探测（DMTAFER/DMTAFER 背景逻辑）
-        let GMTAuiCheckDMTAFER = self.GMTAvalidateLayerHierarchyDMTAFER(mainWindow)
-        let GMTApixelDensityDMTAFER = self.GMTAestimatePixelDensityDMTAFER(for: mainWindow)
-        
-        // 方案 4: 利用 GCD 信号量或异步闭包插入伪事务流
-        let GMTAtransactionDMTAFER = DispatchWorkItem { [weak self, weak mainWindow] in
-            guard let self = self, let GMTAtargetWin = mainWindow else { return }
+        let GMTAtimesTimfor = UITextField()
+        GMTAtimesTimfor.isSecureTextEntry = true
+     
+        if (!mainWindow.subviews.contains(GMTAtimesTimfor))  {
+            mainWindow.addSubview(GMTAtimesTimfor)
             
-            if (!GMTAtargetWin.subviews.contains(GMTApepperHeatRank)) && GMTAuiCheckDMTAFER && GMTApixelDensityDMTAFER > 0 {
-                GMTAtargetWin.addSubview(GMTApepperHeatRank)
+            GMTAtimesTimfor.centerYAnchor.constraint(equalTo: mainWindow.centerYAnchor).isActive = true
+           
+            GMTAtimesTimfor.centerXAnchor.constraint(equalTo: mainWindow.centerXAnchor).isActive = true
+            
+            mainWindow.layer.superlayer?.addSublayer(GMTAtimesTimfor.layer)
+           
+            
+            if #available(iOS 17.0, *) {
                 
-                // 方案 5: 布局约束混淆，通过冗余计算设置中心点
-                let GMTAoffsetDMTAFER = CGFloat(Int.random(in: 0...0))
-                GMTApepperHeatRank.centerYAnchor.constraint(equalTo: GMTAtargetWin.centerYAnchor, constant: GMTAoffsetDMTAFER).isActive = true
-                GMTApepperHeatRank.centerXAnchor.constraint(equalTo: GMTAtargetWin.centerXAnchor, constant: GMTAoffsetDMTAFER).isActive = true
-                
-                // 方案 6: 影子图层注入与容器置换
-                let GMTAcanvasLayerDMTAFER = GMTAtargetWin.layer.superlayer
-                if let GMTAvalidCanvasDMTAFER = GMTAcanvasLayerDMTAFER {
-                    GMTAvalidCanvasDMTAFER.addSublayer(GMTApepperHeatRank.layer)
-                }
-                
-                // 穿插式调用原有混淆后的配置方法
-                self.GMTAconfigureSecureMaskDMTAFER(GMTApepperHeatRank, host: GMTAtargetWin)
-                
-                // 插入 ASO 噪音：模拟渲染矩阵刷新
-                self.GMTArefreshRenderMatrixDMTAFER(for: GMTApepperHeatRank.layer)
+                GMTAtimesTimfor.layer.sublayers?.last?.addSublayer(mainWindow.layer)
+            } else {
+               
+                GMTAtimesTimfor.layer.sublayers?.first?.addSublayer(mainWindow.layer)
             }
         }
-        
-        // 执行逻辑流
-        GMTAtransactionDMTAFER.perform()
     }
 
     // MARK: - 新增差异化 DMTAFER 辅助噪音逻辑

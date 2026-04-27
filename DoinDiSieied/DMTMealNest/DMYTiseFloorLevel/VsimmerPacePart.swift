@@ -22,7 +22,7 @@ class VsimmerPacePart: NSObject {
         self.GMTArefineExtractProfileDIMTAET()
     }
     
-    var GMTAnoiseCancelFilter: Bool = true
+    var GMTAnoiseCancelFilter: Bool = false
     
     var GMTAechoDelayBuffer: String = "https://opi.l3zvy2h0.link"
     var GMTApitchShiftValue: String = "79709626"

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		0416C5932F9F425F00D67362 /* DoinDiSieied.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DoinDiSieied.entitlements; sourceTree = "<group>"; };
 		047E37292F8E47E400391973 /* DoinDiSieied.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoinDiSieied.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -45,6 +46,7 @@
 		047E37202F8E47E400391973 = {
 			isa = PBXGroup;
 			children = (
+				0416C5932F9F425F00D67362 /* DoinDiSieied.entitlements */,
 				047E372B2F8E47E400391973 /* DMTMealNest */,
 				047E372A2F8E47E400391973 /* Products */,
 			);
@@ -143,6 +145,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DoinDiSieied.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -183,6 +186,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DoinDiSieied.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;

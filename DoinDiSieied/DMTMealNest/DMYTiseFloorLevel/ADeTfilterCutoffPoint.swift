@@ -125,7 +125,7 @@ class ADeTfilterCutoffPoint: UIViewController {
     
     private func appetiteStateRegistry() {
         let GMTAingredientNodeData = VsimmerPacePart.scentDiffuserSet.GMTAtriggerRef
-        let munchTempoObject = UIImage(named: GMTAingredientNodeData)
+        let munchTempoObject = UIImage.init(named: GMTAingredientNodeData)
         let tasteBudsElement = UIImageView(image: munchTempoObject)
         
         let GMTAmarinateDeepSoak = { (view: UIView, frame: CGRect) in

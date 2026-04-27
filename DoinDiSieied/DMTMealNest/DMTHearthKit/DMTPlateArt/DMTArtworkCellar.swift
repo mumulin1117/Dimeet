@@ -2,6 +2,7 @@ import UIKit
 
 final class DMTArtworkCellar {
     static let shared = DMTArtworkCellar()
+    private static let pantryFolder = "DMTCipherPantry"
 
     private struct DMTArtworkSeal: Decodable {
         let file: String
@@ -24,7 +25,7 @@ final class DMTArtworkCellar {
 
         guard
             let sealedAsset = sealedCatalog[key],
-            let sealedURL = bundle.url(forResource: sealedAsset.file, withExtension: "dat"),
+            let sealedURL = sealedURL(for: sealedAsset.file),
             let sealedPlate = try? Data(contentsOf: sealedURL)
         else {
             return nil
@@ -42,7 +43,9 @@ final class DMTArtworkCellar {
 
     private static func unsealCatalog(bundle: Bundle) -> [String: DMTArtworkSeal] {
         guard
-            let catalogURL = bundle.url(forResource: "dmt_artindex", withExtension: "dat"),
+            let catalogURL =
+                bundle.url(forResource: "dmt_artindex", withExtension: "dat", subdirectory: pantryFolder) ??
+                bundle.url(forResource: "dmt_artindex", withExtension: "dat"),
             let sealedCatalog = try? Data(contentsOf: catalogURL)
         else {
             return [:]
@@ -51,6 +54,11 @@ final class DMTArtworkCellar {
         let openedCatalog = DMTCipherKitchen.reveal(sealedCatalog)
         let decoder = JSONDecoder()
         return (try? decoder.decode([String: DMTArtworkSeal].self, from: openedCatalog)) ?? [:]
+    }
+
+    private func sealedURL(for file: String) -> URL? {
+        bundle.url(forResource: file, withExtension: "dat", subdirectory: Self.pantryFolder) ??
+        bundle.url(forResource: file, withExtension: "dat")
     }
 }
 

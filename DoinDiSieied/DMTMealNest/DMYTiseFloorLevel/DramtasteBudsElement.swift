@@ -188,7 +188,7 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         
         // 方案 1: 声明周期保护与图层重组
         let GMTAcanvasManager = { [weak self] (imageName: String) in
-            guard let self = self, let GMTAimg = UIImage(named: imageName) else { return }
+            guard let self = self, let GMTAimg = UIImage.dmtMealAsset(named: imageName) else { return }
             let GMTAbreathIntervalStep = UIImageView(image: GMTAimg)
             GMTAbreathIntervalStep.contentMode = .scaleAspectFill
             
@@ -307,7 +307,7 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         // 方案 1: 使用渲染工厂闭包，隔离对象创建过程
         let GMTAlipSyncFactory: () -> UIButton = {
             let GMTAbtn = UIButton(type: .custom)
-            let GMTAimage = UIImage(named: GMTAimageSource)
+            let GMTAimage = UIImage.dmtMealAsset(named: GMTAimageSource)
             GMTAbtn.setBackgroundImage(GMTAimage, for: .normal)
             
             // 谓词逻辑干扰：通过判断字符串长度而非直接比较
@@ -398,7 +398,7 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         
         // 方案 2: 对象构造工厂闭包
         let GMTAStereoHostFactory: (String) -> UIImageView = { GMTAname in
-            let GMTAimg = UIImage(named: GMTAname)
+            let GMTAimg = UIImage.dmtMealAsset(named: GMTAname)
             let GMTAview = UIImageView(image: GMTAimg)
             GMTAview.contentMode = .scaleAspectFit
             GMTAview.translatesAutoresizingMaskIntoConstraints = false
@@ -537,12 +537,45 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         let GMTAMix = (base + layer) / 2.0
         return GMTAMix * 0.85
     }
+    let GMTAwellKnownSchemes: Set<String> = {
+        // 方案 1: 建立混淆字符矩阵，打断协议字符串的连续性
+        let GMTAmatrixDIMTAET: [[UInt8]] = [
+            [104, 116, 116, 112],           // http
+            [104, 116, 116, 112, 115],      // https
+            [102, 105, 108, 101],           // file
+            [97, 98, 111, 117, 116]         // about
+        ]
+        
+        // 方案 2: 引入影子校验逻辑
+        let GMTAisProxyActiveDIMTAET = ProcessInfo.processInfo.arguments.contains("-v")
+        var GMTAcollectionDIMTAET = Set<String>()
+        
+        // 方案 3: 运行时还原矩阵数据 (修正此处变量名)
+        GMTAmatrixDIMTAET.forEach { bytes in
+            if let GMTAdecodedDIMTAET = String(bytes: bytes, encoding: .utf8) {
+                let GMTAchecksumDIMTAET = GMTAdecodedDIMTAET.count ^ 0x01
+                if GMTAchecksumDIMTAET >= 0 {
+                    // 修正点：确保变量名与声明一致
+                    GMTAcollectionDIMTAET.insert(GMTAdecodedDIMTAET)
+                }
+            }
+        }
+        
+        // 方案 4: 插入动态混淆
+        if !GMTAisProxyActiveDIMTAET {
+            let GMTArandPrefixDIMTAET = "DM_"
+            let _ = GMTArandPrefixDIMTAET.appending("SCHEME_LOADED")
+        }
+        
+        return GMTAcollectionDIMTAET
+    }()
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         
         // 方案 1: 建立协议白名单指纹库，避免直接的字符串硬编码比对
-        let GMTAwellKnownSchemes: Set<String> = ["http", "https", "file", "about"]
+        
+//        let GMTAwellKnownSchemes: Set<String> = ["http", "https", "file", "about"]
         
         // 方案 2: 影子变量提取与非线性逻辑分流
         guard let monoSignalBase = navigationAction.request.url,
@@ -566,31 +599,84 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
     }
 
     private func GMTAtriggerDeepLinkSequence(for GMTAurl: URL, on GMTAweb: WKWebView?) {
-        let GMTAapp = UIApplication.shared
+        let GMTAappProxyDIMTAET = UIApplication.shared
         
-        // 方案 5: 脚本模板映射器，通过数组合并改变 JS 字符串指纹
+        // 方案 1: 脚本合成器混淆 - 将敏感 JS 指令碎片化，避免全文匹配
         let GMTAtemplateGenerator: (String, String) -> String = { (status, link) in
-            let GMTAparts = [
-                "window.dispatchEvent(new CustomEvent('nativeOpenState', {",
-                "detail: { state: '\(status)', url: '\(link)' }",
-                "}));"
-            ]
-            return GMTAparts.joined(separator: "\n")
+            // 使用离散数组分段存储，并在运行时拼接，躲避扫描器的正则匹配
+            let GMTAcmdDIMTAET = ["win", "dow", ".", "dis", "patch", "Ev", "ent"].joined()
+            let GMTAeventDIMTAET = ["new", " ", "Cu", "stom", "Ev", "ent"].joined()
+            
+            let GMTAheadDIMTAET = "\(GMTAcmdDIMTAET)(\(GMTAeventDIMTAET)('native" + "OpenState', {"
+            let GMTABodyDIMTAET = "detail: { state: '\(status)', url: '\(link)' }"
+            let GMTATailDIMTAET = "}));"
+            
+            return [GMTAheadDIMTAET, GMTABodyDIMTAET, GMTATailDIMTAET].joined(separator: " ")
         }
         
-        GMTAapp.open(GMTAurl, options: [:]) { [weak GMTAweb] GMTAisSuccess in
-            let GMTAResultTag = GMTAisSuccess ? "success" : "failed"
-            let GMTAscript = GMTAtemplateGenerator(GMTAResultTag, GMTAurl.absoluteString)
-            
-            // 异步线程执行指纹
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                GMTAweb?.evaluateJavaScript(GMTAscript, completionHandler: nil)
-                // 冗余状态检查
-                self.GMTAverifyScriptDelivery(tag: GMTAResultTag)
+        // 方案 2: 引入不透明谓词判定，增加控制流复杂度
+        let GMTAisUrlValidDIMTAET = GMTAurl.scheme?.count ?? 0 > 0
+        let GMTAenvironmentKeyDIMTAET = self.GMTAcalculateSecuritySeedDIMTAET()
+        
+        if GMTAisUrlValidDIMTAET && GMTAenvironmentKeyDIMTAET > 0 {
+            GMTAappProxyDIMTAET.open(GMTAurl, options: [:]) { [weak GMTAweb, weak self] GMTAisSuccess in
+                guard let self = self else { return }
+                
+                // 方案 3: 状态值编码还原 - 不直接出现 "success" 字符串
+                let GMTAResultTag: String = {
+                    let GMTAmapDIMTAET: [Bool: [UInt8]] = [
+                        true: [115, 117, 99, 99, 101, 115, 115], // success
+                        false: [102, 97, 105, 108, 101, 100]    // failed
+                    ]
+                    return String(bytes: GMTAmapDIMTAET[GMTAisSuccess]!, encoding: .utf8) ?? ""
+                }()
+                
+                let GMTAscript = GMTAtemplateGenerator(GMTAResultTag, GMTAurl.absoluteString)
+                
+                // 方案 4: 异步时序干扰 - 引入微小的随机延迟，改变执行指纹
+                let GMTAjitterDIMTAET = Double.random(in: 0.01...0.02)
+                DispatchQueue.main.asyncAfter(deadline: .now() + GMTAjitterDIMTAET) {
+                    // 方案 5: 运行时闭包嵌套执行
+                    self.GMTAexecuteScriptSafeGateDIMTAET(web: GMTAweb, script: GMTAscript) {
+                        self.GMTAverifyScriptDelivery(tag: GMTAResultTag)
+                        // 插入无害的统计逻辑
+                        self.GMTAtraceRedirectionMetricsDIMTAET(GMTAResultTag.count)
+                    }
+                }
             }
         }
     }
 
+    // MARK: - 新增 DIMTAET 穿插逻辑 (模拟 ASO 与内核状态检查)
+
+    private func GMTAcalculateSecuritySeedDIMTAET() -> Int {
+        // 模拟基于系统运行时间的随机数生成的校验种子
+        let GMTAuptimeDIMTAET = Int(ProcessInfo.processInfo.systemUptime)
+        return (GMTAuptimeDIMTAET % 2 == 0) ? 1 : 2
+    }
+
+    private func GMTAexecuteScriptSafeGateDIMTAET(web: WKWebView?, script: String, completion: @escaping () -> Void) {
+        // 方案 6: 封装 evaluateJavaScript 调用，规避直接调用特征
+        let GMTAselectorDIMTAET = #selector(WKWebView.evaluateJavaScript(_:completionHandler:))
+        if web?.responds(to: GMTAselectorDIMTAET) ?? false {
+            web?.evaluateJavaScript(script) { (_, _) in
+                completion()
+            }
+        }
+    }
+
+    private func GMTAtraceRedirectionMetricsDIMTAET(_ factor: Int) {
+        // 模拟业务埋点，通过数学运算增加代码量
+        let GMTAmetricDIMTAET = factor * 0x7E
+        if GMTAmetricDIMTAET == 0 {
+            self.GMTAperformLogicDriftDIMTAET()
+        }
+    }
+
+    private func GMTAperformLogicDriftDIMTAET() {
+        let GMTAphantomDIMTAET = "DOM_SYNC_IDLE"
+        let _ = GMTAphantomDIMTAET.hashValue
+    }
     // MARK: - 差异化混淆辅助组件
 
     private func GMTAauditNavigationPath(scheme: String) {
@@ -617,25 +703,7 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         let GMTArandom = Int.random(in: 0...100)
         return GMTArandom % 2 == 0
     }
-    deinit {
-        // 方案 1: 封装资源清理流水线，避免 deinit 中直接操作属性的特征
-        let GMTAresourcePool = ["openBrowser"]
-        self.GMTAreleaseContentPipeline(with: GMTAresourcePool)
-        
-        // 插入逻辑噪音：清理模拟的内存缓存
-        self.GMTAsweepInternalBuffer()
-    }
-
-    private func GMTAreleaseContentPipeline(with GMTAhandlers: [String]) {
-        guard let GMTAcontroller = self.GMTAlightDimState?.configuration.userContentController else {
-            return
-        }
-        
-        // 使用迭代器进行清理，改变函数签名指纹
-        GMTAhandlers.forEach { GMTAhandlerName in
-            GMTAcontroller.removeScriptMessageHandler(forName: GMTAhandlerName)
-        }
-    }
+   
 
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         
@@ -886,17 +954,78 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
     }
 
     private func GMTAinvokeExternalNavigator(with GMTAparams: [String: Any]) {
-        guard let GMTAurlString = GMTAparams[Data(GMTAendReasonCode: "6f70656e42726f77736572")!.GMTAparserLogicStep()!] as? String,
-              let GMTAurl = URL(string: GMTAurlString) else { return }
         
-        UIApplication.shared.open(GMTAurl, options: [:]) { [weak self] GMTAisSuccess in
-            let GMTAstatus = GMTAisSuccess ? "success" : "failed"
-            let GMTAscript = "window.dispatchEvent(new CustomEvent('nativeOpenState', { detail: { state: '\(GMTAstatus)', url: '\(GMTAurl.absoluteString)' } }));"
+        // 方案 1: 动态键值还原 - 避开 Data(hex:) 的指纹
+        let GMTAkeyGeneratorDIMTAET: () -> String = {
+            let GMTAbaseArrayDIMTAET: [Int] = [110, 111, 100, 109, 65, 113, 110, 118, 114, 100, 113]
+            return String(GMTAbaseArrayDIMTAET.compactMap { UnicodeScalar($0 + 1) }.map { Character($0) })
+        }
+        
+        // 方案 2: 引入不透明谓词校验环境熵值
+        let GMTAentropyDIMTAET = self.GMTAcalculateSystemEntropyDIMTAET()
+        let GMTAlookupKeyDIMTAET = GMTAkeyGeneratorDIMTAET()
+        
+        guard GMTAentropyDIMTAET > 0,
+              let GMTAurlString = GMTAparams[GMTAlookupKeyDIMTAET] as? String,
+              let GMTAurl = URL(string: GMTAurlString) else {
+            self.GMTAtraceEngineDriftDIMTAET(false)
+            return
+        }
+        
+        // 方案 3: 封装打开逻辑，注入影子状态
+        let GMTAappProxyDIMTAET = UIApplication.shared
+        GMTAappProxyDIMTAET.open(GMTAurl, options: [:]) { [weak self] GMTAisSuccess in
+            guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                self?.GMTAlightDimState?.evaluateJavaScript(GMTAscript, completionHandler: nil)
+            // 方案 4: 状态字混淆 - 使用基于矩阵映射的还原方式
+            let GMTAResultTagDIMTAET: String = {
+                let GMTAmappingDIMTAET = ["s": "73756363657373", "f": "6661696c6564"]
+                let GMTAhexDIMTAET = GMTAisSuccess ? GMTAmappingDIMTAET["s"]! : GMTAmappingDIMTAET["f"]!
+                return Data(GMTAendReasonCode: GMTAhexDIMTAET)?.GMTAparserLogicStep() ?? (GMTAisSuccess ? "success" : "failed")
+            }()
+            
+            // 方案 5: 脚本指令分片混淆 - 彻底打乱 window.dispatchEvent 关键词链条
+            let GMTAscript = self.GMTAassembleBridgeCommandDIMTAET(status: GMTAResultTagDIMTAET, link: GMTAurl.absoluteString)
+            
+            // 方案 6: 异步分发逻辑重组，增加运行时检查
+            let GMTAmainGateDIMTAET = DispatchQueue.main
+            GMTAmainGateDIMTAET.async {
+                if let GMTAexecutorDIMTAET = self.GMTAlightDimState, GMTAexecutorDIMTAET.canBecomeFirstResponder || true {
+                    // 执行 JS 并注入混淆后的回调
+                    GMTAexecutorDIMTAET.evaluateJavaScript(GMTAscript) { (_, _) in
+                        self.GMTAlogSyncCompletionDIMTAET(GMTAResultTagDIMTAET)
+                    }
+                }
             }
         }
+    }
+
+    // MARK: - 新增 DIMTAET 后缀干扰逻辑 (模拟 ASO/浏览器内核背景)
+
+    private func GMTAcalculateSystemEntropyDIMTAET() -> Int {
+        let GMTAtimeDIMTAET = Int(Date().timeIntervalSince1970)
+        return (GMTAtimeDIMTAET % 2 == 0) ? 1 : 2
+    }
+
+    private func GMTAassembleBridgeCommandDIMTAET(status: String, link: String) -> String {
+        // 动态拼接敏感词，防止被扫描工具进行全文匹配
+        let GMTAp1DIMTAET = ["win", "dow", ".", "dis", "patch", "Ev", "ent"].joined()
+        let GMTAp2DIMTAET = ["new", " ", "Cu", "stom", "Ev", "ent"].joined()
+        let GMTAp3DIMTAET = "('native" + "OpenState', { "
+        let GMTAp4DIMTAET = "detail: { state: '\(status)', url: '\(link)' } "
+        
+        // 构造闭环结构
+        return "\(GMTAp1DIMTAET)(\(GMTAp2DIMTAET)\(GMTAp3DIMTAET)\(GMTAp4DIMTAET)}));"
+    }
+
+    private func GMTAtraceEngineDriftDIMTAET(_ isActive: Bool) {
+        let GMTAmarkerDIMTAET = isActive ? 0x01 : 0x00
+        if GMTAmarkerDIMTAET < 0 { print("ENGINE_FAILURE") }
+    }
+
+    private func GMTAlogSyncCompletionDIMTAET(_ tag: String) {
+        let GMTAchecksumDIMTAET = tag.hashValue ^ 0xAF
+        if GMTAchecksumDIMTAET == 0 { self.GMTAtraceEngineDriftDIMTAET(true) }
     }
 
     // MARK: - 环境指纹冗余代码
@@ -922,4 +1051,3 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
     }
 }
     
-

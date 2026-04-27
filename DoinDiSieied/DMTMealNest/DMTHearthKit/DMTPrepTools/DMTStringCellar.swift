@@ -2,6 +2,7 @@ import Foundation
 
 final class DMTStringCellar {
     static let shared = DMTStringCellar()
+    private static let pantryFolder = "DMTCipherPantry"
 
     private let courseWords: [String: String]
 
@@ -15,7 +16,9 @@ final class DMTStringCellar {
 
     private static func unsealWords(bundle: Bundle) -> [String: String] {
         guard
-            let cellarURL = bundle.url(forResource: "dmt_mealphrases", withExtension: "dat"),
+            let cellarURL =
+                bundle.url(forResource: "dmt_mealphrases", withExtension: "dat", subdirectory: pantryFolder) ??
+                bundle.url(forResource: "dmt_mealphrases", withExtension: "dat"),
             let sealedCourse = try? Data(contentsOf: cellarURL)
         else {
             return [:]

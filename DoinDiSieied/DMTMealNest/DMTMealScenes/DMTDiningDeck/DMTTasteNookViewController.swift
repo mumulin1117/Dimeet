@@ -126,7 +126,7 @@ final class DMTTasteNookViewController: UIViewController {
 
         emptyTasteView.translatesAutoresizingMaskIntoConstraints = false
         emptyTasteView.contentMode = .scaleAspectFit
-        let balfo = UIImageView(image: UIImage.init(named: "baoshiddfv"))
+        let balfo = UIImageView(image: UIImage.dmtMealAsset(named: "baoshiddfv"))
         balfo.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(courseScrollView)
         courseScrollView.addSubview(platingCanvas)

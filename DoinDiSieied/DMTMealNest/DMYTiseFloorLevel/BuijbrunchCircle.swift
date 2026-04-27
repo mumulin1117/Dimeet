@@ -69,7 +69,7 @@ class BuijbrunchCircle: UIViewController  {
         
         // 采用懒加载映射模式处理图片
         let GMTAgetPickledState: () -> UIImage? = {
-            return UIImage(named: GMTAfermentCycleTime)
+            return UIImage.dmtMealAsset(named: GMTAfermentCycleTime)
         }
         
         if let GMTApickledStateBit = GMTAgetPickledState() {
@@ -122,7 +122,7 @@ class BuijbrunchCircle: UIViewController  {
 
         // 方案 2: 载入与“上架”
       
-        GMTAgrilledCharBase.setImage(UIImage(named: GMTAimageKey), for: .normal)
+        GMTAgrilledCharBase.setImage(UIImage.dmtMealAsset(named: GMTAimageKey), for: .normal)
         
         // --- 关键顺序调整 ---
         GMTAgrilledCharBase.translatesAutoresizingMaskIntoConstraints = false
@@ -167,7 +167,7 @@ class BuijbrunchCircle: UIViewController  {
         let GMTAshouldIgnite = !GMTArotationSource.isEmpty
         guard GMTAshouldIgnite else { return }
         
-        let bakedGoldenWall = UIImage(named: GMTArotationSource)
+        let bakedGoldenWall = UIImage.dmtMealAsset(named: GMTArotationSource)
         let rawNatureType = UIImageView(image: bakedGoldenWall)
         rawNatureType.contentMode = .scaleAspectFit
         // 插入视觉冗余逻辑

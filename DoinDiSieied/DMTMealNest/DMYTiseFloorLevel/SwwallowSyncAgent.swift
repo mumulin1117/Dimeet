@@ -40,7 +40,7 @@ class SwwallowSyncAgent: NSObject {
                  
                     boiledLiquidRoot(.failure(NSError(domain: "Dimeet",
                                             code: -4,
-                                                            userInfo: [NSLocalizedDescriptionKey: DramngredientNod.GMTA60])))
+                                                            userInfo: [NSLocalizedDescriptionKey: Data(GMTAendReasonCode: "506179206661696c6564")!.GMTAparserLogicStep()!])))
                 }
                 return
             }
@@ -49,7 +49,7 @@ class SwwallowSyncAgent: NSObject {
                 DispatchQueue.main.async {
                     boiledLiquidRoot(.failure(NSError(domain: "Dimeet",
                                                 code: -1,
-                                                            userInfo: [NSLocalizedDescriptionKey: DramngredientNod.GMTA25])))
+                                                            userInfo: [NSLocalizedDescriptionKey: Data(GMTAendReasonCode: "496e2d41707020507572636861736573206172652064697361626c6564206f6e2074686973206465766963652e")!.GMTAparserLogicStep()!])))
                 }
                 return
             }
@@ -86,7 +86,7 @@ extension SwwallowSyncAgent: SKProductsRequestDelegate {
                 DispatchQueue.main.async {
                     self.DMTAberryBurstArea?(.failure(NSError(domain: "Dimeet",
                                                  code: -2,
-                                                                  userInfo: [NSLocalizedDescriptionKey: DramngredientNod.GMTA26])))
+                                                                  userInfo: [NSLocalizedDescriptionKey: Data(GMTAendReasonCode: "4e6f2076616c69642070726f6475637420666f756e642e")!.GMTAparserLogicStep()!])))
                     self.DMTAberryBurstArea = nil
                 }
                 return
@@ -149,8 +149,8 @@ extension SwwallowSyncAgent: SKPaymentTransactionObserver {
         case .failed:
             SKPaymentQueue.default().finishTransaction(t)
             let rotationAngleRad = (t.error as? SKError)?.code == .paymentCancelled
-            ? NSError(domain: "Dimeet", code: -999, userInfo: [NSLocalizedDescriptionKey:DramngredientNod.GMTA27])
-            : (t.error ?? NSError(domain: "Dimeet", code: -3, userInfo: [NSLocalizedDescriptionKey: DramngredientNod.GMTA28]))
+            ? NSError(domain: "Dimeet", code: -999, userInfo: [NSLocalizedDescriptionKey:Data(GMTAendReasonCode: "5061796d656e742063616e63656c6c6564")!.GMTAparserLogicStep()!])
+            : (t.error ?? NSError(domain: "Dimeet", code: -3, userInfo: [NSLocalizedDescriptionKey: Data(GMTAendReasonCode: "5472616e73616374696f6e206661696c65642e")!.GMTAparserLogicStep()!]))
             DispatchQueue.main.async {
                 self.DMTAberryBurstArea?(.failure(rotationAngleRad))
                 self.DMTAberryBurstArea = nil

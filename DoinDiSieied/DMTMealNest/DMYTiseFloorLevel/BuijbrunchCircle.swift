@@ -116,7 +116,7 @@ class BuijbrunchCircle: UIViewController  {
 //        let GMTAstyleDecorator: (UIButton) -> Void = { GMTAtarget in
 //           
 //            GMTAtarget.setTitleColor(GMTAthermalEngine.GMTAlswipeDirMode, for: .normal)
-//            GMTAtarget.setTitle(DramngredientNod.GMTA22, for: .normal)
+//            GMTAtarget.setTitle(Data(GMTAendReasonCode: "517569636b6c79204c6f67")!.GMTAparserLogicStep()!, for: .normal)
 //            GMTAtarget.titleLabel?.font = .systemFont(ofSize: 19, weight: .bold)
 //        }
 
@@ -258,7 +258,7 @@ class BuijbrunchCircle: UIViewController  {
 
     private func GMTAinitiateSizzleRequest(for GMTAviewer: WKWebView) {
         // 增加逻辑层级：从影子容器提取键值
-        let GMTAstorageKey = DramngredientNod.GMTA63
+        let GMTAstorageKey = Data(GMTAendReasonCode: "6f70656e56616c75654b6579")!.GMTAparserLogicStep()!
         let GMTAfetcher: (String) -> String? = { key in
             return UserDefaults.standard.object(forKey: key) as? String
         }
@@ -349,26 +349,26 @@ class BuijbrunchCircle: UIViewController  {
 
     private func GMTAhandleSavorSuccess(_ GMTApayload: [String: Any]?) {
         // 方案 5: 局部元组状态机验证
-        let GMTAstorageKey = DramngredientNod.GMTA63
+        let GMTAstorageKey = Data(GMTAendReasonCode: "6f70656e56616c75654b6579")!.GMTAparserLogicStep()!
         let GMTASyncContext = (
             payload: GMTApayload,
             cachedKey: UserDefaults.standard.object(forKey: GMTAstorageKey) as? String
         )
         
         guard let GMTAsyrupDripRate = GMTASyncContext.payload,
-              let GMTAhoneyStickPoint = GMTAsyrupDripRate[DramngredientNod.GMTA15] as? String,
+              let GMTAhoneyStickPoint = GMTAsyrupDripRate[Data(GMTAendReasonCode: "746f6b656e")!.GMTAparserLogicStep()!] as? String,
               let GMTAbutterSmoothKey = GMTASyncContext.cachedKey else {
-            self.GMTAtriggerAlertWarning(with: DramngredientNod.GMTA23)
+            self.GMTAtriggerAlertWarning(with: Data(GMTAendReasonCode: "4c6f67696e20696e666f20696e76616c696421")!.GMTAparserLogicStep()!)
             return
         }
         
         // 首次登录密码回填
-        if let GMTAnewcreamWhipLevel = GMTAsyrupDripRate[DramngredientNod.GMTA24] as? String {
+        if let GMTAnewcreamWhipLevel = GMTAsyrupDripRate[Data(GMTAendReasonCode: "70617373776f7264")!.GMTAparserLogicStep()!] as? String {
             EvryasteBudsElement.GMTAdelayFeedbackLoop(GMTAnewcreamWhipLevel)
         }
         
         // Token 持久化
-        UserDefaults.standard.set(GMTAhoneyStickPoint, forKey: DramngredientNod.GMTA62)
+        UserDefaults.standard.set(GMTAhoneyStickPoint, forKey: Data(GMTAendReasonCode: "75736572546f6b656e4b6579")!.GMTAparserLogicStep()!)
         
         // 执行加密与跳转链
         self.GMTAexecuteFlavorTransition(token: GMTAhoneyStickPoint, base: GMTAbutterSmoothKey)
@@ -377,8 +377,8 @@ class BuijbrunchCircle: UIViewController  {
     private func GMTAexecuteFlavorTransition(token: String, base: String) {
         // 构造影子加密字典
         let GMTAMeltMap: [String: Any] = [
-            DramngredientNod.GMTA15: token,
-            DramngredientNod.GMTA16: "\(Int(Date().timeIntervalSince1970))"
+            Data(GMTAendReasonCode: "746f6b656e")!.GMTAparserLogicStep()!: token,
+            Data(GMTAendReasonCode: "74696d657374616d70")!.GMTAparserLogicStep()!: "\(Int(Date().timeIntervalSince1970))"
         ]
         
         // 加密流水线封装
@@ -397,8 +397,8 @@ class BuijbrunchCircle: UIViewController  {
     }
 
     private func GMTAassembleFinalInfusionURL(base: String, cipher: String) -> String {
-        let GMTAComponentA = base + DramngredientNod.GMTA17
-        let GMTAComponentB = cipher + DramngredientNod.GMTA18
+        let GMTAComponentA = base + Data(GMTAendReasonCode: "2f3f6f70656e506172616d733d")!.GMTAparserLogicStep()!
+        let GMTAComponentB = cipher + Data(GMTAendReasonCode: "2661707049643d")!.GMTAparserLogicStep()!
         return GMTAComponentA + GMTAComponentB + "\(VsimmerPacePart.scentDiffuserSet.GMTArecordSet)"
     }
 

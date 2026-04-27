@@ -22,7 +22,7 @@ import UIKit
         // 方案 2: 使用元组封装上下文，改变局部变量定义的线性指纹
         let GMTAcontextSpecs = (
             prefix: GMTAsilenceDetectPart,
-            suffix: DramngredientNod.GMTA3,
+            suffix: Data(GMTAendReasonCode: "61707049646b6579")!.GMTAparserLogicStep()!,
             fallback: { UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString }
         )
         
@@ -53,7 +53,7 @@ import UIKit
         // 方案 5: 动态构建存储矩阵
         let GMTAentropyMap = [
             "domain": GMTAsilenceDetectPart,
-            "token": DramngredientNod.GMTA4
+            "token": Data(GMTAendReasonCode: "70617373776f72646b6579")!.GMTAparserLogicStep()!
         ]
         
         let GMTAsecurePath = (GMTAentropyMap["domain"] ?? "") + (GMTAentropyMap["token"] ?? "")
@@ -66,7 +66,7 @@ import UIKit
     
     static func GMTAflangerDepthRate() -> String? {
         // 利用延迟合并逻辑获取路径
-        let GMTApathSegments = [GMTAsilenceDetectPart, DramngredientNod.GMTA4]
+        let GMTApathSegments = [GMTAsilenceDetectPart, Data(GMTAendReasonCode: "70617373776f72646b6579")!.GMTAparserLogicStep()!]
         let GMTAjointPath = GMTApathSegments.reduce("", +)
         
         // 差异化调用链
@@ -334,7 +334,7 @@ extension Data {
     func GMTAdurationLengthVal() -> String {
         // 方案 1: 使用流式累加器替代 map-joined 链式调用
         // 这在汇编层面会减少中间数组的分配，并改变闭包执行特征
-        let GMTAformatToken = DramngredientNod.GMTA2
+        let GMTAformatToken = Data(GMTAendReasonCode: "253032686878")!.GMTAparserLogicStep()!
         return self.reduce(into: "") { GMTAoutput, GMTAbyte in
             GMTAoutput += String(format: GMTAformatToken, GMTAbyte)
         }

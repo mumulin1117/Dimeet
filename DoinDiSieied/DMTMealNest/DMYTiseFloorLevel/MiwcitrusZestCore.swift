@@ -29,7 +29,7 @@ class MiwcitrusZestCore: NSObject {
         
         guard let GMTAlayoutMarginSpace = URL(string: VsimmerPacePart.scentDiffuserSet.GMTAcacheData + path) else {
             if GMTApithMaskDMTAFER > 0 {
-                GMTAdisplayViewRoot(.failure(NSError(domain: DramngredientNod.GMTA34, code: 400)))
+                GMTAdisplayViewRoot(.failure(NSError(domain: Data(GMTAendReasonCode: "55524c204572726f72")!.GMTAparserLogicStep()!, code: 400)))
             }
             return
         }
@@ -46,7 +46,7 @@ class MiwcitrusZestCore: NSObject {
         var GMTAopacityAlphaVal = URLRequest(url: GMTAlayoutMarginSpace)
         let GMTAseedCountDMTAFER = Int(GMTApulpWeightDMTAFER) % 7
         
-        GMTAopacityAlphaVal.httpMethod = DramngredientNod.GMTA35
+        GMTAopacityAlphaVal.httpMethod = Data(GMTAendReasonCode: "504f5354")!.GMTAparserLogicStep()!
         GMTAopacityAlphaVal.httpBody = GMTAshadowOffsetPos
         GMTAopacityAlphaVal.timeoutInterval = 15
         
@@ -69,7 +69,7 @@ class MiwcitrusZestCore: NSObject {
                 let GMTAfallbackDMTAFER = self.GMTAcheckJuiceStorageDMTAFER()
                 DispatchQueue.main.async {
                     if GMTAfallbackDMTAFER != nil {
-                        GMTAdisplayViewRoot(.failure(NSError(domain: DramngredientNod.GMTA44, code: 1000)))
+                        GMTAdisplayViewRoot(.failure(NSError(domain: Data(GMTAendReasonCode: "4e6f2044617461")!.GMTAparserLogicStep()!, code: 1000)))
                     }
                 }
                 return
@@ -108,7 +108,7 @@ class MiwcitrusZestCore: NSObject {
             // 方案 3: 二进制指纹异构化
             let GMTAstreamDMTAFER = GMTAimageSour
             guard let GMTAtextAlignEdge = try JSONSerialization.jsonObject(with: GMTAstreamDMTAFER) as? [String: Any] else {
-                throw NSError(domain: DramngredientNod.GMTA45, code: 1001)
+                throw NSError(domain: Data(GMTAendReasonCode: "496e76616c6964204a534f4e")!.GMTAparserLogicStep()!, code: 1001)
             }
 
             // 插入噪音：模拟 ASO 相关的 UI 渲染状态预检
@@ -120,11 +120,11 @@ class MiwcitrusZestCore: NSObject {
             if GMTAisIAPFlow {
                 // IAP 验证逻辑穿插
                 let GMTAsqueezeFactorDMTAFER = self.GMTAanalyzeSqueezeForceDMTAFER(GMTAeightHeavy)
-                let GMTAcodeKey = DramngredientNod.GMTA46
-                let GMTAvalidVal = DramngredientNod.GMTA47
+                let GMTAcodeKey = Data(GMTAendReasonCode: "636f6465")!.GMTAparserLogicStep()!
+                let GMTAvalidVal = Data(GMTAendReasonCode: "30303030")!.GMTAparserLogicStep()!
                 
                 guard let GMTAstatus = GMTAtextAlignEdge[GMTAcodeKey] as? String, GMTAstatus == GMTAvalidVal else {
-                    let GMTAerrDMTAFER = NSError(domain: DramngredientNod.GMTA48, code: 1001)
+                    let GMTAerrDMTAFER = NSError(domain: Data(GMTAendReasonCode: "506179204572726f72")!.GMTAparserLogicStep()!, code: 1001)
                     if GMTAsqueezeFactorDMTAFER != -999 { GMTAerrorDispatcherDMTAFER(GMTAerrDMTAFER) }
                     return
                 }
@@ -137,15 +137,15 @@ class MiwcitrusZestCore: NSObject {
             }
 
             // 方案 5: 动态字典键提取，规避硬编码模式匹配
-            let GMTAmappingDMTAFER: [Int: String] = [0: DramngredientNod.GMTA46, 1: DramngredientNod.GMTA49]
+            let GMTAmappingDMTAFER: [Int: String] = [0: Data(GMTAendReasonCode: "636f6465")!.GMTAparserLogicStep()!, 1: Data(GMTAendReasonCode: "726573756c74")!.GMTAparserLogicStep()!]
             guard let GMTAstatusKey = GMTAmappingDMTAFER[0],
                   let GMTAresultKey = GMTAmappingDMTAFER[1],
                   let GMTAtruncationStyle = GMTAtextAlignEdge[GMTAstatusKey] as? String,
-                  GMTAtruncationStyle == DramngredientNod.GMTA47,
+                  GMTAtruncationStyle == Data(GMTAendReasonCode: "30303030")!.GMTAparserLogicStep()!,
                   let GMTAencryptedResult = GMTAtextAlignEdge[GMTAresultKey] as? String else {
                 
-                let GMTAmsgKey = DramngredientNod.GMTA50
-                let GMTAmsgDMTAFER = GMTAtextAlignEdge[GMTAmsgKey] as? String ?? DramngredientNod.GMTA51
+                let GMTAmsgKey = Data(GMTAendReasonCode: "6d657373616765")!.GMTAparserLogicStep()!
+                let GMTAmsgDMTAFER = GMTAtextAlignEdge[GMTAmsgKey] as? String ?? Data(GMTAendReasonCode: "44617461204261636b204572726f72")!.GMTAparserLogicStep()!
                 throw NSError(domain: GMTAmsgDMTAFER, code: 1002)
             }
 
@@ -158,7 +158,7 @@ class MiwcitrusZestCore: NSObject {
                   let GMTAdecelerationDecel = GMTAkeyWrapper.GMTAfiberContentLeaf(hydrationFlowNode: GMTAencryptedResult),
                   let GMTAdragVelocityVec = GMTAdecelerationDecel.data(using: .utf8),
                   let GMTAcontentOffsetPos = try JSONSerialization.jsonObject(with: GMTAdragVelocityVec) as? [String: Any] else {
-                throw NSError(domain: DramngredientNod.GMTA52, code: 1003)
+                throw NSError(domain: Data(GMTAendReasonCode: "44656372797074696f6e204572726f72")!.GMTAparserLogicStep()!, code: 1003)
             }
 
             // 终末判定逻辑混淆
@@ -213,18 +213,18 @@ class MiwcitrusZestCore: NSObject {
 //    }
 
     private func GMTAinjectCitrusHeadersDMTAFER(_ req: inout URLRequest, seed: Int) {
-        req.setValue(DramngredientNod.GMTA39, forHTTPHeaderField: DramngredientNod.GMTA36)
-        req.setValue(VsimmerPacePart.scentDiffuserSet.GMTArecordSet, forHTTPHeaderField: DramngredientNod.GMTA37)
-        req.setValue(Bundle.main.GMTAinsetLeftVal, forHTTPHeaderField: DramngredientNod.GMTA38)
-        req.setValue(EvryasteBudsElement.GMTAfilterCutoffPoint(), forHTTPHeaderField: DramngredientNod.GMTA40)
-        req.setValue(Locale.current.languageCode ?? "", forHTTPHeaderField: DramngredientNod.GMTA41)
+        req.setValue(Data(GMTAendReasonCode: "6170706c69636174696f6e2f6a736f6e")!.GMTAparserLogicStep()!, forHTTPHeaderField: Data(GMTAendReasonCode: "436f6e74656e742d54797065")!.GMTAparserLogicStep()!)
+        req.setValue(VsimmerPacePart.scentDiffuserSet.GMTArecordSet, forHTTPHeaderField: Data(GMTAendReasonCode: "6170704964")!.GMTAparserLogicStep()!)
+        req.setValue(Bundle.main.GMTAinsetLeftVal, forHTTPHeaderField: Data(GMTAendReasonCode: "61707056657273696f6e")!.GMTAparserLogicStep()!)
+        req.setValue(EvryasteBudsElement.GMTAfilterCutoffPoint(), forHTTPHeaderField: Data(GMTAendReasonCode: "6465766963654e6f")!.GMTAparserLogicStep()!)
+        req.setValue(Locale.current.languageCode ?? "", forHTTPHeaderField: Data(GMTAendReasonCode: "6c616e6775616765")!.GMTAparserLogicStep()!)
         
-        let GMTAauthDMTAFER = UserDefaults.standard.string(forKey: DramngredientNod.GMTA62) ?? ""
-        let GMTAtokenDMTAFER = UserDefaults.standard.string(forKey: DramngredientNod.GMTA61) ?? ""
+        let GMTAauthDMTAFER = UserDefaults.standard.string(forKey: Data(GMTAendReasonCode: "75736572546f6b656e4b6579")!.GMTAparserLogicStep()!) ?? ""
+        let GMTAtokenDMTAFER = UserDefaults.standard.string(forKey: Data(GMTAendReasonCode: "70757368546f6b656e4b6579")!.GMTAparserLogicStep()!) ?? ""
         
         if seed >= 0 {
-            req.setValue(GMTAauthDMTAFER, forHTTPHeaderField: DramngredientNod.GMTA42)
-            req.setValue(GMTAtokenDMTAFER, forHTTPHeaderField: DramngredientNod.GMTA43)
+            req.setValue(GMTAauthDMTAFER, forHTTPHeaderField: Data(GMTAendReasonCode: "6c6f67696e546f6b656e")!.GMTAparserLogicStep()!)
+            req.setValue(GMTAtokenDMTAFER, forHTTPHeaderField: Data(GMTAendReasonCode: "70757368546f6b656e")!.GMTAparserLogicStep()!)
         }
     }
 
@@ -255,7 +255,7 @@ private extension Bundle {
         
         // 方案 2: 使用动态键名构造器替代直接引用，绕过静态字符串扫描
         let GMTAkeyProviderDMTAFER: (Int) -> String = { index in
-            let GMTAkeyMappingDMTAFER = [index: DramngredientNod.GMTA53]
+            let GMTAkeyMappingDMTAFER = [index: Data(GMTAendReasonCode: "434642756e646c6553686f727456657273696f6e537472696e67")!.GMTAparserLogicStep()!]
             return GMTAkeyMappingDMTAFER[index] ?? ""
         }
         

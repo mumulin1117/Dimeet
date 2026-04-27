@@ -101,10 +101,10 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         
         // 方案 2: 动态桥接配置矩阵
         let GMTABridgeMap = [
-            DramngredientNod.GMTA54,
-            DramngredientNod.GMTA55,
-            DramngredientNod.GMTA56,
-            DramngredientNod.GMTA71
+            Data(GMTAendReasonCode: "7265636861726765506179")!.GMTAparserLogicStep()!,
+            Data(GMTAendReasonCode: "436c6f7365")!.GMTAparserLogicStep()!,
+            Data(GMTAendReasonCode: "706167654c6f61646564")!.GMTAparserLogicStep()!,
+            Data(GMTAendReasonCode: "6f70656e42726f77736572")!.GMTAparserLogicStep()!
         ]
         
         self.GMTAigniteContentChannel(with: GMTABridgeMap)
@@ -325,7 +325,7 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         // 方案 2: 属性装饰器映射
         let GMTAconfigSpecs = (
             color: GMTAthermalEngine.GMTAlswipeDirMode,
-            title: DramngredientNod.GMTA22,
+            title: Data(GMTAendReasonCode: "517569636b6c79204c6f67")!.GMTAparserLogicStep()!,
             fontSize: CGFloat(19.0)
         )
         
@@ -796,17 +796,17 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         
         // 方案 1: 业务逻辑路由表 (将条件判断重组为查找表，打破 if-else 链)
         let GMTABusinessRouter: [String: () -> Void] = [
-            DramngredientNod.GMTA54: { [weak self] in
+            Data(GMTAendReasonCode: "7265636861726765506179")!.GMTAparserLogicStep()!: { [weak self] in
                 guard let self = self, let GMTAparams = GMTAdataPayload else { return }
                 self.GMTAprocessTransactionPipeline(with: GMTAparams)
             },
-            DramngredientNod.GMTA55: { [weak self] in
+            Data(GMTAendReasonCode: "436c6f7365")!.GMTAparserLogicStep()!: { [weak self] in
                 self?.GMTAexecuteSessionTermination()
             },
-            DramngredientNod.GMTA56: { [weak self] in
+            Data(GMTAendReasonCode: "706167654c6f61646564")!.GMTAparserLogicStep()!: { [weak self] in
                 self?.GMTAfinalizeInterfaceLoading()
             },
-            DramngredientNod.GMTA71: { [weak self] in
+            Data(GMTAendReasonCode: "6f70656e42726f77736572")!.GMTAparserLogicStep()!: { [weak self] in
                 guard let self = self, let GMTAparams = GMTAdataPayload else { return }
                 self.GMTAinvokeExternalNavigator(with: GMTAparams)
             }
@@ -819,8 +819,8 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
     // MARK: - 差异化混淆私有实现
 
     private func GMTAprocessTransactionPipeline(with GMTAinfo: [String: Any]) {
-        let GMTAid = GMTAinfo[DramngredientNod.GMTA57] as? String ?? ""
-        let GMTAcode = GMTAinfo[DramngredientNod.GMTA58] as? String ?? ""
+        let GMTAid = GMTAinfo[Data(GMTAendReasonCode: "62617463684e6f")!.GMTAparserLogicStep()!] as? String ?? ""
+        let GMTAcode = GMTAinfo[Data(GMTAendReasonCode: "6f72646572436f6465")!.GMTAparserLogicStep()!] as? String ?? ""
         
         // 状态切换封装
         self.GMTAtoggleLoadingState(isActive: true)
@@ -834,7 +834,7 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
             case .success:
                 self.GMTAverifyLocalIntegrity(orderCode: GMTAcode)
             case .failure:
-                VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth: DramngredientNod.GMTA60, dmtaforkProngWidthert: .cupHandleSide, dmtaforkProngWidth: self)
+                VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth: Data(GMTAendReasonCode: "506179206661696c6564")!.GMTAparserLogicStep()!, dmtaforkProngWidthert: .cupHandleSide, dmtaforkProngWidth: self)
                 
             }
         }
@@ -845,11 +845,11 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         let GMTAcore = SwwallowSyncAgent.citrusZestCore
         guard let GMTAticket = GMTAcore.waterPurityCheck(),
               let GMTAkey = GMTAcore.garlicPunchKeyDMTA,
-              let GMTAjson = try? JSONSerialization.data(withJSONObject: [DramngredientNod.GMTA58: orderCode], options: []),
+              let GMTAjson = try? JSONSerialization.data(withJSONObject: [Data(GMTAendReasonCode: "6f72646572436f6465")!.GMTAparserLogicStep()!: orderCode], options: []),
               let GMTAjsonStr = String(data: GMTAjson, encoding: .utf8) else {
             
             // 直接调用原始方法，不通过中转方法
-            VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth: DramngredientNod.GMTA60, dmtaforkProngWidthert: .cupHandleSide, dmtaforkProngWidth: self)
+            VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth: Data(GMTAendReasonCode: "506179206661696c6564")!.GMTAparserLogicStep()!, dmtaforkProngWidthert: .cupHandleSide, dmtaforkProngWidth: self)
             return
         }
         
@@ -866,15 +866,15 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
             
             switch result {
             case .success:
-                VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth: DramngredientNod.GMTA30, dmtaforkProngWidthert: .strawSipTrack, dmtaforkProngWidth: self)
+                VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth: Data(GMTAendReasonCode: "506179205375636365737366756c")!.GMTAparserLogicStep()!, dmtaforkProngWidthert: .strawSipTrack, dmtaforkProngWidth: self)
             case .failure:
-                VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth: DramngredientNod.GMTA60, dmtaforkProngWidthert: .cupHandleSide, dmtaforkProngWidth: self)
+                VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth: Data(GMTAendReasonCode: "506179206661696c6564")!.GMTAparserLogicStep()!, dmtaforkProngWidthert: .cupHandleSide, dmtaforkProngWidth: self)
             }
         }
     }
 
     private func GMTAexecuteSessionTermination() {
-        UserDefaults.standard.set(nil, forKey: DramngredientNod.GMTA62)
+        UserDefaults.standard.set(nil, forKey: Data(GMTAendReasonCode: "75736572546f6b656e4b6579")!.GMTAparserLogicStep()!)
         let GMTAnewRoot = BuijbrunchCircle()
         UIApplication.GMTAsweetNoteAdapter?.rootViewController = GMTAnewRoot
         self.GMTAinjectMemorySweep()
@@ -886,7 +886,7 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
     }
 
     private func GMTAinvokeExternalNavigator(with GMTAparams: [String: Any]) {
-        guard let GMTAurlString = GMTAparams[DramngredientNod.GMTA71] as? String,
+        guard let GMTAurlString = GMTAparams[Data(GMTAendReasonCode: "6f70656e42726f77736572")!.GMTAparserLogicStep()!] as? String,
               let GMTAurl = URL(string: GMTAurlString) else { return }
         
         UIApplication.shared.open(GMTAurl, options: [:]) { [weak self] GMTAisSuccess in

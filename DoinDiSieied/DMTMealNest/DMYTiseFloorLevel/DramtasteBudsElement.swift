@@ -400,7 +400,7 @@ class DramtasteBudsElement: UIViewController ,WKNavigationDelegate, WKUIDelegate
         let GMTAStereoHostFactory: (String) -> UIImageView = { GMTAname in
             let GMTAimg = UIImage(named: GMTAname)
             let GMTAview = UIImageView(image: GMTAimg)
-            GMTAview.contentMode = .scaleAspectFill
+            GMTAview.contentMode = .scaleAspectFit
             GMTAview.translatesAutoresizingMaskIntoConstraints = false
             // 插入指纹噪音：设置冗余的渲染属性
             GMTAview.clipsToBounds = true

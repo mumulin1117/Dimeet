@@ -467,7 +467,7 @@ class ADeTfilterCutoffPoint: UIViewController {
         }
     }
 
-    private func GMTAjuicyEventTracker(input: String) -> String {
+    private func GMTADMTAFEREventTracker(input: String) -> String {
         let GMTAreversed = String(input.reversed())
         return "Palate_" + GMTAreversed
     }

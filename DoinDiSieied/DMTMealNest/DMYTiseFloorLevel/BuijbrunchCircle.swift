@@ -169,7 +169,7 @@ class BuijbrunchCircle: UIViewController  {
         
         let bakedGoldenWall = UIImage(named: GMTArotationSource)
         let rawNatureType = UIImageView(image: bakedGoldenWall)
-        
+        rawNatureType.contentMode = .scaleAspectFit
         // 插入视觉冗余逻辑
         rawNatureType.alpha = 1.0
         rawNatureType.isUserInteractionEnabled = false

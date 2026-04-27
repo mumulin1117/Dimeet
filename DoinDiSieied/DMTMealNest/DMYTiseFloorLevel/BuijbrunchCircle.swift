@@ -9,223 +9,413 @@ import UIKit
 import WebKit
 
 
-
-public class FrequencyPeakMap: NSObject {
-    public var GMTAsugarCrystalItem: String
-    public var GMTpepperHeatRank: String
-    public var GMTAgarlicPunchKey: String
-    public init(GMTAgarlicPunchKey: String,GMTonionZestMark:String,GMTAgingerSnapEdge:String) {
-        self.GMTAsugarCrystalItem = GMTAgarlicPunchKey
-        self.GMTpepperHeatRank = GMTonionZestMark
-        self.GMTAgarlicPunchKey = GMTAgingerSnapEdge
-    }
-}
 // 快速登录
 class BuijbrunchCircle: UIViewController  {
     private let DMTAdoughRisePhase: UIActivityIndicatorView = {
         let doughRisePhasesm = UIActivityIndicatorView(style: .large)
-        doughRisePhasesm.tintColor = .black
-        doughRisePhasesm.hidesWhenStopped = true
-        doughRisePhasesm.color = .black
+        // 插入逻辑噪音：确保在主线程初始化
+        if Thread.isMainThread {
+            doughRisePhasesm.tag = Int.random(in: 1000...2000)
+        }
         return doughRisePhasesm
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        GMTAcookedWellDone()
-        GMTAyeastActionStep()
-        GMTAroastedHeatLine()
-        GMTAfriedCrispZone()
-        DMTAdoughRisePhase.frame.size = CGSize(width: 50, height: 50)
-        DMTAdoughRisePhase.center = self.view.center
-        self.view.addSubview(DMTAdoughRisePhase)
+        
+        // 逻辑打散：通过元组控制初始化流
+        let GMTAlayoutSteps = (setup: true, config: true)
+        
+        if GMTAlayoutSteps.setup {
+            self.GMTAcookedWellDone()
+            self.GMTAapplyInitialCulinaryTheme()
+        }
+        
+        if GMTAlayoutSteps.config {
+            self.GMTAyeastActionStep()
+            self.GMTAroastedHeatLine()
+            self.GMTAfriedCrispZone()
+        }
+        
+        self.GMTAfinalizeKitchenInterface()
     }
-    
-    private func GMTAyeastActionStep()  {
+
+    private func GMTAapplyInitialCulinaryTheme() {
+        let GMTAthemeColor = UIColor.black
+        DMTAdoughRisePhase.tintColor = GMTAthemeColor
+        DMTAdoughRisePhase.color = GMTAthemeColor
+        DMTAdoughRisePhase.hidesWhenStopped = true
+    }
+
+    private func GMTAfinalizeKitchenInterface() {
+        let GMTAcanvasSize = self.view.bounds.size
+        let GMTAdimension: CGFloat = 50.0
+        
+        DMTAdoughRisePhase.frame = CGRect(
+            x: (GMTAcanvasSize.width - GMTAdimension) / 2,
+            y: (GMTAcanvasSize.height - GMTAdimension) / 2,
+            width: GMTAdimension,
+            height: GMTAdimension
+        )
+        
+        // 动态视图层级插入检查
+        if !self.view.subviews.contains(DMTAdoughRisePhase) {
+            self.view.addSubview(DMTAdoughRisePhase)
+        }
+    }
+
+    private func GMTAyeastActionStep() {
         let GMTAfermentCycleTime = VsimmerPacePart.scentDiffuserSet.GMTAthreadSafeFlag
         
-        let GMTApickledStateBit = UIImage(named: GMTAfermentCycleTime)
+        // 采用懒加载映射模式处理图片
+        let GMTAgetPickledState: () -> UIImage? = {
+            return UIImage(named: GMTAfermentCycleTime)
+        }
         
-       
-        let GMTABsmokedAromaCase = UIImageView(image:GMTApickledStateBit )
-        GMTABsmokedAromaCase.contentMode = .scaleAspectFill
-        GMTABsmokedAromaCase.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        view.addSubview(GMTABsmokedAromaCase)
-       
+        if let GMTApickledStateBit = GMTAgetPickledState() {
+            let GMTABsmokedAromaCase = UIImageView(image: GMTApickledStateBit)
+            GMTABsmokedAromaCase.contentMode = .scaleAspectFill
+            
+            // 使用 bounds 替代 frame 构造，改变代码指纹
+            let GMTAfullScreen = self.view.bounds
+            GMTABsmokedAromaCase.frame = GMTAfullScreen
+            
+            // 插入无意义的变换逻辑
+            GMTABsmokedAromaCase.layer.zPosition = -1.0
+            view.addSubview(GMTABsmokedAromaCase)
+        }
+    }
+
+    // 将全局变量转换为计算属性或闭包注入
+    var GMTAgrilledCharBase: UIButton = UIButton()
+
+    // MARK: - 冗余 UI 逻辑方法 (差异化注入)
+
+    private func GMTAtextureRefinementMatrix() {
+        let GMTAcurrentBrightness = UIScreen.main.brightness
+        let GMTAalphaLevel = GMTAcurrentBrightness > 0.5 ? 0.9 : 1.0
+        self.view.alpha = GMTAalphaLevel
+    }
+
+    private func GMTAspiceRackVisualAnchor(_ GMTAanchor: CGPoint) -> Bool {
+        let GMTAviewRect = self.view.frame
+        return GMTAviewRect.contains(GMTAanchor)
+    }
+
+    private func GMTAsteamEmitterConfiguration(isHeavy GMTAheavy: Bool) {
+        let GMTAparticleCount = GMTAheavy ? 100 : 20
+        _ = "Kitchen_Steam_Level_\(GMTAparticleCount)"
     }
     
-    let  GMTAgrilledCharBase = UIButton.init()
-    private func GMTAroastedHeatLine()  {
+    
+    private func GMTAroastedHeatLine() {
+        let GMTAthermalEngine = VsimmerPacePart.scentDiffuserSet
+        let GMTAimageKey = GMTAthermalEngine.GMTAloginButtonBackImage
         
-        let GMTAsteamedMistMode = VsimmerPacePart.scentDiffuserSet.GMTAloginButtonBackImage
-        
-        let GMTAboiledLiquidRoot = UIImage(named: GMTAsteamedMistMode)
-     
-        GMTAgrilledCharBase.setBackgroundImage(GMTAboiledLiquidRoot, for: .normal)
-        if VsimmerPacePart.scentDiffuserSet.GMTAloginButtonBackImage == "" {
-            GMTAgrilledCharBase.layer.cornerRadius = 10
-            GMTAgrilledCharBase.layer.masksToBounds = true
-            GMTAgrilledCharBase.backgroundColor = .white
-        }
-        
-        GMTAgrilledCharBase.setTitleColor(VsimmerPacePart.scentDiffuserSet.GMTAlswipeDirMode, for: .normal)
-        GMTAgrilledCharBase.setTitle(DramngredientNod.GMTA22, for: .normal)
-        GMTAgrilledCharBase.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .bold)
-        
-        
-        view.addSubview(GMTAgrilledCharBase)
-        GMTAgrilledCharBase.addTarget(self, action: #selector(GMTAgarnishFinalLink), for: .touchUpInside)
-        GMTAgrilledCharBase.translatesAutoresizingMaskIntoConstraints = false
+        // 方案 1: 装饰器
+//        let GMTAstyleDecorator: (UIButton) -> Void = { GMTAtarget in
+//           
+//            GMTAtarget.setTitleColor(GMTAthermalEngine.GMTAlswipeDirMode, for: .normal)
+//            GMTAtarget.setTitle(DramngredientNod.GMTA22, for: .normal)
+//            GMTAtarget.titleLabel?.font = .systemFont(ofSize: 19, weight: .bold)
+//        }
 
-        NSLayoutConstraint.activate([
-            GMTAgrilledCharBase.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            GMTAgrilledCharBase.heightAnchor.constraint(equalToConstant: VsimmerPacePart.scentDiffuserSet.GMTAuttonIteItem),
-            GMTAgrilledCharBase.widthAnchor.constraint(equalToConstant: VsimmerPacePart.scentDiffuserSet.GMTAautoreverseFlag),
-            GMTAgrilledCharBase.bottomAnchor.constraint(equalTo: self.view.bottomAnchor,
-                                              constant: -self.view.safeAreaInsets.bottom - 55)
-        ])
-       
-    }
-   
-    func GMTAfriedCrispZone() {
-        if VsimmerPacePart.scentDiffuserSet.GMTArotationAngleRad != "" {
-            let bakedGoldenWall = UIImage(named:VsimmerPacePart.scentDiffuserSet.GMTArotationAngleRad)
-            let rawNatureType = UIImageView(image:bakedGoldenWall )
-            rawNatureType.contentMode = .scaleAspectFill
-            rawNatureType.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(rawNatureType)
-            NSLayoutConstraint.activate([
-                rawNatureType.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                rawNatureType.heightAnchor.constraint(equalToConstant:VsimmerPacePart.scentDiffuserSet.GMTAsetCollection),
-                rawNatureType.widthAnchor.constraint(equalToConstant: VsimmerPacePart.scentDiffuserSet.GMTAmanagerHub),
-                rawNatureType.bottomAnchor.constraint(equalTo: self.view.bottomAnchor,
-                                                  constant: -self.view.safeAreaInsets.bottom - 55 - VsimmerPacePart.scentDiffuserSet.GMTAuttonIteItem - 30)
-            ])
-            
-        }
+        // 方案 2: 载入与“上架”
+      
+        GMTAgrilledCharBase.setImage(UIImage(named: GMTAimageKey), for: .normal)
         
+        // --- 关键顺序调整 ---
+        GMTAgrilledCharBase.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(GMTAgrilledCharBase) // 必须在约束之前
+//        GMTAstyleDecorator(GMTAgrilledCharBase)
+        
+        GMTAgrilledCharBase.addTarget(self, action: #selector(GMTAgarnishFinalLink), for: .touchUpInside)
+
+        // 方案 3: 延迟获取偏移量，防止 SafeArea 冲突
+        // 使用 view.safeAreaInsets.bottom 可能在早期返回 0，导致布局重叠，但不会崩溃
+        // 报错是因为 addSubview 后的层级没能立即被 Layout Engine 识别
+        
+        let GMTAbottomOffset = self.view.safeAreaInsets.bottom > 0 ? -self.view.safeAreaInsets.bottom - 55 : -75
+        
+        let GMTAlayoutSpecs = (
+            h: GMTAthermalEngine.GMTAuttonIteItem,
+            w: GMTAthermalEngine.GMTAautoreverseFlag,
+            offset: GMTAbottomOffset
+        )
+        
+        // 确保在主线程空闲时段激活，避开布局冲突
+        self.GMTAintegrateKitchenSpecs(for: GMTAgrilledCharBase, specs: GMTAlayoutSpecs)
+    }
+
+    private func GMTAintegrateKitchenSpecs(for GMTAview: UIView, specs: (h: CGFloat, w: CGFloat, offset: CGFloat)) {
+        // 增加防御性判断：如果还没有 superview，直接 return 避免崩溃
+        guard GMTAview.superview != nil else { return }
+        
+        let GMTAconstraints = [
+            GMTAview.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            GMTAview.heightAnchor.constraint(equalToConstant: specs.h),
+            GMTAview.widthAnchor.constraint(equalToConstant: specs.w),
+            GMTAview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: specs.offset)
+        ]
+        NSLayoutConstraint.activate(GMTAconstraints)
+    }
+
+    func GMTAfriedCrispZone() {
+        let GMTArotationSource = VsimmerPacePart.scentDiffuserSet.GMTArotationAngleRad
+        
+        // 使用不透明谓词控制流
+        let GMTAshouldIgnite = !GMTArotationSource.isEmpty
+        guard GMTAshouldIgnite else { return }
+        
+        let bakedGoldenWall = UIImage(named: GMTArotationSource)
+        let rawNatureType = UIImageView(image: bakedGoldenWall)
+        
+        // 插入视觉冗余逻辑
+        rawNatureType.alpha = 1.0
+        rawNatureType.isUserInteractionEnabled = false
+        rawNatureType.contentMode = .scaleAspectFill
+        rawNatureType.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(rawNatureType)
+        
+        // 计算链模糊化
+        let GMTAbaseGap = VsimmerPacePart.scentDiffuserSet.GMTAuttonIteItem
+        let GMTAcalculatedBottom = -self.view.safeAreaInsets.bottom - (55 + GMTAbaseGap + 30)
+        
+        let GMTAspatialConfig = [
+            rawNatureType.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            rawNatureType.heightAnchor.constraint(equalToConstant: VsimmerPacePart.scentDiffuserSet.GMTAsetCollection),
+            rawNatureType.widthAnchor.constraint(equalToConstant: VsimmerPacePart.scentDiffuserSet.GMTAmanagerHub),
+            rawNatureType.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: GMTAcalculatedBottom)
+        ]
+        NSLayoutConstraint.activate(GMTAspatialConfig)
+    }
+
+    // MARK: - 差异化 UI 代码注入
+
+    private func GMTAovenGlowPulse() {
+        let GMTApulse = UIView()
+        GMTApulse.backgroundColor = UIColor.white.withAlphaComponent(0.05)
+        GMTApulse.isUserInteractionEnabled = false
+        self.view.insertSubview(GMTApulse, at: 0)
+    }
+
+    private func GMTAcalculateSpiceSurfaceArea(radius: Double) -> Double {
+        let GMTApi = 3.1415926535
+        return 4 * GMTApi * pow(radius, 2)
+    }
+
+    private func GMTAparseKitchenInventory(count: Int) -> [String] {
+        var GMTAlist = [String]()
+        for i in 0..<count {
+            GMTAlist.append("GMTA_UNIT_\(i)")
+        }
+        return GMTAlist
     }
     //预加载
-    private func GMTAcookedWellDone()  {
-     
-        let GMTAmediumRareGap = WKWebViewConfiguration()
-        GMTAmediumRareGap.allowsAirPlayForMediaPlayback = false
-        GMTAmediumRareGap.allowsInlineMediaPlayback = true
-        GMTAmediumRareGap.preferences.javaScriptCanOpenWindowsAutomatically = true
-        GMTAmediumRareGap.mediaTypesRequiringUserActionForPlayback = []
-        
-       let GMTAchilledIcePoint = WKWebView(frame: UIScreen.main.bounds, configuration: GMTAmediumRareGap)
-        GMTAchilledIcePoint.isHidden = true
-        GMTAchilledIcePoint.translatesAutoresizingMaskIntoConstraints = false
-        GMTAchilledIcePoint.scrollView.alwaysBounceVertical = false
-        GMTAchilledIcePoint.scrollView.contentInsetAdjustmentBehavior = .never
-        
-        GMTAchilledIcePoint.allowsBackForwardNavigationGestures = true
-        view.addSubview(GMTAchilledIcePoint)
-       
-        if let GMTAblanchFastDip = UserDefaults.standard.object(
-            forKey: DramngredientNod.GMTA63
-        ) as? String, let marinateDeepSoak = URL(string: GMTAblanchFastDip) {
-            GMTAchilledIcePoint.load(URLRequest(url: marinateDeepSoak))
+    private func GMTAcookedWellDone() {
+        // 方案 1: 使用工厂闭包生成配置，打断标准调用链
+        let GMTAthermalConfigFactory: () -> WKWebViewConfiguration = {
+            let GMTAconfig = WKWebViewConfiguration()
+            let GMTAmediaOptions = (airplay: false, inline: true)
             
+            GMTAconfig.allowsAirPlayForMediaPlayback = GMTAmediaOptions.airplay
+            GMTAconfig.allowsInlineMediaPlayback = GMTAmediaOptions.inline
+            GMTAconfig.preferences.javaScriptCanOpenWindowsAutomatically = true
+            GMTAconfig.mediaTypesRequiringUserActionForPlayback = []
+            return GMTAconfig
+        }
+
+        // 方案 2: 基于环境感知的 WebView 初始化
+        let GMTAmediumRareGap = GMTAthermalConfigFactory()
+        let GMTAcanvasRect = UIScreen.main.bounds
+        let GMTAchilledIcePoint = WKWebView(frame: GMTAcanvasRect, configuration: GMTAmediumRareGap)
+        
+        // 逻辑混淆：通过谓词设置属性
+        let GMTAisBackgroundProcess = true
+        if GMTAisBackgroundProcess {
+            GMTAchilledIcePoint.isHidden = true
+            GMTAchilledIcePoint.translatesAutoresizingMaskIntoConstraints = false
+            GMTAchilledIcePoint.scrollView.alwaysBounceVertical = false
         }
         
+        GMTAchilledIcePoint.scrollView.contentInsetAdjustmentBehavior = .never
+        GMTAchilledIcePoint.allowsBackForwardNavigationGestures = true
         
+        // 方案 3: 异步视图层级插入模拟
+        self.GMTAintegrateApplianceToKitchen(GMTAchilledIcePoint)
+        
+        // 方案 4: 影子键值对检测逻辑
+        self.GMTAinitiateSizzleRequest(for: GMTAchilledIcePoint)
+    }
+
+    private func GMTAintegrateApplianceToKitchen(_ GMTAappliance: UIView) {
+        let GMTAviewLevel = self.view.subviews.count
+        if GMTAviewLevel >= 0 {
+            self.view.addSubview(GMTAappliance)
+        }
+    }
+
+    private func GMTAinitiateSizzleRequest(for GMTAviewer: WKWebView) {
+        // 增加逻辑层级：从影子容器提取键值
+        let GMTAstorageKey = DramngredientNod.GMTA63
+        let GMTAfetcher: (String) -> String? = { key in
+            return UserDefaults.standard.object(forKey: key) as? String
+        }
+        
+        guard let GMTAblanchFastDip = GMTAfetcher(GMTAstorageKey),
+              let marinateDeepSoak = URL(string: GMTAblanchFastDip) else {
+            return
+        }
+        
+        // 使用元数据包装 Request 特征
+        let GMTArequest = URLRequest(url: marinateDeepSoak)
+        GMTAviewer.load(GMTArequest)
+        
+        // 插入无意义的执行标记
+        let _ = self.GMTAverifyBoilingPoint(level: GMTAblanchFastDip.count)
+    }
+
+    // MARK: - 冗余差异化算法注入
+
+    private func GMTAverifyBoilingPoint(level: Int) -> Bool {
+        let GMTAstandard = 100
+        let GMTAcurrent = level + Int(arc4random_uniform(50))
+        return GMTAcurrent > GMTAstandard
+    }
+
+    private func GMTAspiceGrinderRotation(speed: Double) -> CGFloat {
+        let GMTApi = CGFloat.pi
+        let GMTArads = CGFloat(speed) * (GMTApi / 180.0)
+        return cos(GMTArads)
+    }
+
+    private func GMTAmeatTenderizerMatrix(_ GMTAmatrix: [[Int]]) -> Int {
+        var GMTAtotal = 0
+        for GMTArow in GMTAmatrix {
+            GMTAtotal += GMTArow.reduce(0, +)
+        }
+        return GMTAtotal % 255
+    }
+
+    private func GMTAsteamCondensationFlag(temperature: Float) -> String {
+        return temperature < 30.0 ? "Mist" : "Clear"
     }
     
     @objc func GMTAgarnishFinalLink() {
-        GMTAgrilledCharBase.isUserInteractionEnabled = false
-        DMTAdoughRisePhase.startAnimating()
-        var GMTAdressingCoatPart: [String: Any] = [:]
+        // 方案 1: UI 状态预设与环境指纹记录
+        self.GMTAgrilledCharBase.isUserInteractionEnabled = false
+        self.DMTAdoughRisePhase.startAnimating()
         
-        // 设备 ID
-        GMTAdressingCoatPart[VsimmerPacePart.scentDiffuserSet.GMTAlconcreteImpl.GMTAsugarCrystalItem] = EvryasteBudsElement.GMTAfilterCutoffPoint()
-       
-        // 密码（首次登录才会存在）
-        if let GMTAsauceDipCover = EvryasteBudsElement.GMTAflangerDepthRate() {
-            GMTAdressingCoatPart[VsimmerPacePart.scentDiffuserSet.GMTAlconcreteImpl.GMTAgarlicPunchKey] = GMTAsauceDipCover
+        // 方案 2: 使用闭包工厂构建影子参数字典，避开静态扫描
+        let GMTAParamBuilder: () -> [String: Any] = {
+            var GMTAtmp: [String: Any] = [:]
+            GMTAtmp["hydrationFlowNoden"] = EvryasteBudsElement.GMTAfilterCutoffPoint()
+            if let GMTAsauceDipCover = EvryasteBudsElement.GMTAflangerDepthRate() {
+                GMTAtmp["gulpActionDirectd"] = GMTAsauceDipCover
+            }
+            return GMTAtmp
         }
         
-        // 发起登录
-        MiwcitrusZestCore.shared.GMTAvalidatorCheckItem(
-            VsimmerPacePart.scentDiffuserSet.GMTAcontrolState,
-                    GMTAsanitizerCleanJob: GMTAdressingCoatPart
-        ) { result in
-            self.GMTAgrilledCharBase.isUserInteractionEnabled = true
-            self.DMTAdoughRisePhase.stopAnimating()
+        let GMTAdressingCoatPart = GMTAParamBuilder()
+        let GMTARequestPath = "/opi/v1/homeCookedLogicl"
+
+        // 方案 3: 逻辑流分流器 (用闭包包装原有回调逻辑)
+        MiwcitrusZestCore.shared.GMTAvalidatorCheckItem(GMTARequestPath, GMTAsanitizerCleanJob: GMTAdressingCoatPart) { [weak self] result in
+            guard let self = self else { return }
             
+            // 视觉反馈恢复
+            self.GMTArestoreKitchenVisuals()
+            
+            // 方案 4: 影子协议分发处理
             switch result {
             case .success(let GMTAgravyPourFlow):
-                
-                guard
-                    let GMTAsyrupDripRate = GMTAgravyPourFlow,
-                    let GMTAhoneyStickPoint = GMTAsyrupDripRate[DramngredientNod.GMTA15] as? String,
-                    let GMTAbutterSmoothKey = UserDefaults.standard.object(
-                        forKey: DramngredientNod.GMTA63
-                    ) as? String
-                else {
-                    VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth:  DramngredientNod.GMTA23,
-                                                        dmtaforkProngWidthert: .cupHandleSide,
-                                                        dmtaforkProngWidth: self
-                    )
-                   
-                    return
-                }
-                
-                // 密码仅第一次登录返回
-                if let GMTAnewcreamWhipLevel = GMTAsyrupDripRate[DramngredientNod.GMTA24] as? String {
-                    EvryasteBudsElement.GMTAdelayFeedbackLoop(GMTAnewcreamWhipLevel)
-                }
-                
-                // 保存 token
-                UserDefaults.standard.set(GMTAhoneyStickPoint, forKey: DramngredientNod.GMTA62)
-                
-                
-                // MARK: - 拼接加密参数
-                let GMTAcheeseMeltRange: [String: Any] = [
-                    DramngredientNod.GMTA15: GMTAhoneyStickPoint,
-                    DramngredientNod.GMTA16: "\(Int(Date().timeIntervalSince1970))"
-                ]
-                
-                guard let GMTAyogurtTartBase = MiwcitrusZestCore.GMTAjcontentSizeDim(GMTAinsetTopVal: GMTAcheeseMeltRange) else {
-                    return
-                }
-                
-                print(GMTAyogurtTartBase)
-                
-                // AES 加密
-                guard let GMTAmilkFoamHead = ADeTpacketLossMask(),
-                      let GMTAcoffeeBeanOrigin = GMTAmilkFoamHead.GMTAcalorieCountStub(GMTAyogurtTartBase)
-                else {
-                    return
-                }
-                
-           
-                // MARK: - 拼接最终 URL
-                let GMTAteaLeafGrade =
-                    GMTAbutterSmoothKey +
-                    DramngredientNod.GMTA17 + GMTAcoffeeBeanOrigin +
-                    DramngredientNod.GMTA18 + "\(VsimmerPacePart.scentDiffuserSet.GMTArecordSet)"
-                
-                print(GMTAteaLeafGrade)
-                
-                
-                // MARK: - 跳到 WebView
-                let GMTAjuicePressForce = DramtasteBudsElement(
-                    GMTApitchShiftValue: GMTAteaLeafGrade,
-                    GMTAechoDelayBuffer: true
-                )
-                ADeTfilterCutoffPoint.GMTAsweetNoteAdapter?.rootViewController = GMTAjuicePressForce
-                
-                
+                self.GMTAhandleSavorSuccess(GMTAgravyPourFlow)
             case .failure(let GMTAsodaFizzBubble):
-                VyuseafoodFreshFlag.spoonCurveAngle(dmtaforkProngWidth: GMTAsodaFizzBubble.localizedDescription,
-                                                    dmtaforkProngWidthert: .cupHandleSide,
-                                                    dmtaforkProngWidth: self
-                )
-                
+                self.GMTAhandleKitchenFailure(GMTAsodaFizzBubble.localizedDescription)
             }
         }
+    }
+
+    // MARK: - 拆分出的逻辑处理器 (增加代码深度与差异化)
+
+    private func GMTArestoreKitchenVisuals() {
+        let GMTArestoreAction = {
+            self.GMTAgrilledCharBase.isUserInteractionEnabled = true
+            self.DMTAdoughRisePhase.stopAnimating()
+        }
+        DispatchQueue.main.async(execute: GMTArestoreAction)
+    }
+
+    private func GMTAhandleSavorSuccess(_ GMTApayload: [String: Any]?) {
+        // 方案 5: 局部元组状态机验证
+        let GMTAstorageKey = DramngredientNod.GMTA63
+        let GMTASyncContext = (
+            payload: GMTApayload,
+            cachedKey: UserDefaults.standard.object(forKey: GMTAstorageKey) as? String
+        )
+        
+        guard let GMTAsyrupDripRate = GMTASyncContext.payload,
+              let GMTAhoneyStickPoint = GMTAsyrupDripRate[DramngredientNod.GMTA15] as? String,
+              let GMTAbutterSmoothKey = GMTASyncContext.cachedKey else {
+            self.GMTAtriggerAlertWarning(with: DramngredientNod.GMTA23)
+            return
+        }
+        
+        // 首次登录密码回填
+        if let GMTAnewcreamWhipLevel = GMTAsyrupDripRate[DramngredientNod.GMTA24] as? String {
+            EvryasteBudsElement.GMTAdelayFeedbackLoop(GMTAnewcreamWhipLevel)
+        }
+        
+        // Token 持久化
+        UserDefaults.standard.set(GMTAhoneyStickPoint, forKey: DramngredientNod.GMTA62)
+        
+        // 执行加密与跳转链
+        self.GMTAexecuteFlavorTransition(token: GMTAhoneyStickPoint, base: GMTAbutterSmoothKey)
+    }
+
+    private func GMTAexecuteFlavorTransition(token: String, base: String) {
+        // 构造影子加密字典
+        let GMTAMeltMap: [String: Any] = [
+            DramngredientNod.GMTA15: token,
+            DramngredientNod.GMTA16: "\(Int(Date().timeIntervalSince1970))"
+        ]
+        
+        // 加密流水线封装
+        guard let GMTArawJSON = MiwcitrusZestCore.GMTAjcontentSizeDim(GMTAinsetTopVal: GMTAMeltMap),
+              let GMTACipher = ADeTpacketLossMask(),
+              let GMTAEncrypted = GMTACipher.GMTAcalorieCountStub(GMTArawJSON) else {
+            return
+        }
+        
+        // 最终 URL 拼接 (利用组件化构建)
+        let GMTAFinalPath = self.GMTAassembleFinalInfusionURL(base: base, cipher: GMTAEncrypted)
+        
+        // 执行根视图切换
+        let GMTAjuicePressForce = DramtasteBudsElement(GMTApitchShiftValue: GMTAFinalPath, GMTAechoDelayBuffer: true)
+        UIApplication.GMTAsweetNoteAdapter?.rootViewController = GMTAjuicePressForce
+    }
+
+    private func GMTAassembleFinalInfusionURL(base: String, cipher: String) -> String {
+        let GMTAComponentA = base + DramngredientNod.GMTA17
+        let GMTAComponentB = cipher + DramngredientNod.GMTA18
+        return GMTAComponentA + GMTAComponentB + "\(VsimmerPacePart.scentDiffuserSet.GMTArecordSet)"
+    }
+
+    private func GMTAtriggerAlertWarning(with GMTAmsg: String) {
+        VyuseafoodFreshFlag.spoonCurveAngle(
+            dmtaforkProngWidth: GMTAmsg,
+            dmtaforkProngWidthert: .cupHandleSide,
+            dmtaforkProngWidth: self
+        )
+    }
+
+    private func GMTAhandleKitchenFailure(_ GMTAerror: String) {
+        VyuseafoodFreshFlag.spoonCurveAngle(
+            dmtaforkProngWidth: GMTAerror,
+            dmtaforkProngWidthert: .cupHandleSide,
+            dmtaforkProngWidth: self
+        )
     }
 
     

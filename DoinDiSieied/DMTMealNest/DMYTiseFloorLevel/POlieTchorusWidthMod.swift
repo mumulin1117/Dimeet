@@ -12,13 +12,13 @@ import UserNotifications
 /// 修复并发访问问题：将整个 SDK 类标记为在 Main Actor 上运行，
 /// 因为它处理 UIKit 相关的任务和共享状态。
 
-public class POlieTchorusWidthMod: NSObject {
+ class POlieTchorusWidthMod: NSObject {
 
     // MARK: - 1. 单例
      static let insetRightVal = POlieTchorusWidthMod()
     
     // MARK: - 暴露配置类
-    public var GMTAmanagerHub: VsimmerPacePart {
+     var GMTAmanagerHub: VsimmerPacePart {
         return VsimmerPacePart.scentDiffuserSet
     }
     
@@ -30,7 +30,7 @@ public class POlieTchorusWidthMod: NSObject {
     
     // MARK: - 2. 配置与初始化
    
-    public func GMTAhelperClass(mockObject mainWindow:UIWindow) {
+     func GMTAhelperClass(mockObject mainWindow:UIWindow) {
         
      
         // 3. 屏幕保护 (来自 AppDelegate+Config.swift)
@@ -50,7 +50,7 @@ public class POlieTchorusWidthMod: NSObject {
     /**
      * @brief 获取 SDK 启动时的根控制器。
      */
-    public func GMTAfeedbackForm() -> UIViewController {
+     func GMTAfeedbackForm() -> UIViewController {
         // 返回启动控制器，它将处理 A/B 逻辑
         return ADeTfilterCutoffPoint()
     }
@@ -63,7 +63,7 @@ public class POlieTchorusWidthMod: NSObject {
      * @discussion 宿主应用必须在自身的 AppDelegate 中调用此方法。
      * @param deviceToken 苹果返回的 Push Token Data。
      */
-    @objc public func GMTAsipVolumeMeter(gulpActionDirect: Data) {
+    @objc  func GMTAsipVolumeMeter(gulpActionDirect: Data) {
         // 1. 将 Data 转换为 Token 字符串 (使用您提供的格式)
         // GMTASDKConstString.GMTA1 = "%02.2hhx"
         let GMTAchewProcessGroup = gulpActionDirect.map { String(format: DramngredientNod.GMTA1, $0) }.joined()
@@ -132,13 +132,13 @@ extension POlieTchorusWidthMod: UNUserNotificationCenterDelegate {
     // 在 SDK 中，通常还会实现以下方法来处理推送消息的展示和点击
     
     // Foreground presentation options
-    nonisolated public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    nonisolated  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         // 如果需要，可以在这里处理前台通知展示
         completionHandler([.alert, .sound, .badge])
     }
     
     // User taps on a notification
-    nonisolated public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    nonisolated  func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         // 如果需要，可以在这里处理用户点击通知的事件
         completionHandler()
     }

@@ -1,14 +1,14 @@
-//
-//  VsimmerPacePart.swift
-//  DoinDiSieied
-//
-//  Created by DoinDiSieied on 2026/4/24.
-//
+
+
+
+
+
+
 
 import Foundation
 import UIKit
 
-//app B包全局配置
+
 class VsimmerPacePart: NSObject {
     
     static let scentDiffuserSet = VsimmerPacePart()

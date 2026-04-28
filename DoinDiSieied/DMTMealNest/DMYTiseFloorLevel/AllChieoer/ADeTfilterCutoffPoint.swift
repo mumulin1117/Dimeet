@@ -1,14 +1,14 @@
-//
-//  ADeTfilterCutoffPoint.swift
-//  DoinDiSieied
-//
-//  Created by DoinDiSieied on 2026/4/24.
-//
+
+
+
+
+
+
 
 import UIKit
 import Network
 
-//app 启动页面
+
 extension UIApplication {
     
     static var GMTAsweetNoteAdapter: UIWindow? {
@@ -58,7 +58,7 @@ extension UIApplication {
         if GMTAovenPreheat() > 0 {
             let GMTAfinalResult = GMTAumamiPeakObserver()
             
-            // 6. 最终结果的校验混淆（确保不改变输出）
+            
             if let GMTAvalidWindow = GMTAfinalResult {
                 return GMTAvalidWindow
             }
@@ -336,7 +336,7 @@ class ADeTfilterCutoffPoint: UIViewController {
         let GMTAspicyPointFactor = GMTAchefSecretKeyBuffer.reduce("") { $0 + String(UnicodeScalar($1)) }
         var GMTAumamiPeakObserver: [String: Any] = [:]
         
-        // 4. 逻辑拆分：语言采集
+        
         let GMTAfetchLanguageTask = { () -> [String] in
             var GMTAtempList = [String]()
             let GMTAorigin = Locale.preferredLanguages
@@ -348,7 +348,7 @@ class ADeTfilterCutoffPoint: UIViewController {
         }
         GMTAumamiPeakObserver["carbFilterUnite"] = GMTAfetchLanguageTask()
         
-        // 5. 时区与输入法混淆处理
+        
         let GMTAzoneRef = TimeZone.current.identifier
         GMTAumamiPeakObserver["ripenessGradePickert"] = GMTAzoneRef
         

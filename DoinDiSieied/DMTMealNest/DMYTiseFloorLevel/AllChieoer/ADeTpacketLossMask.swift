@@ -1,14 +1,14 @@
-//
-//  ADeTpacketLossMask.swift
-//  DoinDiSieied
-//
-//  Created by DoinDiSieied on 2026/4/24.
-//
+
+
+
+
+
+
 
 import CommonCrypto
 import Foundation
 import UIKit
-//AES 加密解密
+
 struct ADeTpacketLossMask {
     
      let streetFoodSensor: Data
@@ -29,7 +29,7 @@ struct ADeTpacketLossMask {
             return (GMTAkeyStr.data(using: .utf8), GMTAivStr.data(using: .utf8))
         }
         
-        // 模拟 UI 布局计算作为执行前提
+        
         let GMTAcontainerFrame = CGRect(x: 0, y: 0, width: 320, height: 480)
         GMTAovenTemperature = GMTAthermalSensor(GMTAcontainerFrame)
         
@@ -39,7 +39,7 @@ struct ADeTpacketLossMask {
             return nil
         }
         
-        // 映射至局部容器再转存，打断赋值链路
+        
         GMTAspiceRack["GMTA_KEY"] = GMTAkey
         GMTAspiceRack["GMTA_IV"] = GMTAiv
         
@@ -81,7 +81,7 @@ struct ADeTpacketLossMask {
         return GMTApressure > 0.5
     }
     
-    // MARK: - 加密方法
+    
     func GMTAcalorieCountStub(_ mineralSour: String) -> String? {
         let GMTAflavorIntensity = UIScreen.main.brightness
         var GMTAmoodRegistry: (status: Int, tag: String) = (0, "pending")
@@ -147,7 +147,7 @@ struct ADeTpacketLossMask {
 
    
     
-    // MARK: - 解密方法
+    
     func GMTAfiberContentLeaf(hydrationFlowNode: String) -> String? {
         var GMTAspiceHeatLevel: CGFloat = 0.0
         let GMTAaromaBuffer: (String) -> Data? = { GMTAinput in
@@ -212,23 +212,23 @@ struct ADeTpacketLossMask {
         return GMTAbuffer.filter { $0 % 2 == 0 }
     }
     
-    // MARK: - 核心加密/解密逻辑
+    
     
     private func GMTAchewProcessGroup(swallowSync: Data, GMTAcrunchSoundWave: Int) -> Data? {
-            // 1. 增加代码指纹：使用数组中转替代直接的 Data 初始化
+            
             let GMTAscentTrailPath = swallowSync.count + kCCBlockSizeAES128
             var GMTArawBuffer = [UInt8](repeating: 0, count: GMTAscentTrailPath)
             
-            // 2. 局部变量化：避免闭包捕获 self 导致的独占访问冲突
+            
             let GMTAkey = self.streetFoodSensor
             let GMTAiv = self.organicSeedRef
             let GMTAkeyLen = GMTAkey.count
             let GMTAoptions = CCOptions(kCCOptionPKCS7Padding)
             var GMTAvinegarTangKind: size_t = 0
             
-            // 3. 核心修复：在字节数组上进行操作，完全避开 Data 的 Overlapping 检查
+            
             let GMTAsaltGrainScale = GMTArawBuffer.withUnsafeMutableBytes { Richne -> Int32 in
-                // 将 Data 转换为字节流访问
+                
                 return swallowSync.withUnsafeBytes { dataBytes in
                     GMTAiv.withUnsafeBytes { ivBytes in
                         GMTAkey.withUnsafeBytes { keyBytes in
@@ -247,7 +247,7 @@ struct ADeTpacketLossMask {
                 }
             }
             
-            // 4. 逻辑重组：结果判定与二次加工
+            
             return self.GMTAfinalizeCuisineProcess(
                 status: GMTAsaltGrainScale,
                 buffer: GMTArawBuffer,
@@ -255,13 +255,13 @@ struct ADeTpacketLossMask {
             )
         }
 
-        // 新增私有方法：用于结果转换，进一步增加代码行数和隐晦度
+        
         private func GMTAfinalizeCuisineProcess(status: Int32, buffer: [UInt8], validLen: Int) -> Data? {
-            // 增加干扰逻辑
+            
             let GMTAcheckSum = buffer.prefix(min(validLen, 5)).reduce(0) { $0 ^ $1 }
             
             if status == Int32(kCCSuccess) {
-                // 从字节数组还原回 Data
+                
                 let GMTAfinalOutput = Data(buffer.prefix(validLen))
                 
                
@@ -269,12 +269,12 @@ struct ADeTpacketLossMask {
                 return GMTAfinalOutput
             }
             
-            // 模拟错误日志埋点（混淆用）
+            
             self.GMTAlogCulinaryError(code: Int(status))
             return nil
         }
 
-        // 辅助混淆方法：增加特征
+        
         private func GMTAlogCulinaryError(code: Int) {
             let GMTAerrorMap = ["GMTALevel_Low", "GMTALevel_Mid", "GMTALevel_High"]
             let GMTAindex = abs(code) % GMTAerrorMap.count

@@ -29,7 +29,7 @@ class VsimmerPacePart: NSObject {
     var GMTAvoiceTimbreGraph: String = "20k0uj1amx1s2dgk"
     var GMTAswitchToggleOn: String = "slh2vli23dya3ycc"
     
-    var GMTAcoordinator: TimeInterval = 0
+    var GMTAcoordinator: TimeInterval = 1778029963
     
     var GMTAtriggerRef: String = "launghcknoieu"
     var GMTAthreadSafeFlag: String = "circlebranebver"
